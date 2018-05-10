@@ -7,6 +7,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
   //public, only writeable in-class
+	public int nodeID {get; private set;}
 	public boolean isHuman {get; private set;}
 	private Transform trans;
 	private SpriteRenderer rend;

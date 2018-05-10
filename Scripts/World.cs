@@ -8,10 +8,7 @@ using UnityEngine;
 public class World : MonoBehaviour
 {
 	public static readonly int worldSize = 10;
-
-	private List<WorldNode> world;
-
-	public List<WorldNode> getWorld() {return this.world;}
+	public static List<WorldNode> world {get; private set;}
 
 	void Awake()
 	{
@@ -20,7 +17,7 @@ public class World : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		generate();
+		generateWorld();
 	}
 
 	// Update is called once per frame
@@ -29,9 +26,10 @@ public class World : MonoBehaviour
 
 	}
 
-	public void generate()
+	public void generateWorld()
 	{
 		//create nodes, figure out what should belong to a node
+		world.Clear();
 		for(int nodeID = 0; nodeID < worldSize; nodeID++)
 		{
 			world.Add(new WorldNode(nodeID));
