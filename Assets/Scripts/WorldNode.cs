@@ -8,7 +8,7 @@ public class WorldNode : World
 {
   //public, only writeable in-class
   public int nodeID {get; private set;}
-  public boolean isActive {get; private set;}
+  public bool isActive {get; private set;}
 
   public WorldNode(int nodeID)
   {

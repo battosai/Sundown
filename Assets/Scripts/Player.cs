@@ -7,13 +7,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
   //public, only writeable in-class
-	public int nodeID {get; private set;}
-	public boolean isHuman {get; private set;}
+	public static int nodeID {get; private set;}
+	public static bool isHuman {get; private set;}
 	private Transform trans;
 	private SpriteRenderer rend;
 
 	//temporary, only used in editor for user input (will be touch)
-	private readonly float defaultMouseZ = -10f;
+	private readonly float defaultMouseZ = -9f;
 	private GameObject mouse;
 	private Transform mouseTrans;
 	private SpriteRenderer mouseRend;
@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
 		mouse = GameObject.Find("Mouse");
 		mouseTrans = mouse.GetComponent<Transform>();
 		mouseRend = mouse.GetComponent<SpriteRenderer>();
-		cam = GameObject.Find("MainCamera");
+		cam = GameObject.Find("MainCamera").GetComponent<Camera>();
 	}
 
 	// Use this for initialization

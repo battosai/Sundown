@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,15 +7,14 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-  public static readonly int width = 50;
-  public static readonly int height = 50;
+  public static readonly int width = 100;
+  public static readonly int height = 100;
+  public static readonly int equalNeighbors = 4;
   public static int[,] map {get; private set;}
   private string seed;
   [Range(0, 100)]
   public int randomFillPercent;
-  [Range(1, 8)]
-  public int smoothingRate;
-  public boolean isRandomSeed;
+  public bool isRandomSeed;
 
 	void Awake()
 	{
@@ -29,10 +29,15 @@ public class MapGenerator : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+    if (Input.GetMouseButtonDown(0)) 
+    {
+      generateMap();
+    }
 	}
 
   private void generateMap()
   {
+    seed = "";
     map = new int[width, height];
     randomFillMap();
     smoothMap();
@@ -44,7 +49,7 @@ public class MapGenerator : MonoBehaviour
     //if not random, seed will be null thus returning same one each time
     if(isRandomSeed)
       seed = Time.time.ToString();
-    System.Random rand = new Random(seed.GetHashCode());
+    System.Random rand = new System.Random(seed.GetHashCode());
     for(int i = 0; i < width; i++)
     {
       for(int j = 0; j < height; j++)
@@ -69,9 +74,9 @@ public class MapGenerator : MonoBehaviour
       for(int j = 0; j < height; j++)
       {
         int neighbors = countWallNeighbors(i, j);
-        if(neighbors > smoothingRate)
+        if(neighbors > equalNeighbors)
           map[i, j] = 1;
-        else if(neighbors < smoothingRate)
+        else if(neighbors < equalNeighbors)
           map[i, j] = 0;
       }
     }
@@ -85,11 +90,30 @@ public class MapGenerator : MonoBehaviour
     {
       for(int j = y-1; j <= y+1; j++)
       {
+        if(i < 0 || i >= width || j < 0 || j >= height)
+          continue;
         if(i == x && j == y)
           continue;
         count += map[i, j];
       }
     }
     return count;
+  }
+
+  //draw the map
+  void OnDrawGizmos() 
+  {
+    if(map != null) 
+    {
+      for(int x = 0; x < width; x ++) 
+      {
+        for(int y = 0; y < height; y ++) 
+        {
+          Gizmos.color = (map[x,y] == 1)?Color.black:Color.white;
+          Vector3 pos = new Vector3(-width/2 + x + .5f, -height/2 + y+.5f, 0);
+          Gizmos.DrawCube(pos,Vector3.one);
+        }
+      }
+    }
   }
 }

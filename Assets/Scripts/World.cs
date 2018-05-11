@@ -9,6 +9,7 @@ public class World : MonoBehaviour
 {
 	public static readonly int worldSize = 10;
 	public static List<WorldNode> world {get; private set;}
+	public bool isDaytime {get; private set;}
 
 	void Awake()
 	{
@@ -17,6 +18,7 @@ public class World : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+		reset();
 		generateWorld();
 	}
 
@@ -34,5 +36,10 @@ public class World : MonoBehaviour
 		{
 			world.Add(new WorldNode(nodeID));
 		}
+	}
+
+	public void reset()
+	{
+		isDaytime = true;
 	}
 }
