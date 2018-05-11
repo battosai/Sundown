@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//ROLE: handle player inputs for all platforms
+
 public class PlayerInput : MonoBehaviour
 {
+  public static bool isClick;
+  public static bool isHold;
+
 	private readonly float DEFAULT_MOUSE_Z = -9f;
   private readonly float CLICK_TOLERANCE = 0.25f;
   private readonly float UNSET_TIME = -1f;
 
-  private bool isClick;
-  private bool isHold;
   private float downTime;
 	private GameObject mouse;
 	private Transform mouseTrans;
@@ -46,15 +49,14 @@ public class PlayerInput : MonoBehaviour
   //differentiates between mouse click and hold
   private void getMouseInput()
   {
+    isClick = false;
     if(Input.GetMouseButtonDown(0))
       downTime = Time.time;
     if(Input.GetMouseButtonUp(0))
-      downTime = UNSET_TIME;
-    if(downTime != UNSET_TIME)
     {
       float duration = Time.time - downTime;
-      isHold = duration > CLICK_TOLERANCE;
-      isClick = !isHold;
+      isClick = duration < CLICK_TOLERANCE;
     }
+    isHold = Input.GetMouseButton(0);
   }
 }

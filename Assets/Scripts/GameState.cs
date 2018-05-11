@@ -43,7 +43,6 @@ public class GameState : MonoBehaviour
 			{
 				isDaytime = false;
 				startTime = UNSET_TIME;
-				Player.toggleDayNight(isDaytime);
 			}
 		}
 		else
@@ -52,7 +51,6 @@ public class GameState : MonoBehaviour
 			{
 				isDaytime = true;
 				startTime = UNSET_TIME;
-				Player.toggleDayNight(isDaytime);
 			}
 		}
 	}

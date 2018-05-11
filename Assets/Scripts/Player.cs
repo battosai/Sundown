@@ -31,12 +31,13 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		//check to see if player is clicking at exit to go to next worldnode
 	}
 
 	//called by gamestate.checkTimeLimit
-	public static void toggleDayNight(bool isDaytime)
+	public static void toggleDayNight()
 	{
-		if(isDaytime)
+		if(GameState.isDaytime)
 		{
 			isHuman = true;
 			isFed = false;

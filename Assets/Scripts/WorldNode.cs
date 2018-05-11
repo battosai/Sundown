@@ -8,9 +8,10 @@ public class WorldNode : World
 {
   public int nodeID {get; private set;}
   public bool isActive {get; private set;}
-  private GameObject playerSpawn;
-  private GameObject playerExit;
-
+  // private GameObject playerSpawn;
+  // private GameObject playerExit;
+  private Vector2 playerSpawn = new Vector2(0, 0);
+  private Vector2 playerExit; = new Vector2(10, 0);
 
   public WorldNode(int nodeID)
   {
@@ -20,8 +21,8 @@ public class WorldNode : World
 
   void Awake()
   {
-    playerSpawn = GameObject.Find(this.name + "/PlayerSpawn");
-    playerExit = GameObject.Find(this.name+"/PlayerExit");
+    // playerSpawn = GameObject.Find(this.name + "/PlayerSpawn");
+    // playerExit = GameObject.Find(this.name+"/PlayerExit");
   }
 
 	// Update is called once per frame
