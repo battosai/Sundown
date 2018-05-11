@@ -7,18 +7,17 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-  public static readonly int width = 100;
-  public static readonly int height = 100;
-  public static readonly int equalNeighbors = 4;
+  public static readonly int WIDTH = 100;
+  public static readonly int HEIGHT = 100;
+  public static readonly int EQUAL_NEIGHBORS = 4;
+
   public static int[,] map {get; private set;}
+
   private string seed;
+
   [Range(0, 100)]
   public int randomFillPercent;
   public bool isRandomSeed;
-
-	void Awake()
-	{
-	}
 
 	// Use this for initialization
 	void Start()
@@ -29,7 +28,7 @@ public class MapGenerator : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-    if (Input.GetMouseButtonDown(0)) 
+    if (Input.GetMouseButtonDown(0))
     {
       generateMap();
     }
@@ -38,7 +37,7 @@ public class MapGenerator : MonoBehaviour
   private void generateMap()
   {
     seed = "";
-    map = new int[width, height];
+    map = new int[WIDTH, HEIGHT];
     randomFillMap();
     smoothMap();
   }
@@ -50,11 +49,11 @@ public class MapGenerator : MonoBehaviour
     if(isRandomSeed)
       seed = Time.time.ToString();
     System.Random rand = new System.Random(seed.GetHashCode());
-    for(int i = 0; i < width; i++)
+    for(int i = 0; i < WIDTH; i++)
     {
-      for(int j = 0; j < height; j++)
+      for(int j = 0; j < HEIGHT; j++)
       {
-        if(i == 0 || j == 0 || i == width-1 || j == height-1)
+        if(i == 0 || j == 0 || i == WIDTH-1 || j == HEIGHT-1)
         {
           map[i, j] = 1;
         }
@@ -69,14 +68,14 @@ public class MapGenerator : MonoBehaviour
   //smooths randomly filled map
   private void smoothMap()
   {
-    for(int i = 0; i < width; i++)
+    for(int i = 0; i < WIDTH; i++)
     {
-      for(int j = 0; j < height; j++)
+      for(int j = 0; j < HEIGHT; j++)
       {
         int neighbors = countWallNeighbors(i, j);
-        if(neighbors > equalNeighbors)
+        if(neighbors > EQUAL_NEIGHBORS)
           map[i, j] = 1;
-        else if(neighbors < equalNeighbors)
+        else if(neighbors < EQUAL_NEIGHBORS)
           map[i, j] = 0;
       }
     }
@@ -90,7 +89,7 @@ public class MapGenerator : MonoBehaviour
     {
       for(int j = y-1; j <= y+1; j++)
       {
-        if(i < 0 || i >= width || j < 0 || j >= height)
+        if(i < 0 || i >= WIDTH || j < 0 || j >= HEIGHT)
           continue;
         if(i == x && j == y)
           continue;
@@ -101,17 +100,17 @@ public class MapGenerator : MonoBehaviour
   }
 
   //draw the map
-  void OnDrawGizmos() 
+  void OnDrawGizmos()
   {
-    if(map != null) 
+    if(map != null)
     {
-      for(int x = 0; x < width; x ++) 
+      for(int x = 0; x < WIDTH; x++)
       {
-        for(int y = 0; y < height; y ++) 
+        for(int y = 0; y < HEIGHT; y++)
         {
-          Gizmos.color = (map[x,y] == 1)?Color.black:Color.white;
-          Vector3 pos = new Vector3(-width/2 + x + .5f, -height/2 + y+.5f, 0);
-          Gizmos.DrawCube(pos,Vector3.one);
+          Gizmos.color = (map[x, y] == 1)? Color.black : Color.white;
+          Vector3 pos = new Vector3(-WIDTH/2 + x + .5f, -height/2 + y + .5f, 0);
+          Gizmos.DrawCube(pos, Vector3.one);
         }
       }
     }

@@ -6,28 +6,20 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-  //public, only writeable in-class
+	public static readonly int DAILY_FOOD_REQUIREMENT = 30;
+
 	public static int nodeID {get; private set;}
 	public static bool isHuman {get; private set;}
+	public static bool isFed {get; private set;}
+
 	private Transform trans;
 	private SpriteRenderer rend;
-
-	//temporary, only used in editor for user input (will be touch)
-	private readonly float defaultMouseZ = -9f;
-	private GameObject mouse;
-	private Transform mouseTrans;
-	private SpriteRenderer mouseRend;
-	private Camera cam;
+	private int food;
 
 	void Awake()
 	{
 		trans = GetComponent<Transform>();
 		rend = GetComponent<SpriteRenderer>();
-		//temp
-		mouse = GameObject.Find("Mouse");
-		mouseTrans = mouse.GetComponent<Transform>();
-		mouseRend = mouse.GetComponent<SpriteRenderer>();
-		cam = GameObject.Find("MainCamera").GetComponent<Camera>();
 	}
 
 	// Use this for initialization
@@ -39,21 +31,34 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		trackMouse();
+	}
+
+	//called by gamestate.checkTimeLimit
+	public static void toggleDayNight(bool isDaytime)
+	{
+		if(isDaytime)
+		{
+			isHuman = true;
+			isFed = false;
+		}
+		else
+		{
+			isHuman = false;
+		}
 	}
 
 	//will also be used when replaying game
 	//place all initializations in here
-	public void reset()
+	public static void reset()
 	{
 		isHuman = true;
+		isFed = false;
 	}
 
-	//temp
-	private void trackMouse()
+	private void addFood(int value)
 	{
-		Vector2 mousePos = Input.mousePosition;
-		mousePos = cam.ScreenToWorldPoint(mousePos);
-		mouseTrans.position = new Vector3(mousePos.x, mousePos.y, defaultMouseZ);
+		food += value;
+		if(food >= DAILY_FOOD_REQUIREMENT)
+			isFed = true;
 	}
 }

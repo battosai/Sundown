@@ -6,9 +6,11 @@ using UnityEngine;
 
 public class WorldNode : World
 {
-  //public, only writeable in-class
   public int nodeID {get; private set;}
   public bool isActive {get; private set;}
+  private GameObject playerSpawn;
+  private GameObject playerExit;
+
 
   public WorldNode(int nodeID)
   {
@@ -16,10 +18,15 @@ public class WorldNode : World
     this.isActive = true;
   }
 
+  void Awake()
+  {
+    playerSpawn = GameObject.Find(this.name + "/PlayerSpawn");
+    playerExit = GameObject.Find(this.name+"/PlayerExit");
+  }
+
 	// Update is called once per frame
 	void Update()
 	{
 
 	}
-
 }
