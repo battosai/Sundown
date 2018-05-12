@@ -4,25 +4,24 @@ using UnityEngine;
 
 //ROLE: handles node events (player interactions, hero interactions, etc)
 
-public class WorldNode : World
+public class WorldNode : MonoBehaviour
 {
   public int nodeID {get; private set;}
   public bool isActive {get; private set;}
-  // private GameObject playerSpawn;
-  // private GameObject playerExit;
-  private Vector2 playerSpawn = new Vector2(0, 0);
-  private Vector2 playerExit; = new Vector2(10, 0);
+  private GameObject playerSpawn;
+  private GameObject playerExit;
 
-  public WorldNode(int nodeID)
-  {
-    this.nodeID = nodeID;
-    this.isActive = true;
-  }
+  public void setNodeID(int nodeID){this.nodeID = nodeID;}
 
   void Awake()
   {
-    // playerSpawn = GameObject.Find(this.name + "/PlayerSpawn");
-    // playerExit = GameObject.Find(this.name+"/PlayerExit");
+    playerSpawn = GameObject.Find(this.name + "/PlayerSpawn");
+    playerExit = GameObject.Find(this.name + "/PlayerExit");
+  }
+
+  void Start()
+  {
+    reset();
   }
 
 	// Update is called once per frame
@@ -30,4 +29,9 @@ public class WorldNode : World
 	{
 
 	}
+
+  public void reset()
+  {
+    isActive = true;
+  }
 }

@@ -8,17 +8,22 @@ using UnityEngine;
 public class World : MonoBehaviour
 {
 	public static readonly int WORLD_SIZE = GameState.DAYS_TO_WIN;
-	public static List<WorldNode> world {get; private set;}
+	public static readonly float NODE_SPACING = 100f;
+	public static List<GameObject> nodes {get; private set;}
+	private GameObject startNode;
+	private Transform trans;
 
 	void Awake()
 	{
+		startNode = GameObject.Find("Node");
+		trans = GetComponent<Transform>();
+		nodes = new List<GameObject>();
 	}
 
 	// Use this for initialization
 	void Start()
 	{
 		reset();
-		generateWorld();
 	}
 
 	// Update is called once per frame
@@ -26,17 +31,27 @@ public class World : MonoBehaviour
 	{
 	}
 
-	public void generateWorld()
+	private void generateWorld()
 	{
-		world.Clear();
-		for(int nodeID = 0; nodeID < WORLD_SIZE; nodeID++)
+		if(nodes == null)
 		{
-			world.Add(new WorldNode(nodeID));
+			Debug.Log("Error: nodes is null");
+			return;
+		}
+		nodes.Clear();
+		startNode.GetComponent<WorldNode>().setNodeID(nodes.Count);
+		nodes.Add(startNode);
+		for(int i = 1; i < WORLD_SIZE; i++)
+		{
+			GameObject node = Instantiate(startNode, trans);
+			node.GetComponent<WorldNode>().setNodeID(i);
+			nodes.Add(node);
+			node.GetComponent<Transform>().position = new Vector2(i*NODE_SPACING, i*NODE_SPACING);
 		}
 	}
 
-	public static void reset()
+	private void reset()
 	{
-		isDaytime = true;
+		generateWorld();
 	}
 }

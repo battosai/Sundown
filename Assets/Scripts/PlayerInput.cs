@@ -10,7 +10,7 @@ public class PlayerInput : MonoBehaviour
   public static bool isHold;
 
 	private readonly float DEFAULT_MOUSE_Z = -9f;
-  private readonly float CLICK_TOLERANCE = 0.25f;
+  private readonly float CLICK_TOLERANCE = 0.2f;
   private readonly float UNSET_TIME = -1f;
 
   private float downTime;
@@ -30,6 +30,7 @@ public class PlayerInput : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+		downTime = UNSET_TIME;
 	}
 
 	// Update is called once per frame
@@ -49,14 +50,25 @@ public class PlayerInput : MonoBehaviour
   //differentiates between mouse click and hold
   private void getMouseInput()
   {
-    isClick = false;
     if(Input.GetMouseButtonDown(0))
       downTime = Time.time;
+    isClick = false;
     if(Input.GetMouseButtonUp(0))
     {
       float duration = Time.time - downTime;
       isClick = duration < CLICK_TOLERANCE;
+			downTime = UNSET_TIME;
     }
-    isHold = Input.GetMouseButton(0);
+		isHold = false;
+		if(downTime != UNSET_TIME)
+		{
+			float duration = Time.time - downTime;
+			if(duration > CLICK_TOLERANCE)
+				isHold = true;
+		}
+		// if(isHold)
+		// 	Debug.Log("Hold");
+		// if(isClick)
+		// 	Debug.Log("Click");
   }
 }

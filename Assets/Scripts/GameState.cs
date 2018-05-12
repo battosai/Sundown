@@ -8,7 +8,7 @@ public class GameState : MonoBehaviour
 {
 	public static readonly int DAY_LENGTH = 60;
 	public static readonly int NIGHT_LENGTH = 60;
-	public static readonly int DAYS_TO_WIN = 10;
+	public static readonly int DAYS_TO_WIN = 5;
 	public static int day {get; private set;}
 	public static bool isDaytime {get; private set;}
 
@@ -29,7 +29,7 @@ public class GameState : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		checkTimeLimit()
+		checkTimeLimit();
 	}
 
 	//switches between daytime and nighttime according to their durations
