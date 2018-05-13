@@ -8,6 +8,7 @@ public class PlayerInput : MonoBehaviour
 {
   public static bool isClick;
   public static bool isHold;
+  public static bool E, W, A, S, D;
 
 	private readonly float DEFAULT_MOUSE_Z = -9f;
   private readonly float CLICK_TOLERANCE = 0.2f;
@@ -38,7 +39,34 @@ public class PlayerInput : MonoBehaviour
 	{
 		trackMouse();
     getMouseInput();
+    getKeyboardInput();
+    useInput();
 	}
+
+  private void useInput()
+  {
+    if(mouseTrans.position.x > Player.trans.position.x)
+      Player.rend.flipX = true;
+    else if(mouseTrans.position.x < Player.trans.position.x)
+      Player.rend.flipX = false;
+    Player.rb.velocity = calculateVelocity();
+    Player.iColl.enabled = E;
+  }
+
+  private Vector2 calculateVelocity()
+  {
+    float x = 0;
+    float y = 0;
+    if(W)
+      y = Player.speed;
+    else if(S)
+      y = -Player.speed;
+    if(D)
+      x = Player.speed;
+    else if(A)
+      x = -Player.speed;
+    return new Vector2(x, y);
+  }
 
 	private void trackMouse()
 	{
@@ -70,5 +98,24 @@ public class PlayerInput : MonoBehaviour
 		// 	Debug.Log("Hold");
 		// if(isClick)
 		// 	Debug.Log("Click");
+  }
+
+  private void getKeyboardInput()
+  {
+    E = Input.GetKeyDown(KeyCode.E);
+    W = Input.GetKey(KeyCode.W);
+    A = Input.GetKey(KeyCode.A);
+    S = Input.GetKey(KeyCode.S);
+    D = Input.GetKey(KeyCode.D);
+    if(W && S)
+    {
+      W = false;
+      S = false;
+    }
+    if(A && D)
+    {
+      A = false;
+      D = false;
+    }
   }
 }

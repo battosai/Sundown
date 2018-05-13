@@ -2,24 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//ROLE: handles player controls and input
+//ROLE: controls player status
 
 public class Player : MonoBehaviour
 {
 	public static readonly int DAILY_FOOD_REQUIREMENT = 30;
+	public static readonly int BASE_SPEED = 10;
 
 	public static int nodeID {get; private set;}
 	public static bool isHuman {get; private set;}
 	public static bool isFed {get; private set;}
-
-	private Transform trans;
-	private SpriteRenderer rend;
+	public static float speed {get; private set;}
+ 	public static Transform trans;
+	public static Rigidbody2D rb;
+	public static SpriteRenderer rend;
+	public static Collider2D iColl;
 	private int food;
 
 	void Awake()
 	{
 		trans = GetComponent<Transform>();
+		rb = GetComponent<Rigidbody2D>();
 		rend = GetComponent<SpriteRenderer>();
+		iColl = GameObject.Find("InteractionCollider").GetComponent<Collider2D>();
 	}
 
 	// Use this for initialization
@@ -32,6 +37,7 @@ public class Player : MonoBehaviour
 	void Update()
 	{
 		//check to see if player is clicking at exit to go to next worldnode
+
 	}
 
 	//called by gamestate.checkTimeLimit
@@ -54,6 +60,7 @@ public class Player : MonoBehaviour
 	{
 		isHuman = true;
 		isFed = false;
+		speed = BASE_SPEED;
 	}
 
 	private void addFood(int value)
