@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
 	public static Collider2D iColl;
 	private int food;
 
+	public static void setNodeID(int id){nodeID = id;}
+
 	void Awake()
 	{
 		trans = GetComponent<Transform>();
@@ -40,8 +42,7 @@ public class Player : MonoBehaviour
 
 	}
 
-	//called by gamestate.checkTimeLimit
-	public static void toggleDayNight()
+	public void toggleDayNight()
 	{
 		if(GameState.isDaytime)
 		{

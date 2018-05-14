@@ -8,8 +8,8 @@ public class WorldNode : MonoBehaviour
 {
   public int nodeID {get; private set;}
   public bool isActive {get; private set;}
-  private GameObject playerSpawn;
-  private GameObject playerExit;
+  public GameObject playerSpawn {get; private set;}
+  public GameObject playerExit {get; private set;}
 
   public void setNodeID(int nodeID){this.nodeID = nodeID;}
 

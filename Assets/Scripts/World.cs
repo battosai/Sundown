@@ -15,7 +15,7 @@ public class World : MonoBehaviour
 
 	void Awake()
 	{
-		startNode = GameObject.Find("Node");
+		startNode = GameObject.Find("Node0");
 		trans = GetComponent<Transform>();
 		nodes = new List<GameObject>();
 	}
@@ -44,6 +44,7 @@ public class World : MonoBehaviour
 		for(int i = 1; i < WORLD_SIZE; i++)
 		{
 			GameObject node = Instantiate(startNode, trans);
+			node.name = "Node" + i;
 			node.GetComponent<WorldNode>().setNodeID(i);
 			nodes.Add(node);
 			node.GetComponent<Transform>().position = new Vector2(i*NODE_SPACING, i*NODE_SPACING);

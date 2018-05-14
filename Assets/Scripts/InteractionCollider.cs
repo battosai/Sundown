@@ -33,6 +33,17 @@ public class InteractionCollider : MonoBehaviour
 
 	private void travel()
 	{
-		Debug.Log("Traveling!");
+		if(Player.nodeID < World.WORLD_SIZE-1)
+		{
+			Debug.Log("Traveling!");
+			Player.setNodeID(Player.nodeID+1);
+			GameObject node = World.nodes[Player.nodeID];
+			GameObject spawn = node.GetComponent<WorldNode>().playerSpawn;
+			Player.trans.position = spawn.GetComponent<Transform>().position;
+		}
+		else
+		{
+			Debug.Log("This is the last node");
+		}
 	}
 }
