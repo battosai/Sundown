@@ -30,7 +30,6 @@ public class MapGenerator : MonoBehaviour
 	{
     if (Input.GetMouseButtonDown(0))
     {
-      Debug.Log("Button pressed.");
       generateMap();
     }
 	}
@@ -46,7 +45,7 @@ public class MapGenerator : MonoBehaviour
   //randomly fills map based on randomfillpercent
   private void randomFillMap()
   {
-    //if not random, seed will be null thus returning same one each time
+    //if not random, seed will be empty thus returning same one each time
     if(isRandomSeed)
       seed = Time.time.ToString();
     System.Random rand = new System.Random(seed.GetHashCode());

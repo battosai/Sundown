@@ -6,10 +6,10 @@ using UnityEngine;
 
 public class PlayerClass : CharacterClass
 {
-	public static readonly int DAILY_FOOD_REQUIREMENT = 30;
+	public readonly int DAILY_FOOD_REQUIREMENT = 30;
 
-	public static bool isHuman {get; private set;}
-	public static bool isFed {get; private set;}
+	public bool isHuman {get; private set;}
+	public bool isFed {get; private set;}
 	private int food;
 
 	// Use this for initialization
