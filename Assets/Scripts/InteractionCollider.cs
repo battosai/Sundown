@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class InteractionCollider : MonoBehaviour
 {
-	private PlayerClass player;
+	private CharacterClass player;
 	// Use this for initialization
 	void Start ()
 	{

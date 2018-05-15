@@ -19,7 +19,7 @@ public class PlayerInput : MonoBehaviour
 	private Transform mouseTrans;
 	private SpriteRenderer mouseRend;
 	private Camera cam;
-  private PlayerClass player;
+  private CharacterClass player;
 
 	void Awake()
 	{
