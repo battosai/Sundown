@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class CharacterClass : MonoBehaviour {
 	public static readonly int BASE_SPEED = 10;
-	public static int nodeID {get; private set;}
-	public static float speed {get; private set;}
-	public static Transform trans;
-	public static Rigidbody2D rb;
-	public static SpriteRenderer rend;
-	public static Collider2D iColl;
-	public static void setNodeID(int id){nodeID = id;}
+	public int nodeID {get; private set;}
+	public float speed {get; private set;}
+	public Transform trans;
+	public Rigidbody2D rb;
+	public SpriteRenderer rend;
+	public Collider2D iColl;
+	public void setNodeID(int id){nodeID = id;}
 
 	void Awake()
 	{
@@ -29,7 +29,7 @@ public class CharacterClass : MonoBehaviour {
 		
 	}
 
-	public static void reset() {
+	public void reset() {
 		speed = BASE_SPEED;
 	}
 }

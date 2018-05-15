@@ -15,7 +15,7 @@ public class PlayerClass : CharacterClass
 	// Use this for initialization
 	void Start()
 	{
-		CharacterClass.reset();
+		base.reset();
 		isHuman = true;
 		isFed = false;
 	}
