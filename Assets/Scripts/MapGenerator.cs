@@ -30,6 +30,7 @@ public class MapGenerator : MonoBehaviour
 	{
     if (Input.GetMouseButtonDown(0))
     {
+      Debug.Log("Button pressed.");
       generateMap();
     }
 	}

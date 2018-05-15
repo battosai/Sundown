@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class InteractionCollider : MonoBehaviour
 {
-
+	private CharacterClass player;
 	// Use this for initialization
 	void Start ()
 	{
-
+		player = GameObject.Find("Player").GetComponent<PlayerClass>();
 	}
 
 	// Update is called once per frame
@@ -33,13 +33,13 @@ public class InteractionCollider : MonoBehaviour
 
 	private void travel()
 	{
-		if(Player.nodeID < World.WORLD_SIZE-1)
+		if(player.nodeID < World.WORLD_SIZE-1)
 		{
 			Debug.Log("Traveling!");
-			Player.setNodeID(Player.nodeID+1);
-			GameObject node = World.nodes[Player.nodeID];
+			player.setNodeID(player.nodeID+1);
+			GameObject node = World.nodes[player.nodeID];
 			GameObject spawn = node.GetComponent<WorldNode>().playerSpawn;
-			Player.trans.position = spawn.GetComponent<Transform>().position;
+			player.trans.position = spawn.GetComponent<Transform>().position;
 		}
 		else
 		{

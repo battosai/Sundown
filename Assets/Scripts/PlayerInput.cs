@@ -19,6 +19,7 @@ public class PlayerInput : MonoBehaviour
 	private Transform mouseTrans;
 	private SpriteRenderer mouseRend;
 	private Camera cam;
+  private CharacterClass player;
 
 	void Awake()
 	{
@@ -26,6 +27,7 @@ public class PlayerInput : MonoBehaviour
 		mouseTrans = mouse.GetComponent<Transform>();
 		mouseRend = mouse.GetComponent<SpriteRenderer>();
 		cam = GameObject.Find("MainCamera").GetComponent<Camera>();
+    player = GameObject.Find("Player").GetComponent<PlayerClass>();
 	}
 
 	// Use this for initialization
@@ -45,12 +47,12 @@ public class PlayerInput : MonoBehaviour
 
   private void useInput()
   {
-    if(mouseTrans.position.x > Player.trans.position.x)
-      Player.rend.flipX = true;
-    else if(mouseTrans.position.x < Player.trans.position.x)
-      Player.rend.flipX = false;
-    Player.rb.velocity = calculateVelocity();
-    Player.iColl.enabled = E;
+    if(mouseTrans.position.x > player.trans.position.x)
+      player.rend.flipX = true;
+    else if(mouseTrans.position.x < player.trans.position.x)
+      player.rend.flipX = false;
+    player.rb.velocity = calculateVelocity();
+    player.iColl.enabled = E;
   }
 
   private Vector2 calculateVelocity()
@@ -58,13 +60,13 @@ public class PlayerInput : MonoBehaviour
     float x = 0;
     float y = 0;
     if(W)
-      y = Player.speed;
+      y = player.speed;
     else if(S)
-      y = -Player.speed;
+      y = -player.speed;
     if(D)
-      x = Player.speed;
+      x = player.speed;
     else if(A)
-      x = -Player.speed;
+      x = -player.speed;
     return new Vector2(x, y);
   }
 
@@ -94,10 +96,12 @@ public class PlayerInput : MonoBehaviour
 			if(duration > CLICK_TOLERANCE)
 				isHold = true;
 		}
-		// if(isHold)
-		// 	Debug.Log("Hold");
-		// if(isClick)
-		// 	Debug.Log("Click");
+    /* 
+		 if(isHold)
+		 	Debug.Log("Hold");
+		 if(isClick)
+		 	Debug.Log("Click");
+    */
   }
 
   private void getKeyboardInput()

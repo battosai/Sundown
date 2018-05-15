@@ -13,7 +13,7 @@ public class GameState : MonoBehaviour
 	public static bool isDaytime {get; private set;}
 
 	private readonly float UNSET_TIME = -1f;
-	private Player player;
+	private CharacterClass player;
 	private float startTime;
 
 	void Awake()
