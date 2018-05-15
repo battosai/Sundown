@@ -6,10 +6,10 @@ public class CharacterClass : MonoBehaviour {
 	public static readonly int BASE_SPEED = 10;
 	public int nodeID {get; private set;}
 	public float speed {get; private set;}
-	public Transform trans;
-	public Rigidbody2D rb;
-	public SpriteRenderer rend;
-	public Collider2D iColl;
+	public Transform trans {get; private set;}
+	public Rigidbody2D rb { get; private set;}
+	public SpriteRenderer rend { get; private set;}
+	public Collider2D iColl { get; private set;}
 	public void setNodeID(int id){nodeID = id;}
 
 	void Awake()
