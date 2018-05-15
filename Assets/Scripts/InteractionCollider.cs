@@ -7,10 +7,15 @@ using UnityEngine;
 public class InteractionCollider : MonoBehaviour
 {
 	private CharacterClass player;
+
+	void Awake()
+	{
+		player = GameObject.Find("Player").GetComponent<PlayerClass>();
+	}
+
 	// Use this for initialization
 	void Start ()
 	{
-		player = GameObject.Find("Player").GetComponent<PlayerClass>();
 	}
 
 	// Update is called once per frame

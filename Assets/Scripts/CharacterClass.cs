@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterClass : MonoBehaviour {
+public class CharacterClass : MonoBehaviour
+{
 	public static readonly int BASE_SPEED = 10;
 	public int nodeID {get; private set;}
 	public float speed {get; private set;}
@@ -10,6 +11,7 @@ public class CharacterClass : MonoBehaviour {
 	public Rigidbody2D rb { get; private set;}
 	public SpriteRenderer rend { get; private set;}
 	public Collider2D iColl { get; private set;}
+	
 	public void setNodeID(int id){nodeID = id;}
 
 	void Awake()
@@ -20,16 +22,19 @@ public class CharacterClass : MonoBehaviour {
 		iColl = GameObject.Find("InteractionCollider").GetComponent<Collider2D>();
 	}
 
-	void Start () {
+	void Start()
+	{
 		reset();
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
-		
+	void Update()
+	{
+
 	}
 
-	public void reset() {
+	public void reset()
+	{
 		speed = BASE_SPEED;
 	}
 }
