@@ -45,12 +45,12 @@ public class PlayerInput : MonoBehaviour
 
   private void useInput()
   {
-    if(mouseTrans.position.x > Player.trans.position.x)
-      Player.rend.flipX = true;
-    else if(mouseTrans.position.x < Player.trans.position.x)
-      Player.rend.flipX = false;
-    Player.rb.velocity = calculateVelocity();
-    Player.iColl.enabled = E;
+    if(mouseTrans.position.x > CharacterClass.trans.position.x)
+      CharacterClass.rend.flipX = true;
+    else if(mouseTrans.position.x < CharacterClass.trans.position.x)
+      CharacterClass.rend.flipX = false;
+    CharacterClass.rb.velocity = calculateVelocity();
+    CharacterClass.iColl.enabled = E;
   }
 
   private Vector2 calculateVelocity()
@@ -58,13 +58,13 @@ public class PlayerInput : MonoBehaviour
     float x = 0;
     float y = 0;
     if(W)
-      y = Player.speed;
+      y = CharacterClass.speed;
     else if(S)
-      y = -Player.speed;
+      y = -CharacterClass.speed;
     if(D)
-      x = Player.speed;
+      x = CharacterClass.speed;
     else if(A)
-      x = -Player.speed;
+      x = -CharacterClass.speed;
     return new Vector2(x, y);
   }
 

@@ -33,13 +33,13 @@ public class InteractionCollider : MonoBehaviour
 
 	private void travel()
 	{
-		if(Player.nodeID < World.WORLD_SIZE-1)
+		if(CharacterClass.nodeID < World.WORLD_SIZE-1)
 		{
 			Debug.Log("Traveling!");
-			Player.setNodeID(Player.nodeID+1);
-			GameObject node = World.nodes[Player.nodeID];
+			CharacterClass.setNodeID(CharacterClass.nodeID+1);
+			GameObject node = World.nodes[CharacterClass.nodeID];
 			GameObject spawn = node.GetComponent<WorldNode>().playerSpawn;
-			Player.trans.position = spawn.GetComponent<Transform>().position;
+			CharacterClass.trans.position = spawn.GetComponent<Transform>().position;
 		}
 		else
 		{
