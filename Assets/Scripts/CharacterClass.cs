@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class CharacterClass : MonoBehaviour
 {
-	public static readonly int BASE_SPEED = 10;
+	public readonly int BASE_SPEED = 10;
 	public int nodeID {get; private set;}
 	public float speed {get; private set;}
+	public bool isLeft {get; private set;}
 	public Transform trans {get; private set;}
 	public Rigidbody2D rb { get; private set;}
 	public SpriteRenderer rend { get; private set;}
-	
+
 	public void setNodeID(int id){nodeID = id;}
+	public void setIsLeft(bool isLeft){this.isLeft = isLeft;}
 
 	void Awake()
 	{

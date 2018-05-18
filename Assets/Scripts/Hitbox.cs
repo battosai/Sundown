@@ -48,13 +48,11 @@ public class Hitbox : MonoBehaviour
       return;
     Collider2D[] colliders = new Collider2D[maxTargets];
     int collisions = Physics2D.OverlapBox((Vector2)trans.position+offset, size, 0f, mask, colliders);
-    Debug.Log("Hit " + collisions + " colliders!");
     for(int i = 0; i < collisions; i++)
     {
       Collider2D coll = colliders[i];
       if(responder != null)
         responder.collisionWith(coll, action);
-      Debug.Log(coll);
     }
     state = collisions > 0 ? ColliderState.COLLIDING : ColliderState.OPEN;
   }
