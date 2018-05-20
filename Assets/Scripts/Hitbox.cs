@@ -7,15 +7,21 @@ using UnityEngine;
 public enum ColliderState {CLOSED, OPEN, COLLIDING};
 public class Hitbox : MonoBehaviour
 {
-  public LayerMask mask;
+  public ContactFilter2D mask;
   public Color closedColor, openColor, collidingColor;
 
-  private Vector2 size = Vector2.one; //half dimensions
+  private int maxTargets = 5;
+  private Vector2 size = new Vector2(5, 5); //half dimensions
+  private Vector2 offset = new Vector2(0, 0);
   private ColliderState state;
+  private Action action;
   private Transform trans;
   private IHitboxResponder responder;
 
   public void setResponder(IHitboxResponder responder){this.responder = responder;}
+  public void setSize(Vector2 size){this.size = size;}
+  public void setOffset(Vector2 offset){this.offset = offset;}
+  public void setAction(Action action){this.action = action;}
 
   void Awake()
   {
@@ -24,38 +30,38 @@ public class Hitbox : MonoBehaviour
   void Start()
   {
     responder = null;
-  }
-  void Update()
-  {
+    state = ColliderState.CLOSED;
   }
 
-  private void startCheckingCollision()
+  public void startCheckingCollision()
   {
     state = ColliderState.OPEN;
   }
-  private void stopCheckingCollision()
+  public void stopCheckingCollision()
   {
     state = ColliderState.CLOSED;
   }
 
-  private void checkCollision()
+  public void checkCollision()
   {
     if(state == ColliderState.CLOSED)
       return;
-    Colliders2D[] colliders = Physics2D.OverlapBox(trans.position, size, tran.rotation, mask);
-    for(int i = 0; i < colliders.Length; i++)
+    Collider2D[] colliders = new Collider2D[maxTargets];
+    int collisions = Physics2D.OverlapBox((Vector2)trans.position+offset, size, 0f, mask, colliders);
+    for(int i = 0; i < collisions; i++)
     {
       Collider2D coll = colliders[i];
-      responder?.collisionWith(coll);
+      if(responder != null)
+        responder.collisionWith(coll, action);
     }
-    state = colliders.Length > 0? ColliderState.COLLIDING : ColliderState.OPEN;
+    state = collisions > 0 ? ColliderState.COLLIDING : ColliderState.OPEN;
   }
 
-  private void OnDrawGizmos()
+  void OnDrawGizmos()
   {
     colorGizmo();
-    Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.localScale);
-    Gizmos.DrawCube(Vector3.zero, new Vector3(size.x * 2, size.y * 2, 0)); // Because size is halfExtents
+    Gizmos.matrix = Matrix4x4.TRS((Vector2)trans.position+offset, trans.rotation, trans.localScale);
+    Gizmos.DrawCube(Vector3.zero, new Vector3(size.x*2, size.y*2, 0)); // Because size is halfExtents
   }
 
   private void colorGizmo()

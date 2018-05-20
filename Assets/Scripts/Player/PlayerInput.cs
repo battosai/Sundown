@@ -6,8 +6,9 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-  public static bool isClick;
-  public static bool isHold;
+  public static bool isLeftClick;
+  public static bool isLeftHold;
+  public static bool isRightClick;
   public static bool E, W, A, S, D;
 
 	private readonly float DEFAULT_MOUSE_Z = -9f;
@@ -19,7 +20,7 @@ public class PlayerInput : MonoBehaviour
 	private Transform mouseTrans;
 	private SpriteRenderer mouseRend;
 	private Camera cam;
-  private CharacterClass player;
+  private PlayerClass player;
 
 	void Awake()
 	{
@@ -28,7 +29,7 @@ public class PlayerInput : MonoBehaviour
 		mouseRend = mouse.GetComponent<SpriteRenderer>();
 		cam = GameObject.Find("MainCamera").GetComponent<Camera>();
     player = GameObject.Find("Player").GetComponent<PlayerClass>();
-	}
+  }
 
 	// Use this for initialization
 	void Start()
@@ -51,8 +52,12 @@ public class PlayerInput : MonoBehaviour
       player.rend.flipX = true;
     else if(mouseTrans.position.x < player.trans.position.x)
       player.rend.flipX = false;
+    player.setIsLeft(!player.rend.flipX);
     player.rb.velocity = calculateVelocity();
-    player.iColl.enabled = E;
+    if(isRightClick)
+      player.actions.attack();
+    if(E)
+      player.actions.travelCheck();
   }
 
   private Vector2 calculateVelocity()
@@ -82,26 +87,21 @@ public class PlayerInput : MonoBehaviour
   {
     if(Input.GetMouseButtonDown(0))
       downTime = Time.time;
-    isClick = false;
+    isLeftClick = false;
     if(Input.GetMouseButtonUp(0))
     {
       float duration = Time.time - downTime;
-      isClick = duration < CLICK_TOLERANCE;
+      isLeftClick = duration < CLICK_TOLERANCE;
 			downTime = UNSET_TIME;
     }
-		isHold = false;
+		isLeftHold = false;
 		if(downTime != UNSET_TIME)
 		{
 			float duration = Time.time - downTime;
 			if(duration > CLICK_TOLERANCE)
-				isHold = true;
+				isLeftHold = true;
 		}
-    /* 
-		 if(isHold)
-		 	Debug.Log("Hold");
-		 if(isClick)
-		 	Debug.Log("Click");
-    */
+    isRightClick = Input.GetMouseButtonDown(1);
   }
 
   private void getKeyboardInput()

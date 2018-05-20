@@ -7,10 +7,18 @@ using UnityEngine;
 public class PlayerClass : CharacterClass
 {
 	public readonly int DAILY_FOOD_REQUIREMENT = 30;
-
 	public bool isHuman {get; private set;}
 	public bool isFed {get; private set;}
+	public PlayerInput inputs {get; private set;}
+	public PlayerActions actions {get; private set;}
 	private int food;
+
+	public override void Awake()
+	{
+		base.Awake();
+		inputs = GetComponent<PlayerInput>();
+		actions = GetComponent<PlayerActions>();
+	}
 
 	// Use this for initialization
 	void Start()
