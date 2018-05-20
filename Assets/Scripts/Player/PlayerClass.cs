@@ -24,6 +24,7 @@ public class PlayerClass : CharacterClass
 	void Start()
 	{
 		base.reset();
+		base.setNodeID(0);
 		isHuman = true;
 		isFed = false;
 	}

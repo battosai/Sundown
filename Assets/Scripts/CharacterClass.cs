@@ -22,11 +22,6 @@ public class CharacterClass : MonoBehaviour
 		rend = GetComponent<SpriteRenderer>();
 	}
 
-	void Start()
-	{
-		reset();
-	}
-
 	// Update is called once per frame
 	void Update()
 	{
