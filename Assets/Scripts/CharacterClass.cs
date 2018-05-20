@@ -22,13 +22,7 @@ public class CharacterClass : MonoBehaviour
 		rend = GetComponent<SpriteRenderer>();
 	}
 
-	// Update is called once per frame
-	void Update()
-	{
-
-	}
-
-	public void reset()
+	public virtual void reset()
 	{
 		speed = BASE_SPEED;
 	}

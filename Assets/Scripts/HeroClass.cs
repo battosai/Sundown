@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HeroClass : CharacterClass
 {
+	private int tracking; //used to determine how likely a clue will be discovered
 	private float leash = 20f;
 	private PlayerClass player;
 
@@ -15,8 +16,7 @@ public class HeroClass : CharacterClass
 	// Use this for initialization
 	void Start ()
 	{
-		base.reset();
-		base.setNodeID(0);//Random.Range(0, World.WORLD_SIZE-1));
+		reset();
 	}
 
 	// Update is called once per frame
@@ -51,5 +51,12 @@ public class HeroClass : CharacterClass
 		Debug.Log("Speed: " + speed);
 		Debug.Log(velocity);
 		return velocity;
+	}
+
+	public override void reset()
+	{
+		base.reset();
+		base.setNodeID(0);//Random.Range(0, World.WORLD_SIZE-1));
+		tracking = 0;
 	}
 }

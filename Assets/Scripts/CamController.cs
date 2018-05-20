@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //ROLE: controls how the camera behaves
+//make this limited by the borders
 
 public class CamController : MonoBehaviour
 {
