@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//CONSIDER MAKING THIS CLASS NON MONOBEHAVIOUR SO WE CAN USE A NORMAL CONSTRUCTOR INSTEAD OF THE AWAKE FNC
 public class CharacterClass : MonoBehaviour
 {
 	public readonly int BASE_SPEED = 10;
