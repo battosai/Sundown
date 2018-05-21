@@ -48,8 +48,6 @@ public class HeroClass : CharacterClass
 		distance = Vector2.Distance(player.trans.position, trans.position);
 		direction = player.trans.position - trans.position;
 		velocity = new Vector2((direction.x*speed)/distance, (direction.y*speed)/distance);
-		Debug.Log("Speed: " + speed);
-		Debug.Log(velocity);
 		return velocity;
 	}
 

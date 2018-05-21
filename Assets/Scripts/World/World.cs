@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //ROLE: handles creation of world (spawn critters, interactables, etc)
-//USEFUL LINKS: https://unity3d.com/learn/tutorials/s/procedural-cave-generation-tutorial
 
 public class World : MonoBehaviour
 {
