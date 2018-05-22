@@ -18,24 +18,24 @@ public class MeshGenerator : MonoBehaviour
             {
                 for(int j = 0; j < squareGrid.squares.GetLength(0); j++)
                 {
-                    Gizmos.color = (squareGrid.squares[x,y].topLeft.active)?Color.black:Color.white;
-                    Gizmos.DrawCube(squareGrid.squares[x,y].topLeft.position, Vector3.one * .4f);
+                    Gizmos.color = (squareGrid.squares[i,j].topLeft.active)?Color.black:Color.white;
+                    Gizmos.DrawCube(squareGrid.squares[i,j].topLeft.position, Vector3.one * .4f);
 
-                    Gizmos.color = (squareGrid.squares[x,y].topRight.active)?Color.black:Color.white;
-                    Gizmos.DrawCube(squareGrid.squares[x,y].topRight.position, Vector3.one * .4f);
+                    Gizmos.color = (squareGrid.squares[i,j].topRight.active)?Color.black:Color.white;
+                    Gizmos.DrawCube(squareGrid.squares[i,j].topRight.position, Vector3.one * .4f);
 
-                    Gizmos.color = (squareGrid.squares[x,y].bottomRight.active)?Color.black:Color.white;
-                    Gizmos.DrawCube(squareGrid.squares[x,y].bottomRight.position, Vector3.one * .4f);
+                    Gizmos.color = (squareGrid.squares[i,j].bottomRight.active)?Color.black:Color.white;
+                    Gizmos.DrawCube(squareGrid.squares[i,j].bottomRight.position, Vector3.one * .4f);
 
-                    Gizmos.color = (squareGrid.squares[x,y].bottomLeft.active)?Color.black:Color.white;
-                    Gizmos.DrawCube(squareGrid.squares[x,y].bottomLeft.position, Vector3.one * .4f);
+                    Gizmos.color = (squareGrid.squares[i,j].bottomLeft.active)?Color.black:Color.white;
+                    Gizmos.DrawCube(squareGrid.squares[i,j].bottomLeft.position, Vector3.one * .4f);
 
 
                     Gizmos.color = Color.grey;
-                    Gizmos.DrawCube(squareGrid.squares[x,y].centreTop.position, Vector3.one * .15f);
-                    Gizmos.DrawCube(squareGrid.squares[x,y].centreRight.position, Vector3.one * .15f);
-                    Gizmos.DrawCube(squareGrid.squares[x,y].centreBottom.position, Vector3.one * .15f);
-                    Gizmos.DrawCube(squareGrid.squares[x,y].centreLeft.position, Vector3.one * .15f);
+                    Gizmos.DrawCube(squareGrid.squares[i,j].centerTop.position, Vector3.one * .15f);
+                    Gizmos.DrawCube(squareGrid.squares[i,j].centerRight.position, Vector3.one * .15f);
+                    Gizmos.DrawCube(squareGrid.squares[i,j].centerBottom.position, Vector3.one * .15f);
+                    Gizmos.DrawCube(squareGrid.squares[i,j].centerLeft.position, Vector3.one * .15f);
                 }
             }
         }
@@ -60,8 +60,8 @@ public class MeshGenerator : MonoBehaviour
                     controlNodes[i, j] = new ControlNode(position, map[i, j] == 1, squareSize);
                 }
             }
-            rows = nodeRows-1;
-            cols = nodeCols-1;
+            int rows = nodeRows-1;
+            int cols = nodeCols-1;
             squares = new Square[rows, cols];
             for(int i = 0; i < rows; i++)
             {
@@ -76,7 +76,7 @@ public class MeshGenerator : MonoBehaviour
     public class Square
     {
         public ControlNode topLeft, topRight, bottomRight, bottomLeft;
-        public Node centerTop, centerRight, ceterBottom, centerLeft;
+        public Node centerTop, centerRight, centerBottom, centerLeft;
 
         public Square(ControlNode topLeft, ControlNode topRight, ControlNode bottomRight, ControlNode bottomLeft)
         {
@@ -111,8 +111,8 @@ public class MeshGenerator : MonoBehaviour
         public ControlNode(Vector3 position, bool active, float squareSize) : base(position)
         {
             this.active = active;
-            this.above = new Node(position*Vector3.up*squareSize/2f);
-            this.right = new Node(position*Vector3.right*squareSize/2f);
+            this.above = new Node(position + Vector3.up*squareSize/2f);
+            this.right = new Node(position + Vector3.right*squareSize/2f);
         }
     }
 }

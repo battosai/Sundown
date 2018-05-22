@@ -7,9 +7,10 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-  public static readonly int WIDTH = 100;
-  public static readonly int HEIGHT = 100;
+  public static readonly int COLS = 50;
+  public static readonly int ROWS = 50;
   public static readonly int EQUAL_NEIGHBORS = 4;
+  private readonly int SMOOTH_EPOCHS = 3;
 
   public static int[,] map {get; private set;}
 
@@ -37,10 +38,12 @@ public class MapGenerator : MonoBehaviour
   private void generateMap()
   {
     seed = "";
-    map = new int[WIDTH, HEIGHT];
+    map = new int[ROWS, COLS];
     randomFillMap();
-    //could run smoothing multiple times
-    smoothMap();
+    for(int i = 0; i < SMOOTH_EPOCHS; i++)
+    { 
+      smoothMap();
+    }
     MeshGenerator meshGen = GetComponent<MeshGenerator>();
     meshGen.GenerateMesh(map, 1);
   }
@@ -52,11 +55,11 @@ public class MapGenerator : MonoBehaviour
     if(isRandomSeed)
       seed = Time.time.ToString();
     System.Random rand = new System.Random(seed.GetHashCode());
-    for(int i = 0; i < WIDTH; i++)
+    for(int i = 0; i < ROWS; i++)
     {
-      for(int j = 0; j < HEIGHT; j++)
+      for(int j = 0; j < COLS; j++)
       {
-        if(i == 0 || j == 0 || i == WIDTH-1 || j == HEIGHT-1)
+        if(i == 0 || j == 0 || i == ROWS-1 || j == COLS-1)
         {
           map[i, j] = 1;
         }
@@ -71,10 +74,12 @@ public class MapGenerator : MonoBehaviour
   //smooths randomly filled map
   private void smoothMap()
   {
-    for(int i = 0; i < WIDTH; i++)
+    for(int i = 0; i < ROWS; i++)
     {
-      for(int j = 0; j < HEIGHT; j++)
+      for(int j = 0; j < COLS; j++)
       {
+        if(i == 0 || j == 0 || i == ROWS-1 || j == COLS-1)
+          continue;
         int neighbors = countWallNeighbors(i, j);
         if(neighbors > EQUAL_NEIGHBORS)
           map[i, j] = 1;
@@ -92,7 +97,7 @@ public class MapGenerator : MonoBehaviour
     {
       for(int j = y-1; j <= y+1; j++)
       {
-        if(i < 0 || i >= WIDTH || j < 0 || j >= HEIGHT)
+        if(i < 0 || i >= ROWS || j < 0 || j >= COLS)
           continue;
         if(i == x && j == y)
           continue;
@@ -107,12 +112,12 @@ public class MapGenerator : MonoBehaviour
   // {
   //   if(map != null)
   //   {
-  //     for(int x = 0; x < WIDTH; x++)
+  //     for(int x = 0; x < ROWS; x++)
   //     {
-  //       for(int y = 0; y < HEIGHT; y++)
+  //       for(int y = 0; y < COLS; y++)
   //       {
   //         Gizmos.color = (map[x, y] == 1)? Color.black : Color.white;
-  //         Vector3 pos = new Vector3(-WIDTH/2 + x + .5f, -HEIGHT/2 + y + .5f, 0);
+  //         Vector3 pos = new Vector3(-ROWS/2 + x + .5f, -COLS/2 + y + .5f, 0);
   //         Gizmos.DrawCube(pos, Vector3.one);
   //       }
   //     }

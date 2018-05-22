@@ -634,6 +634,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1536867871}
   - component: {fileID: 1536867872}
+  - component: {fileID: 1536867873}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -660,13 +661,24 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1536867870}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a5777858741d248c994fd66a23e2e9fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomFillPercent: 50
+  randomFillPercent: 45
   isRandomSeed: 1
+--- !u!114 &1536867873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1536867870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe9165ccb7ce27e48a93abdfbc4e0d33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1806611272
 GameObject:
   m_ObjectHideFlags: 0
