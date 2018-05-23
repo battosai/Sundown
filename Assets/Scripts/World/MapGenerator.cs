@@ -10,7 +10,7 @@ public class MapGenerator : MonoBehaviour
   public static readonly int COLS = 50;
   public static readonly int ROWS = 50;
   public static readonly int EQUAL_NEIGHBORS = 4;
-  private readonly int SMOOTH_EPOCHS = 3;
+  private readonly int SMOOTH_EPOCHS = 5;
 
   public static int[,] map {get; private set;}
 
@@ -107,7 +107,6 @@ public class MapGenerator : MonoBehaviour
     return count;
   }
 
-  //draw the map
   // void OnDrawGizmos()
   // {
   //   if(map != null)

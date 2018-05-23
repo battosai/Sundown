@@ -57,26 +57,26 @@ public class Hitbox : MonoBehaviour
     state = collisions > 0 ? ColliderState.COLLIDING : ColliderState.OPEN;
   }
 
-  void OnDrawGizmos()
-  {
-    colorGizmo();
-    Gizmos.matrix = Matrix4x4.TRS((Vector2)trans.position+offset, trans.rotation, trans.localScale);
-    Gizmos.DrawCube(Vector3.zero, new Vector3(size.x*2, size.y*2, 0)); // Because size is halfExtents
-  }
+  // void OnDrawGizmos()
+  // {
+  //   colorGizmo();
+  //   Gizmos.matrix = Matrix4x4.TRS((Vector2)trans.position+offset, trans.rotation, trans.localScale);
+  //   Gizmos.DrawCube(Vector3.zero, new Vector3(size.x*2, size.y*2, 0)); // Because size is halfExtents
+  // }
 
-  private void colorGizmo()
-  {
-    switch(state)
-    {
-      case ColliderState.CLOSED:
-        Gizmos.color = closedColor;
-        break;
-      case ColliderState.OPEN:
-        Gizmos.color = openColor;
-        break;
-      case ColliderState.COLLIDING:
-        Gizmos.color = collidingColor;
-        break;
-    }
-  }
+  // private void colorGizmo()
+  // {
+  //   switch(state)
+  //   {
+  //     case ColliderState.CLOSED:
+  //       Gizmos.color = closedColor;
+  //       break;
+  //     case ColliderState.OPEN:
+  //       Gizmos.color = openColor;
+  //       break;
+  //     case ColliderState.COLLIDING:
+  //       Gizmos.color = collidingColor;
+  //       break;
+  //   }
+  // }
 }
