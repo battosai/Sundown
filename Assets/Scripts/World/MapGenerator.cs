@@ -48,6 +48,48 @@ public class MapGenerator : MonoBehaviour
     meshGen.GenerateMesh(map, 1);
   }
 
+  private List<Coord> getRegion(int startRow, int startCol)
+  {
+    List<Coord>() tiles = new List<Coord>();
+    bool[,] isVisited = new bool[ROWS, COLS];
+    int tileType = map[startRow, startCol];
+    Queue<Coord>() queue = new Queue<Coord>();
+    queue.Enqueue(new Coord(startRow, startCol));
+    isVisited[i, j] = true;
+    while(queue.Count > 0)
+    {
+      Coord tile = queue.Dequeue();
+      tiles.Add(tile);
+      for(int i = tile.row-1; i <= tile.row+1; i++)
+      {
+        for(int j = tile.col-1; j <= tile.col+1; j++)
+        {
+          if(i < 0 || i >= ROWS || j < 0 || j >= COLS)
+            continue;
+          if(i == tile.row && j == tile.col)
+            continue;
+          if(!isVisited[i, j] && map[i, j] == tileType)
+          {
+            queue.Enqueue(new Coord(i, j));
+          isVisited[i, j] = true;
+          }
+        }
+      }
+    }
+    return tiles;
+  }
+
+  struct Coord
+  {
+    public int row;
+    public int col;
+    public Coord(int a, int b)
+    {
+      row = a;
+      col = b;
+    }
+  }
+
   //randomly fills map based on randomfillpercent
   private void randomFillMap()
   {

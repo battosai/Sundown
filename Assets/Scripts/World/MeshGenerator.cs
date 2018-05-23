@@ -21,10 +21,10 @@ public class MeshGenerator : MonoBehaviour
             }
         }
         Mesh mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
+        GetComponent<MeshFilter>().mesh = mesh;
     }
 
     void TriangulateSquare(Square square)
