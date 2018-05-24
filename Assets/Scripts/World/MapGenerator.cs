@@ -10,6 +10,7 @@ public class MapGenerator : MonoBehaviour
   public static readonly int COLS = 50;
   public static readonly int ROWS = 50;
   public static readonly int EQUAL_NEIGHBORS = 4;
+  private readonly int SQUARE_SIZE = 2;
   private readonly int SMOOTH_EPOCHS = 5;
 
   public static int[,] map {get; private set;}
@@ -45,17 +46,17 @@ public class MapGenerator : MonoBehaviour
       smoothMap();
     }
     MeshGenerator meshGen = GetComponent<MeshGenerator>();
-    meshGen.GenerateMesh(map, 1);
+    meshGen.GenerateMesh(map, SQUARE_SIZE);
   }
 
   private List<Coord> getRegion(int startRow, int startCol)
   {
-    List<Coord>() tiles = new List<Coord>();
+    List<Coord> tiles = new List<Coord>();
     bool[,] isVisited = new bool[ROWS, COLS];
     int tileType = map[startRow, startCol];
-    Queue<Coord>() queue = new Queue<Coord>();
+    Queue<Coord> queue = new Queue<Coord>();
     queue.Enqueue(new Coord(startRow, startCol));
-    isVisited[i, j] = true;
+    isVisited[startRow, startCol] = true;
     while(queue.Count > 0)
     {
       Coord tile = queue.Dequeue();
@@ -71,7 +72,7 @@ public class MapGenerator : MonoBehaviour
           if(!isVisited[i, j] && map[i, j] == tileType)
           {
             queue.Enqueue(new Coord(i, j));
-          isVisited[i, j] = true;
+            isVisited[i, j] = true;
           }
         }
       }

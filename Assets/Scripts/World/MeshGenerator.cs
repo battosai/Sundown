@@ -131,36 +131,36 @@ public class MeshGenerator : MonoBehaviour
         triangles.Add(c.vertexIndex);
     }
 
-    void OnDrawGizmos()
-    {
-        if(squareGrid != null)
-        {
-            for(int i = 0; i < squareGrid.squares.GetLength(1); i++)
-            {
-                for(int j = 0; j < squareGrid.squares.GetLength(0); j++)
-                {
-                    Gizmos.color = (squareGrid.squares[i,j].topLeft.active)?Color.red:Color.white;
-                    Gizmos.DrawCube(squareGrid.squares[i,j].topLeft.position, Vector3.one * .4f);
+    // void OnDrawGizmos()
+    // {
+    //     if(squareGrid != null)
+    //     {
+    //         for(int i = 0; i < squareGrid.squares.GetLength(1); i++)
+    //         {
+    //             for(int j = 0; j < squareGrid.squares.GetLength(0); j++)
+    //             {
+    //                 Gizmos.color = (squareGrid.squares[i,j].topLeft.active)?Color.red:Color.white;
+    //                 Gizmos.DrawCube(squareGrid.squares[i,j].topLeft.position, Vector3.one * .4f);
 
-                    Gizmos.color = (squareGrid.squares[i,j].topRight.active)?Color.black:Color.white;
-                    Gizmos.DrawCube(squareGrid.squares[i,j].topRight.position, Vector3.one * .4f);
+    //                 Gizmos.color = (squareGrid.squares[i,j].topRight.active)?Color.black:Color.white;
+    //                 Gizmos.DrawCube(squareGrid.squares[i,j].topRight.position, Vector3.one * .4f);
 
-                    Gizmos.color = (squareGrid.squares[i,j].bottomRight.active)?Color.black:Color.white;
-                    Gizmos.DrawCube(squareGrid.squares[i,j].bottomRight.position, Vector3.one * .4f);
+    //                 Gizmos.color = (squareGrid.squares[i,j].bottomRight.active)?Color.black:Color.white;
+    //                 Gizmos.DrawCube(squareGrid.squares[i,j].bottomRight.position, Vector3.one * .4f);
 
-                    Gizmos.color = (squareGrid.squares[i,j].bottomLeft.active)?Color.black:Color.white;
-                    Gizmos.DrawCube(squareGrid.squares[i,j].bottomLeft.position, Vector3.one * .4f);
+    //                 Gizmos.color = (squareGrid.squares[i,j].bottomLeft.active)?Color.black:Color.white;
+    //                 Gizmos.DrawCube(squareGrid.squares[i,j].bottomLeft.position, Vector3.one * .4f);
 
 
-                    Gizmos.color = Color.grey;
-                    Gizmos.DrawCube(squareGrid.squares[i,j].centerTop.position, Vector3.one * .15f);
-                    Gizmos.DrawCube(squareGrid.squares[i,j].centerRight.position, Vector3.one * .15f);
-                    Gizmos.DrawCube(squareGrid.squares[i,j].centerBottom.position, Vector3.one * .15f);
-                    Gizmos.DrawCube(squareGrid.squares[i,j].centerLeft.position, Vector3.one * .15f);
-                }
-            }
-        }
-    }
+    //                 Gizmos.color = Color.grey;
+    //                 Gizmos.DrawCube(squareGrid.squares[i,j].centerTop.position, Vector3.one * .15f);
+    //                 Gizmos.DrawCube(squareGrid.squares[i,j].centerRight.position, Vector3.one * .15f);
+    //                 Gizmos.DrawCube(squareGrid.squares[i,j].centerBottom.position, Vector3.one * .15f);
+    //                 Gizmos.DrawCube(squareGrid.squares[i,j].centerLeft.position, Vector3.one * .15f);
+    //             }
+    //         }
+    //     }
+    // }
 
     public class SquareGrid
     {
