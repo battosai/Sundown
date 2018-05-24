@@ -10,6 +10,7 @@ public class WorldNode : MonoBehaviour
   public bool isActive {get; private set;}
   public GameObject playerSpawn {get; private set;}
   public GameObject playerExit {get; private set;}
+  public MeshFilter meshFilter {get; private set;}
 
   public void setNodeID(int nodeID){this.nodeID = nodeID;}
 
@@ -17,6 +18,7 @@ public class WorldNode : MonoBehaviour
   {
     playerSpawn = GameObject.Find(this.name + "/PlayerSpawn");
     playerExit = GameObject.Find(this.name + "/PlayerExit");
+    meshFilter = GetComponent<MeshFilter>();
   }
 
   void Start()

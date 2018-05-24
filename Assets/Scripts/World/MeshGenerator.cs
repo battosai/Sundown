@@ -4,13 +4,14 @@ using System.Collections.Generic;
 
 public class MeshGenerator : MonoBehaviour 
 {
-    public SquareGrid squareGrid;
-    List<Vector3> vertices;
-    List<int> triangles;
+    private readonly float SQUARE_SIZE = 1f;
+    private SquareGrid squareGrid;
+    private List<Vector3> vertices;
+    private List<int> triangles;
 
-    public void GenerateMesh(int[,] map, float squareSize)
+    public Mesh GenerateMesh(int[,] map)
     {
-        squareGrid = new SquareGrid(map, squareSize);
+        squareGrid = new SquareGrid(map);
         vertices = new List<Vector3>();
         triangles = new List<int>();
         for(int i = 0; i < squareGrid.squares.GetLength(1); i++)
@@ -24,10 +25,10 @@ public class MeshGenerator : MonoBehaviour
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
-        GetComponent<MeshFilter>().mesh = mesh;
+        return mesh;
     }
 
-    void TriangulateSquare(Square square)
+    private void TriangulateSquare(Square square)
     {
         switch(square.configuration)
         {
@@ -89,7 +90,7 @@ public class MeshGenerator : MonoBehaviour
         }
     }
 
-    void MeshFromPoints(params Node[] points)
+    private void MeshFromPoints(params Node[] points)
     {
         AssignVertices(points);
         switch(points.Length)
@@ -112,7 +113,7 @@ public class MeshGenerator : MonoBehaviour
         }
     }
 
-    void AssignVertices(Node[] points)
+    private void AssignVertices(Node[] points)
     {
         for(int i = 0; i < points.Length; i++)
         {
@@ -124,7 +125,7 @@ public class MeshGenerator : MonoBehaviour
         }
     }
 
-    void CreateTriangle(Node a, Node b, Node c)
+    private void CreateTriangle(Node a, Node b, Node c)
     {
         triangles.Add(a.vertexIndex);
         triangles.Add(b.vertexIndex);
@@ -162,23 +163,23 @@ public class MeshGenerator : MonoBehaviour
     //     }
     // }
 
-    public class SquareGrid
+    private class SquareGrid
     {
         public Square[,] squares;
 
-        public SquareGrid(int[,] map, float squareSize)
+        public SquareGrid(int[,] map)
         {
             int nodeCols = map.GetLength(0);
             int nodeRows = map.GetLength(1);
-            float mapWidth = nodeCols*squareSize;
-            float mapHeight = nodeRows*squareSize;
+            float mapWidth = nodeCols*SQUARE_SIZE;
+            float mapHeight = nodeRows*SQUARE_SIZE;
             ControlNode[,] controlNodes = new ControlNode[nodeCols, nodeRows];
             for(int i = 0; i < nodeRows; i++)
             {
                 for(int j = 0; j < nodeCols; j++)
                 {
-                    Vector3 position = new Vector3(-mapWidth/2 + j*squareSize + squareSize/2, mapHeight/2 - i*squareSize - squareSize/2, 0);
-                    controlNodes[i, j] = new ControlNode(position, map[i, j] == 1, squareSize);
+                    Vector3 position = new Vector3(-mapWidth/2 + j*SQUARE_SIZE + SQUARE_SIZE/2, mapHeight/2 - i*SQUARE_SIZE - SQUARE_SIZE/2, 0);
+                    controlNodes[i, j] = new ControlNode(position, map[i, j] == 1);
                 }
             }
             int rows = nodeRows-1;
@@ -194,7 +195,7 @@ public class MeshGenerator : MonoBehaviour
         }
     }
 
-    public class Square
+    private class Square
     {
         public ControlNode topLeft, topRight, bottomRight, bottomLeft;
         public Node centerTop, centerRight, centerBottom, centerLeft;
@@ -221,7 +222,7 @@ public class MeshGenerator : MonoBehaviour
         }
     }
 
-    public class Node
+    private class Node
     {
         public Vector3 position;
         public int vertexIndex = -1;
@@ -232,16 +233,16 @@ public class MeshGenerator : MonoBehaviour
         }
     }
 
-    public class ControlNode : Node
+    private class ControlNode : Node
     {
         public bool active;
         public Node above, right;
 
-        public ControlNode(Vector3 position, bool active, float squareSize) : base(position)
+        public ControlNode(Vector3 position, bool active) : base(position)
         {
             this.active = active;
-            this.above = new Node(position + Vector3.up*squareSize/2f);
-            this.right = new Node(position + Vector3.right*squareSize/2f);
+            this.above = new Node(position + Vector3.up*SQUARE_SIZE/2f);
+            this.right = new Node(position + Vector3.right*SQUARE_SIZE/2f);
         }
     }
 }

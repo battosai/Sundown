@@ -8,55 +8,33 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-  public static readonly int COLS = 50;
-  public static readonly int ROWS = 50;
-  public static readonly int EQUAL_NEIGHBORS = 4;
-  private readonly int SQUARE_SIZE = 2;
+  [Range(0, 100)]
+  public int randomFillPercent;
+  public bool isRandomSeed;
+  private readonly int COLS = 50;
+  private readonly int ROWS = 50;
+  private readonly int EQUAL_NEIGHBORS = 4;
   private readonly int SMOOTH_EPOCHS = 5;
   private readonly int WALL = 1;
   private readonly int FLOOR = 0;
   private readonly int WALL_FILTER = 10;
   private readonly int FLOOR_FILTER = 10;
+  private string seed = "";
 
-  public static int[,] map {get; private set;}
-
-  private string seed;
-
-  [Range(0, 100)]
-  public int randomFillPercent;
-  public bool isRandomSeed;
-
-	// Use this for initialization
-	void Start()
-	{
-    generateMap();
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-    if (Input.GetMouseButtonDown(0))
-    {
-      generateMap();
-    }
-	}
-
-  private void generateMap()
+  public int[,] generateMap()
   {
-    seed = "";
-    map = new int[ROWS, COLS];
-    randomFillMap();
+    int[,] map = new int[ROWS, COLS];
+    randomFillMap(map);
     for(int i = 0; i < SMOOTH_EPOCHS; i++)
     { 
-      smoothMap();
+      smoothMap(map);
     }
-    filterMapRegions();
-    MeshGenerator meshGen = GetComponent<MeshGenerator>();
-    meshGen.GenerateMesh(map, SQUARE_SIZE);
+    filterMapRegions(map);
+    return map;
   }
 
-  //get rid of regions in the map that are just extra noise
-  private void filterMapRegions()
+  //removes regions that are too small
+  private void filterMapRegions(int[,] map)
   {
     List<List<Coord>> walls = getRegionsOfType(WALL);
     foreach(List<Coord> region in walls)
@@ -82,7 +60,7 @@ public class MapGenerator : MonoBehaviour
     }
   }
 
-  //returns a list of all regions in the map of wall/floor
+  //returns a list of all regions (as lists of tiles) in the map of tileType
   private List<List<Coord>> getRegionsOfType(int tileType)
   {
     List<List<Coord>> regions = new List<List<Coord>>();
@@ -137,7 +115,7 @@ public class MapGenerator : MonoBehaviour
   }
 
   //used instead of Vector2 because Vector2 uses x and y which could be confusing
-  struct Coord
+  private struct Coord
   {
     public int row;
     public int col;
@@ -149,7 +127,7 @@ public class MapGenerator : MonoBehaviour
   }
 
   //randomly fills map based on randomfillpercent
-  private void randomFillMap()
+  private void randomFillMap(int[,] map)
   {
     //if not random, seed will be empty thus returning same one each time
     if(isRandomSeed)
@@ -172,7 +150,7 @@ public class MapGenerator : MonoBehaviour
   }
 
   //smooths randomly filled map
-  private void smoothMap()
+  private void smoothMap(int[,] map)
   {
     for(int i = 0; i < ROWS; i++)
     {

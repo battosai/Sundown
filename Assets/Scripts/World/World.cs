@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //ROLE: handles creation of world (spawn critters, interactables, etc)
+//NOTE: EACH NODE NEEDS A MESHFILTER AND MESHRENDERER AS WELL AS MATERIAL ADDED
+
 
 public class World : MonoBehaviour
 {
@@ -11,12 +13,16 @@ public class World : MonoBehaviour
 	public static List<GameObject> nodes {get; private set;}
 	private GameObject startNode;
 	private Transform trans;
+	private MapGenerator mapGen;
+	private MeshGenerator meshGen;
 
 	void Awake()
 	{
 		startNode = GameObject.Find("Node0");
 		trans = GetComponent<Transform>();
 		nodes = new List<GameObject>();
+		mapGen = GetComponent<MapGenerator>();
+		meshGen = GetComponent<MeshGenerator>();
 	}
 
 	// Use this for initialization
@@ -28,9 +34,22 @@ public class World : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		if(Input.GetMouseButtonDown(0))
+			reset();
 	}
 
-	private void generateWorld()
+	private void reset()
+	{
+		generateWorldNodes();
+		foreach(GameObject node in nodes)
+		{
+			int[,] map = mapGen.generateMap();
+			Mesh mesh = meshGen.generateMesh(map);
+			node.meshFilter.mesh = mesh;
+		}
+	}
+
+	private void generateWorldNodes()
 	{
 		if(nodes == null)
 		{
@@ -48,10 +67,5 @@ public class World : MonoBehaviour
 			nodes.Add(node);
 			node.GetComponent<Transform>().position = new Vector2(i*NODE_SPACING, i*NODE_SPACING);
 		}
-	}
-
-	private void reset()
-	{
-		generateWorld();
 	}
 }
