@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //ROLE: generates map procedurally that world references
+//NOTE: ALL MULTIDIMENSIONAL STRUCTURES USE (row, col) instead of cartesian
 
 public class MapGenerator : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class MapGenerator : MonoBehaviour
   public static readonly int EQUAL_NEIGHBORS = 4;
   private readonly int SQUARE_SIZE = 2;
   private readonly int SMOOTH_EPOCHS = 5;
+  private readonly int WALL = 1;
+  private readonly int FLOOR = 0;
+  private readonly int WALL_FILTER = 10;
+  private readonly int FLOOR_FILTER = 10;
 
   public static int[,] map {get; private set;}
 
@@ -45,16 +50,67 @@ public class MapGenerator : MonoBehaviour
     { 
       smoothMap();
     }
+    filterMapRegions();
     MeshGenerator meshGen = GetComponent<MeshGenerator>();
     meshGen.GenerateMesh(map, SQUARE_SIZE);
   }
 
+  //get rid of regions in the map that are just extra noise
+  private void filterMapRegions()
+  {
+    List<List<Coord>> walls = getRegionsOfType(WALL);
+    foreach(List<Coord> region in walls)
+    {
+      if(region.Count < WALL_FILTER)
+      {
+        foreach(Coord tile in region)
+        {
+          map[tile.row, tile.col] = FLOOR;
+        }
+      }
+    }
+    List<List<Coord>> floors = getRegionsOfType(FLOOR);
+    foreach(List<Coord> region in floors)
+    {
+      if(region.Count < FLOOR_FILTER)
+      {
+        foreach(Coord tile in region)
+        {
+          map[tile.row, tile.col] = WALL;
+        }
+      }
+    }
+  }
+
+  //returns a list of all regions in the map of wall/floor
+  private List<List<Coord>> getRegionsOfType(int tileType)
+  {
+    List<List<Coord>> regions = new List<List<Coord>>();
+    bool[,] isVisited = new bool[ROWS, COLS];
+    for(int i = 0; i < ROWS; i++)
+    {
+      for(int j = 0; j < COLS; j++)
+      {
+        if(!isVisited[i, j] && map[i, j] == tileType)
+        {
+          List<Coord> region = getRegion(i, j);
+          foreach(Coord tile in region)
+            isVisited[tile.row, tile.col] = true;
+          regions.Add(region);
+        }
+      }
+    }
+    return regions;
+  }
+
+  //returns a list of tiles for one region of the starting tile type
+  //implemented as a floodfill queue algorithm
   private List<Coord> getRegion(int startRow, int startCol)
   {
     List<Coord> tiles = new List<Coord>();
+    Queue<Coord> queue = new Queue<Coord>();
     bool[,] isVisited = new bool[ROWS, COLS];
     int tileType = map[startRow, startCol];
-    Queue<Coord> queue = new Queue<Coord>();
     queue.Enqueue(new Coord(startRow, startCol));
     isVisited[startRow, startCol] = true;
     while(queue.Count > 0)
@@ -80,6 +136,7 @@ public class MapGenerator : MonoBehaviour
     return tiles;
   }
 
+  //used instead of Vector2 because Vector2 uses x and y which could be confusing
   struct Coord
   {
     public int row;
@@ -108,7 +165,7 @@ public class MapGenerator : MonoBehaviour
         }
         else
         {
-          map[i, j] = (rand.Next(0, 100) < randomFillPercent)? 1 : 0;
+          map[i, j] = (rand.Next(0, 100) < randomFillPercent)? WALL : FLOOR;
         }
       }
     }
@@ -125,9 +182,9 @@ public class MapGenerator : MonoBehaviour
           continue;
         int neighbors = countWallNeighbors(i, j);
         if(neighbors > EQUAL_NEIGHBORS)
-          map[i, j] = 1;
+          map[i, j] = WALL;
         else if(neighbors < EQUAL_NEIGHBORS)
-          map[i, j] = 0;
+          map[i, j] = FLOOR;
       }
     }
   }
