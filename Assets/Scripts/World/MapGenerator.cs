@@ -98,13 +98,14 @@ public class MapGenerator : MonoBehaviour
   }
 
   //creates corridors between each room's closest neighbor
+  //MAYBE JUST MAKE IT FIND ONE ROOMS CLOSEST NEIGHBOR, THEN THAT GROUPS CLOSEST, ETC. so that all are connected
   private void connectClosestRooms(int[,] map, List<Room> rooms)
   {
     foreach(Room a in rooms)
     {
       int minDistance = 0;
       Coord minTileA, minTileB;
-      Room minRoomA, minRoomB;
+      Room minRoomB;
       foreach(Room b in rooms)
       {
         if(a == b)
@@ -124,16 +125,44 @@ public class MapGenerator : MonoBehaviour
               minDistance = distance;
               minTileA = tileA;
               minTileB = tileB;
-              minRoomA = roomA;
-              minRoomB = roomB;
+              minRoomB = b;
             }
           }
         }
       }
       if(minDistance > 0)
-        createCorridor(map, roomA, roomB, tileA, tileB);
+        createCorridor(map, a, minRoomB, minTileA, minTileB);
     }
   }
+
+  // //unused, just making for testing later
+  // //connects all rooms after theyve connected with closest neighbors
+  // private void connectRoomGroups(int[,] map, List<Room> rooms)
+  // {
+  //   //choose one room group as already linked
+  //   List<Room> linked = new List<Room>();
+  //   linked.Add(rooms[0]);
+  //   foreach(Room room in rooms[0].connected)
+  //     linked.Add(room);
+  //   //HARD TO DEFINE LINKED ROOMS BECAUSE WOULD HAVE TO GO DOWN FAR
+  // }
+
+  // private List<Room> getLinkedRooms(Room origin)
+  // {
+  //   List<Room> linked = new List<Room>();
+  //   linked.Add(origin);
+  //   Queue<Room> unchecked = new Queue<Room>();
+  //   //DOESNT LIKE THIS ENQUEE STATEMENT
+  //   //unchecked.Enqueue(origin);
+  //   while(unchecked.Count > 0)
+  //   {
+  //     if(linked.Contains(unchecked[0]))
+  //       unchecked.Dequeue();
+  //     else
+  //       break;
+  //   }
+  //   return linked;
+  // }
 
   private void createCorridor(int[,] map, Room roomA, Room roomB, Coord tileA, Coord tileB)
   {
