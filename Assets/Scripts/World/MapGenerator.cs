@@ -14,11 +14,15 @@ public class MapGenerator : MonoBehaviour
   private readonly int COLS = 50;
   private readonly int ROWS = 50;
   private readonly int EQUAL_NEIGHBORS = 4;
+  private readonly int ALL = 8;
+  private readonly int HALF = 4;
   private readonly int SMOOTH_EPOCHS = 5;
   private readonly int WALL = 1;
   private readonly int FLOOR = 0;
   private readonly int WALL_FILTER = 10;
   private readonly int FLOOR_FILTER = 10;
+  private readonly int CORRIDOR_HEIGHT = 3;
+  private readonly int CORRIDOR_WIDTH = 3;
   private int randomizer = 0;
   private string seed = "";
 
@@ -30,12 +34,40 @@ public class MapGenerator : MonoBehaviour
     { 
       smoothMap(map);
     }
-    filterMapRegions(map);
+    //maybe make this a List<List<Room>> so that it returns a list for each room type!!!
+    //will help when generating the polygon collider
+    List<Room> rooms = filterMapRegions(map);
+    connectClosestRooms(map, rooms);
     return map;
   }
 
-  //removes regions that are too small
-  private void filterMapRegions(int[,] map)
+  private class Room
+  {
+    public int size;
+    public List<Coord> tiles;
+    public List<Coord> edgeTiles;
+    public List<Room> connected;
+
+    public Room(int[,] map, List<Coord> tiles)
+    {
+      this.tiles = tiles;
+      size = tiles.Count;
+      connected = new List<Room>();
+      edgeTiles = new List<Coord>();
+      foreach(Coord tile in tiles)
+        if(countWallNeighbors(map, tile.row, tile.col, HALF) > 0)
+          edgeTiles.Add(tile);
+    }
+
+    public static void connectRooms(Room a, Room b)
+    {
+      a.connected.Add(b);
+      b.connected.Add(a);
+    }
+  }
+
+  //removes regions that are too small, returns list of floor regions as rooms
+  private List<Room> filterMapRegions(int[,] map)
   {
     List<List<Coord>> walls = getRegionsOfType(map, WALL);
     foreach(List<Coord> region in walls)
@@ -48,6 +80,7 @@ public class MapGenerator : MonoBehaviour
         }
       }
     }
+    List<Room> rooms = new List<Room>();
     List<List<Coord>> floors = getRegionsOfType(map, FLOOR);
     foreach(List<Coord> region in floors)
     {
@@ -58,7 +91,57 @@ public class MapGenerator : MonoBehaviour
           map[tile.row, tile.col] = WALL;
         }
       }
+      else
+        rooms.Add(new Room(map, region));
     }
+    return rooms;
+  }
+
+  //creates corridors between each room's closest neighbor
+  private void connectClosestRooms(int[,] map, List<Room> rooms)
+  {
+    foreach(Room a in rooms)
+    {
+      int minDistance = 0;
+      Coord minTileA, minTileB;
+      Room minRoomA, minRoomB;
+      foreach(Room b in rooms)
+      {
+        if(a == b)
+          continue;
+        if(a.connected.Contains(b))
+        {
+          minDistance = 0;
+          break;
+        }
+        foreach(Coord tileA in a.edgeTiles)
+        {
+          foreach(Coord tileB in b.edgeTiles)
+          {
+            int distance = (int) Mathf.Pow(tileA.row-tileB.row, 2) + Mathf.Pow(tileA.col-tileB.col, 2);
+            if(distance < minDistance || minDistance == 0)
+            {
+              minDistance = distance;
+              minTileA = tileA;
+              minTileB = tileB;
+              minRoomA = roomA;
+              minRoomB = roomB;
+            }
+          }
+        }
+      }
+      if(minDistance > 0)
+        createCorridor(map, roomA, roomB, tileA, tileB);
+    }
+  }
+
+  private void createCorridor(int[,] map, Room roomA, Room roomB, Coord tileA, Coord tileB)
+  {
+    Room.connectRooms(roomA, roomB);
+    //temp so corridors can be visualized
+    Vector3 start = new Vector3(-COLS/2 + 0.5f + roomA.col, ROWS/2 - 0.5f - roomA.row);
+    Vector3 end = new Vector3(-COLS/2 + 0.5f + roomB.col, ROWS/2 - 0.5f - roomB.row);
+    Debug.DrawLine(start, end, Color.green, 100);
   }
 
   //returns a list of all regions (as lists of tiles) in the map of tileType
@@ -142,18 +225,14 @@ public class MapGenerator : MonoBehaviour
       for(int j = 0; j < COLS; j++)
       {
         if(i == 0 || j == 0 || i == ROWS-1 || j == COLS-1)
-        {
           map[i, j] = 1;
-        }
         else
-        {
           map[i, j] = (rand.Next(0, 100) < randomFillPercent)? WALL : FLOOR;
-        }
       }
     }
   }
 
-  //smooths randomly filled map
+  //smooths randomly filled map to reduce noise
   private void smoothMap(int[,] map)
   {
     for(int i = 0; i < ROWS; i++)
@@ -162,7 +241,7 @@ public class MapGenerator : MonoBehaviour
       {
         if(i == 0 || j == 0 || i == ROWS-1 || j == COLS-1)
           continue;
-        int neighbors = countWallNeighbors(map, i, j);
+        int neighbors = countWallNeighbors(map, i, j, ALL);
         if(neighbors > EQUAL_NEIGHBORS)
           map[i, j] = WALL;
         else if(neighbors < EQUAL_NEIGHBORS)
@@ -171,37 +250,35 @@ public class MapGenerator : MonoBehaviour
     }
   }
 
-  //returns number of neighbors that are walls
-  private int countWallNeighbors(int[,] map, int x, int y)
+  //returns number of neighbors (all/half) that are walls
+  private int countWallNeighbors(int[,] map, int tileRow, int tileCol, int directions)
   {
     int count = 0;
-    for(int i = x-1; i <= x+1; i++)
-    {
-      for(int j = y-1; j <= y+1; j++)
+    if(directions == ALL)
+      for(int i = tileRow-1; i <= tileRow+1; i++)
       {
-        if(i < 0 || i >= ROWS || j < 0 || j >= COLS)
-          continue;
-        if(i == x && j == y)
-          continue;
-        count += map[i, j];
+        for(int j = tileCol-1; j <= tileCol+1; j++)
+        {
+          if(i < 0 || i >= ROWS || j < 0 || j >= COLS)
+            continue;
+          if(i == tileRow && j == tileCol)
+            continue;
+          count += map[i, j];
+        }
       }
+    else if(directions == HALF)
+    {
+      if(i > 0)
+        count += map[i-1, j];
+      if(i < ROWS)
+        count += map[i+1, j];
+      if(j > 0)
+        count += map[i, j-1];
+      if(j < COLS)
+        count += map[i, j+1];
     }
+    else
+      Debug.Log("[Input Error] Invalid Direction Check");
     return count;
   }
-
-  // void OnDrawGizmos()
-  // {
-  //   if(map != null)
-  //   {
-  //     for(int x = 0; x < ROWS; x++)
-  //     {
-  //       for(int y = 0; y < COLS; y++)
-  //       {
-  //         Gizmos.color = (map[x, y] == 1)? Color.black : Color.white;
-  //         Vector3 pos = new Vector3(-ROWS/2 + x + .5f, -COLS/2 + y + .5f, 0);
-  //         Gizmos.DrawCube(pos, Vector3.one);
-  //       }
-  //     }
-  //   }
-  // }
 }
