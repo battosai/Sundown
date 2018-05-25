@@ -19,9 +19,10 @@ public class MapGenerator : MonoBehaviour
   private readonly int FLOOR = 0;
   private readonly int WALL_FILTER = 10;
   private readonly int FLOOR_FILTER = 10;
+  private int randomizer = 0;
   private string seed = "";
 
-  public int[,] generateMap()
+  public int[,] GenerateMap()
   {
     int[,] map = new int[ROWS, COLS];
     randomFillMap(map);
@@ -36,7 +37,7 @@ public class MapGenerator : MonoBehaviour
   //removes regions that are too small
   private void filterMapRegions(int[,] map)
   {
-    List<List<Coord>> walls = getRegionsOfType(WALL);
+    List<List<Coord>> walls = getRegionsOfType(map, WALL);
     foreach(List<Coord> region in walls)
     {
       if(region.Count < WALL_FILTER)
@@ -47,7 +48,7 @@ public class MapGenerator : MonoBehaviour
         }
       }
     }
-    List<List<Coord>> floors = getRegionsOfType(FLOOR);
+    List<List<Coord>> floors = getRegionsOfType(map, FLOOR);
     foreach(List<Coord> region in floors)
     {
       if(region.Count < FLOOR_FILTER)
@@ -61,7 +62,7 @@ public class MapGenerator : MonoBehaviour
   }
 
   //returns a list of all regions (as lists of tiles) in the map of tileType
-  private List<List<Coord>> getRegionsOfType(int tileType)
+  private List<List<Coord>> getRegionsOfType(int[,] map, int tileType)
   {
     List<List<Coord>> regions = new List<List<Coord>>();
     bool[,] isVisited = new bool[ROWS, COLS];
@@ -71,7 +72,7 @@ public class MapGenerator : MonoBehaviour
       {
         if(!isVisited[i, j] && map[i, j] == tileType)
         {
-          List<Coord> region = getRegion(i, j);
+          List<Coord> region = getRegion(map, i, j);
           foreach(Coord tile in region)
             isVisited[tile.row, tile.col] = true;
           regions.Add(region);
@@ -83,7 +84,7 @@ public class MapGenerator : MonoBehaviour
 
   //returns a list of tiles for one region of the starting tile type
   //implemented as a floodfill queue algorithm
-  private List<Coord> getRegion(int startRow, int startCol)
+  private List<Coord> getRegion(int[,] map, int startRow, int startCol)
   {
     List<Coord> tiles = new List<Coord>();
     Queue<Coord> queue = new Queue<Coord>();
@@ -131,7 +132,10 @@ public class MapGenerator : MonoBehaviour
   {
     //if not random, seed will be empty thus returning same one each time
     if(isRandomSeed)
-      seed = Time.time.ToString();
+    {
+      seed = (Time.time + randomizer).ToString();
+      randomizer++;
+    }
     System.Random rand = new System.Random(seed.GetHashCode());
     for(int i = 0; i < ROWS; i++)
     {
@@ -158,7 +162,7 @@ public class MapGenerator : MonoBehaviour
       {
         if(i == 0 || j == 0 || i == ROWS-1 || j == COLS-1)
           continue;
-        int neighbors = countWallNeighbors(i, j);
+        int neighbors = countWallNeighbors(map, i, j);
         if(neighbors > EQUAL_NEIGHBORS)
           map[i, j] = WALL;
         else if(neighbors < EQUAL_NEIGHBORS)
@@ -168,7 +172,7 @@ public class MapGenerator : MonoBehaviour
   }
 
   //returns number of neighbors that are walls
-  private int countWallNeighbors(int x, int y)
+  private int countWallNeighbors(int[,] map, int x, int y)
   {
     int count = 0;
     for(int i = x-1; i <= x+1; i++)

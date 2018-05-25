@@ -28,6 +28,7 @@ public class World : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+		generateWorldNodes();
 		reset();
 	}
 
@@ -40,15 +41,15 @@ public class World : MonoBehaviour
 
 	private void reset()
 	{
-		generateWorldNodes();
 		foreach(GameObject node in nodes)
 		{
-			int[,] map = mapGen.generateMap();
-			Mesh mesh = meshGen.generateMesh(map);
-			node.meshFilter.mesh = mesh;
+			int[,] map = mapGen.GenerateMap();
+			Mesh mesh = meshGen.GenerateMesh(map);
+			node.GetComponent<WorldNode>().meshFilter.mesh = mesh;
 		}
 	}
 
+	//should only be used once at the start to instantiate the nodes
 	private void generateWorldNodes()
 	{
 		if(nodes == null)

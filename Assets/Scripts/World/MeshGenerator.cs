@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class MeshGenerator : MonoBehaviour 
 {
-    private readonly float SQUARE_SIZE = 1f;
+    private static readonly float SQUARE_SIZE = 1f;
     private SquareGrid squareGrid;
     private List<Vector3> vertices;
     private List<int> triangles;
