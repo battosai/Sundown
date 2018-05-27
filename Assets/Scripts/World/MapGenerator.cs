@@ -4,26 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //ROLE: generates map procedurally that world references
-//NOTE: ALL MULTIDIMENSIONAL STRUCTURES USE (row, col) instead of cartesian
+//NOTICE: ALL MULTIDIMENSIONAL STRUCTURES USE (row, col) instead of cartesian
 
 public class MapGenerator : MonoBehaviour
 {
   [Range(0, 100)]
   public int randomFillPercent;
   public bool isRandomSeed;
-  private readonly int COLS = 50;
-  private readonly int ROWS = 50;
-  private readonly int EQUAL_NEIGHBORS = 4;
-  private readonly int ALL = 8;
-  private readonly int HALF = 4;
-  private readonly int SMOOTH_EPOCHS = 5;
-  private readonly int WALL = 1;
-  private readonly int FLOOR = 0;
-  private readonly int WALL_FILTER = 10;
-  private readonly int FLOOR_FILTER = 10;
-  private readonly int CORRIDOR_HEIGHT = 3;
-  private readonly int CORRIDOR_WIDTH = 3;
-  private int randomizer = 0;
+  private static readonly int COLS = 50;
+  private static readonly int ROWS = 50;
+  private static readonly int EQUAL_NEIGHBORS = 4;
+  private static readonly int SMOOTH_EPOCHS = 5;
+  private static readonly int WALL = 1;
+  private static readonly int FLOOR = 0;
+  private static readonly int WALL_FILTER = 10;
+  private static readonly int FLOOR_FILTER = 10;
+  private static readonly int CORRIDOR_HEIGHT = 3;
+  private static readonly int CORRIDOR_WIDTH = 3;
+  private float randomizer = 0f;
   private string seed = "";
 
   public int[,] GenerateMap()
@@ -31,7 +29,7 @@ public class MapGenerator : MonoBehaviour
     int[,] map = new int[ROWS, COLS];
     randomFillMap(map);
     for(int i = 0; i < SMOOTH_EPOCHS; i++)
-    { 
+    {
       smoothMap(map);
     }
     //maybe make this a List<List<Room>> so that it returns a list for each room type!!!
@@ -48,6 +46,7 @@ public class MapGenerator : MonoBehaviour
     public List<Coord> edgeTiles;
     public List<Room> connected;
 
+    public Room(){}
     public Room(int[,] map, List<Coord> tiles)
     {
       this.tiles = tiles;
@@ -55,8 +54,19 @@ public class MapGenerator : MonoBehaviour
       connected = new List<Room>();
       edgeTiles = new List<Coord>();
       foreach(Coord tile in tiles)
-        if(countWallNeighbors(map, tile.row, tile.col, HALF) > 0)
+      {
+        //if any 4D wall neighbors, add to edgeTiles
+        if(map[tile.row-1, tile.col] == MapGenerator.WALL)
           edgeTiles.Add(tile);
+        else if(map[tile.row+1, tile.col] == MapGenerator.WALL)
+          edgeTiles.Add(tile);
+        else if(map[tile.row, tile.col-1] == MapGenerator.WALL)
+          edgeTiles.Add(tile);
+        else if(map[tile.row, tile.col+1] == MapGenerator.WALL)
+          edgeTiles.Add(tile);
+      }
+      if(edgeTiles.Count == 0)
+        Debug.Log("WTF");
     }
 
     public static void connectRooms(Room a, Room b)
@@ -104,8 +114,9 @@ public class MapGenerator : MonoBehaviour
     foreach(Room a in rooms)
     {
       int minDistance = 0;
-      Coord minTileA, minTileB;
-      Room minRoomB;
+      Coord minTileA = new Coord();
+      Coord minTileB = new Coord();
+      Room minRoomB = new Room();
       foreach(Room b in rooms)
       {
         if(a == b)
@@ -119,7 +130,7 @@ public class MapGenerator : MonoBehaviour
         {
           foreach(Coord tileB in b.edgeTiles)
           {
-            int distance = (int) Mathf.Pow(tileA.row-tileB.row, 2) + Mathf.Pow(tileA.col-tileB.col, 2);
+            int distance = (int)(Mathf.Pow(tileA.row-tileB.row, 2) + Mathf.Pow(tileA.col-tileB.col, 2));
             if(distance < minDistance || minDistance == 0)
             {
               minDistance = distance;
@@ -168,9 +179,9 @@ public class MapGenerator : MonoBehaviour
   {
     Room.connectRooms(roomA, roomB);
     //temp so corridors can be visualized
-    Vector3 start = new Vector3(-COLS/2 + 0.5f + roomA.col, ROWS/2 - 0.5f - roomA.row);
-    Vector3 end = new Vector3(-COLS/2 + 0.5f + roomB.col, ROWS/2 - 0.5f - roomB.row);
-    Debug.DrawLine(start, end, Color.green, 100);
+    Vector3 start = new Vector3(-COLS/2 + 0.5f + tileA.col, ROWS/2 - 0.5f - tileA.row);
+    Vector3 end = new Vector3(-COLS/2 + 0.5f + tileB.col, ROWS/2 - 0.5f - tileB.row);
+    Debug.DrawLine(start, end, Color.green, 5);
   }
 
   //returns a list of all regions (as lists of tiles) in the map of tileType
@@ -228,7 +239,7 @@ public class MapGenerator : MonoBehaviour
   }
 
   //used instead of Vector2 because Vector2 uses x and y which could be confusing
-  private struct Coord
+  struct Coord
   {
     public int row;
     public int col;
@@ -245,7 +256,7 @@ public class MapGenerator : MonoBehaviour
     //if not random, seed will be empty thus returning same one each time
     if(isRandomSeed)
     {
-      seed = (Time.time + randomizer).ToString();
+      seed = (Time.time+randomizer).ToString();
       randomizer++;
     }
     System.Random rand = new System.Random(seed.GetHashCode());
@@ -270,7 +281,7 @@ public class MapGenerator : MonoBehaviour
       {
         if(i == 0 || j == 0 || i == ROWS-1 || j == COLS-1)
           continue;
-        int neighbors = countWallNeighbors(map, i, j, ALL);
+        int neighbors = countWallNeighbors(map, i, j);
         if(neighbors > EQUAL_NEIGHBORS)
           map[i, j] = WALL;
         else if(neighbors < EQUAL_NEIGHBORS)
@@ -280,34 +291,20 @@ public class MapGenerator : MonoBehaviour
   }
 
   //returns number of neighbors (all/half) that are walls
-  private int countWallNeighbors(int[,] map, int tileRow, int tileCol, int directions)
+  private int countWallNeighbors(int[,] map, int tileRow, int tileCol)
   {
     int count = 0;
-    if(directions == ALL)
-      for(int i = tileRow-1; i <= tileRow+1; i++)
-      {
-        for(int j = tileCol-1; j <= tileCol+1; j++)
-        {
-          if(i < 0 || i >= ROWS || j < 0 || j >= COLS)
-            continue;
-          if(i == tileRow && j == tileCol)
-            continue;
-          count += map[i, j];
-        }
-      }
-    else if(directions == HALF)
+    for(int i = tileRow-1; i <= tileRow+1; i++)
     {
-      if(i > 0)
-        count += map[i-1, j];
-      if(i < ROWS)
-        count += map[i+1, j];
-      if(j > 0)
-        count += map[i, j-1];
-      if(j < COLS)
-        count += map[i, j+1];
+      for(int j = tileCol-1; j <= tileCol+1; j++)
+      {
+        if(i < 0 || i >= ROWS || j < 0 || j >= COLS)
+          continue;
+        if(i == tileRow && j == tileCol)
+          continue;
+        count += map[i, j];
+      }
     }
-    else
-      Debug.Log("[Input Error] Invalid Direction Check");
     return count;
   }
 }

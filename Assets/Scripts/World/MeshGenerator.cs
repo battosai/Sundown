@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class MeshGenerator : MonoBehaviour 
+public class MeshGenerator : MonoBehaviour
 {
     private static readonly float SQUARE_SIZE = 1f;
     private SquareGrid squareGrid;
@@ -56,7 +56,7 @@ public class MeshGenerator : MonoBehaviour
                 MeshFromPoints(square.bottomLeft, square.centerLeft, square.centerTop, square.topRight, square.centerRight, square.centerBottom);
                 break;
             case 6:
-                MeshFromPoints(square.centerTop, square.topRight, square.bottomRight, square.centerBottom);   
+                MeshFromPoints(square.centerTop, square.topRight, square.bottomRight, square.centerBottom);
                 break;
             case 9:
                 MeshFromPoints(square.bottomLeft, square.topLeft, square.centerTop, square.centerBottom);
