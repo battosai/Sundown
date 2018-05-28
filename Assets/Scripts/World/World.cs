@@ -46,7 +46,6 @@ public class World : MonoBehaviour
 			int[,] map = mapGen.GenerateMap();
 			Mesh mesh = meshGen.GenerateMesh(map);
 			node.GetComponent<WorldNode>().meshFilter.mesh = mesh;
-			//break; //TEMPORARY
 		}
 	}
 

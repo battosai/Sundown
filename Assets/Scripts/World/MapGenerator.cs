@@ -181,6 +181,7 @@ public class MapGenerator : MonoBehaviour
       foreach(Room unlinkedRoom in unlinked)
         linked.Add(unlinkedRoom);
     }
+    Debug.Log("Total Rooms Linked: " + linked.Count);
   }
 
   //returns a list of rooms that are linked to each other (connected =/= linked)
@@ -199,7 +200,6 @@ public class MapGenerator : MonoBehaviour
         if(!queue.Contains(connection) && !linked.Contains(connection))
           queue.Enqueue(connection);
     }
-    Debug.Log("Room " + origin.tiles.Count + " linked with " + linked.Count);
     return linked;
   }
 
