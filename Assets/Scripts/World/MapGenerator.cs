@@ -11,8 +11,8 @@ public class MapGenerator : MonoBehaviour
   [Range(0, 100)]
   public int randomFillPercent;
   public bool isRandomSeed;
-  private static readonly int COLS = 50;
-  private static readonly int ROWS = 50;
+  private static readonly int COLS = 100;
+  private static readonly int ROWS = 100;
   private static readonly int EQUAL_NEIGHBORS = 4;
   private static readonly int SMOOTH_EPOCHS = 5;
   private static readonly int WALL = 1;
@@ -36,6 +36,7 @@ public class MapGenerator : MonoBehaviour
     //will help when generating the polygon collider
     List<Room> rooms = filterMapRegions(map);
     connectClosestRooms(map, rooms);
+    connectRoomGroups(map, rooms);
     return map;
   }
 
@@ -65,8 +66,6 @@ public class MapGenerator : MonoBehaviour
         else if(map[tile.row, tile.col+1] == MapGenerator.WALL)
           edgeTiles.Add(tile);
       }
-      if(edgeTiles.Count == 0)
-        Debug.Log("WTF");
     }
 
     public static void connectRooms(Room a, Room b)
@@ -146,34 +145,63 @@ public class MapGenerator : MonoBehaviour
     }
   }
 
-  // //unused, just making for testing later
-  // //connects all rooms after theyve connected with closest neighbors
-  // private void connectRoomGroups(int[,] map, List<Room> rooms)
-  // {
-  //   //choose one room group as already linked
-  //   List<Room> linked = new List<Room>();
-  //   linked.Add(rooms[0]);
-  //   foreach(Room room in rooms[0].connected)
-  //     linked.Add(room);
-  //   //HARD TO DEFINE LINKED ROOMS BECAUSE WOULD HAVE TO GO DOWN FAR
-  // }
+  //unused, just making for testing later
+  //connects all rooms after theyve connected with closest neighbors
+  private void connectRoomGroups(int[,] map, List<Room> rooms)
+  {
+    List<Room> linked = new List<Room>();
+    linked = getLinkedRooms(rooms[0]);
+    foreach(Room room in rooms)
+    {
+      int minDistance = 0;
+      Room minLinkedRoom = new Room();
+      Room minUnlinkedRoom = new Room();
+      Coord minLinkedTile = new Coord();
+      Coord minUnlinkedTile = new Coord();
+      if(linked.Contains(room))
+        continue;
+      List<Room> unlinked = getLinkedRooms(room);
+      foreach(Room linkedRoom in linked)
+        foreach(Room unlinkedRoom in unlinked)
+          foreach(Coord linkedTile in linkedRoom.edgeTiles)
+            foreach(Coord unlinkedTile in unlinkedRoom.edgeTiles)
+            {
+              int distance = (int)(Mathf.Pow(linkedTile.row-unlinkedTile.row, 2)+Mathf.Pow(linkedTile.col-unlinkedTile.col, 2));
+              if(distance < minDistance || minDistance == 0)
+              {
+                minDistance = distance;
+                minLinkedRoom = linkedRoom;
+                minUnlinkedRoom = unlinkedRoom;
+                minLinkedTile = linkedTile;
+                minUnlinkedTile = unlinkedTile;
+              }
+            }
+      if(minDistance > 0)
+        createCorridor(map, minLinkedRoom, minUnlinkedRoom, minLinkedTile, minUnlinkedTile);
+      foreach(Room unlinkedRoom in unlinked)
+        linked.Add(unlinkedRoom);
+    }
+  }
 
-  // private List<Room> getLinkedRooms(Room origin)
-  // {
-  //   List<Room> linked = new List<Room>();
-  //   linked.Add(origin);
-  //   Queue<Room> unchecked = new Queue<Room>();
-  //   //DOESNT LIKE THIS ENQUEE STATEMENT
-  //   //unchecked.Enqueue(origin);
-  //   while(unchecked.Count > 0)
-  //   {
-  //     if(linked.Contains(unchecked[0]))
-  //       unchecked.Dequeue();
-  //     else
-  //       break;
-  //   }
-  //   return linked;
-  // }
+  //returns a list of rooms that are linked to each other (connected =/= linked)
+  //connected rooms are directly connected, linked can also be indirectly connected
+  private List<Room> getLinkedRooms(Room origin)
+  {
+    List<Room> linked = new List<Room>();
+    Queue<Room> queue = new Queue<Room>();
+    queue.Enqueue(origin);
+    while(queue.Count > 0)
+    {
+      Room room = queue.Dequeue();
+      if(!linked.Contains(room))
+        linked.Add(room);
+      foreach(Room connection in room.connected)
+        if(!queue.Contains(connection) && !linked.Contains(connection))
+          queue.Enqueue(connection);
+    }
+    Debug.Log("Room " + origin.tiles.Count + " linked with " + linked.Count);
+    return linked;
+  }
 
   private void createCorridor(int[,] map, Room roomA, Room roomB, Coord tileA, Coord tileB)
   {
