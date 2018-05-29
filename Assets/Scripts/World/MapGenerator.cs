@@ -207,9 +207,25 @@ public class MapGenerator : MonoBehaviour
   {
     Room.connectRooms(roomA, roomB);
     //temp so corridors can be visualized
-    Vector3 start = new Vector3(-COLS/2 + 0.5f + tileA.col, ROWS/2 - 0.5f - tileA.row);
-    Vector3 end = new Vector3(-COLS/2 + 0.5f + tileB.col, ROWS/2 - 0.5f - tileB.row);
-    Debug.DrawLine(start, end, Color.green, 5);
+    // Vector3 start = new Vector3(-COLS/2 + 0.5f + tileA.col, ROWS/2 - 0.5f - tileA.row);
+    // Vector3 end = new Vector3(-COLS/2 + 0.5f + tileB.col, ROWS/2 - 0.5f - tileB.row);
+    // Debug.DrawLine(start, end, Color.green, 5);
+    int dx = tileB.col - tileA.col;
+    int dy = tileB.row - tileA.row;
+    float slope = dy/dx;
+    int stepX = Math.Sign(dx);
+    int stepY = Math.Sign(dy);
+    bool isLeadingX = Mathf.Abs(dx) > Mathf.Abs(dy);
+    if(isLeadingX)
+    {
+      int i = 0;
+      for(int j = 0; Mathf.Abs(j) < Mathf.Abs(dx); j += stepX)
+      {
+        if(slope*(tileA.col+i) > (tileA.col+i+0.5f))
+          i++;
+        
+      }
+    }
   }
 
   //returns a list of all regions (as lists of tiles) in the map of tileType
