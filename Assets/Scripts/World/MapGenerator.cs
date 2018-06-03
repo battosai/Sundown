@@ -32,8 +32,6 @@ public class MapGenerator : MonoBehaviour
     {
       smoothMap(map);
     }
-    //maybe make this a List<List<Room>> so that it returns a list for each room type!!!
-    //will help when generating the polygon collider
     List<Room> rooms = filterMapRegions(map);
     //NOTE: postponing corridor connections
     // connectClosestRooms(map, rooms);
