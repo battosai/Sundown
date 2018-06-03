@@ -35,8 +35,9 @@ public class MapGenerator : MonoBehaviour
     //maybe make this a List<List<Room>> so that it returns a list for each room type!!!
     //will help when generating the polygon collider
     List<Room> rooms = filterMapRegions(map);
-    connectClosestRooms(map, rooms);
-    connectRoomGroups(map, rooms);
+    //NOTE: postponing corridor connections
+    // connectClosestRooms(map, rooms);
+    // connectRoomGroups(map, rooms);
     return map;
   }
 
@@ -207,23 +208,51 @@ public class MapGenerator : MonoBehaviour
   {
     Room.connectRooms(roomA, roomB);
     //temp so corridors can be visualized
-    // Vector3 start = new Vector3(-COLS/2 + 0.5f + tileA.col, ROWS/2 - 0.5f - tileA.row);
-    // Vector3 end = new Vector3(-COLS/2 + 0.5f + tileB.col, ROWS/2 - 0.5f - tileB.row);
-    // Debug.DrawLine(start, end, Color.green, 5);
+    Vector3 start = new Vector3(-COLS/2 + 0.5f + tileA.col, ROWS/2 - 0.5f - tileA.row);
+    Vector3 end = new Vector3(-COLS/2 + 0.5f + tileB.col, ROWS/2 - 0.5f - tileB.row);
     int dx = tileB.col - tileA.col;
     int dy = tileB.row - tileA.row;
-    float slope = dy/dx;
     int stepX = Math.Sign(dx);
     int stepY = Math.Sign(dy);
     bool isLeadingX = Mathf.Abs(dx) > Mathf.Abs(dy);
     if(isLeadingX)
     {
+      Debug.Log("leading X: slope is " + dy + "/" + dx);
+      Debug.DrawLine(start, end, Color.green, 5);
       int i = 0;
-      for(int j = 0; Mathf.Abs(j) < Mathf.Abs(dx); j += stepX)
+      for(int j = 0; Mathf.Abs(j) <= Mathf.Abs(dx); j += stepX)
       {
-        if(slope*(tileA.col+i) > (tileA.col+i+0.5f))
-          i++;
-        
+        if(stepY >= 0)
+        {
+          if((dy/dx)*j > (i+0.5f))
+            i += stepY;
+        }
+        else
+        {
+          if((-dy/dx)*j > (i-0.5f))
+            i += stepY;
+        }
+        map[tileA.row+i, tileA.col+j] = FLOOR;
+      }
+    }
+    else
+    {
+      Debug.Log("leading Y: slope is " + dy + "/" + dx);
+      Debug.DrawLine(start, end, Color.red, 5);
+      int j = 0;
+      for(int i = 0; Mathf.Abs(i) <= Mathf.Abs(dy); i += stepY)
+      {
+        if(stepX > 0)
+        {
+          if((dx/dy)*i > (j+0.5f))
+            j += stepX;
+        }
+        else
+        {
+          if((-dx/dy)*i > (j-0.5f))
+            j += stepX;
+        }
+        map[tileA.row+i, tileA.col+j] = FLOOR;
       }
     }
   }
