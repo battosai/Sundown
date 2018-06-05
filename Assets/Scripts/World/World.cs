@@ -15,6 +15,7 @@ public class World : MonoBehaviour
 	private Transform trans;
 	private MapGenerator mapGen;
 	private MeshGenerator meshGen;
+	private ColliderGenerator collGen;
 
 	void Awake()
 	{
@@ -23,6 +24,7 @@ public class World : MonoBehaviour
 		nodes = new List<GameObject>();
 		mapGen = GetComponent<MapGenerator>();
 		meshGen = GetComponent<MeshGenerator>();
+		collGen = GetComponent<ColliderGenerator>();
 	}
 
 	// Use this for initialization
@@ -46,7 +48,8 @@ public class World : MonoBehaviour
 			int[,] map = mapGen.GenerateMap();
 			Mesh mesh = meshGen.GenerateMesh(map);
 			node.GetComponent<WorldNode>().meshFilter.mesh = mesh;
-			break;
+			collGen.GenerateCollider(node);
+			break; //temp
 		}
 	}
 
