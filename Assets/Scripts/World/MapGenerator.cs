@@ -11,6 +11,7 @@ public class MapGenerator : MonoBehaviour
   [Range(0, 100)]
   public int randomFillPercent;
   public bool isRandomSeed;
+  public List<List<Vector2>> edgePoints;
   private static readonly int COLS = 100;
   private static readonly int ROWS = 100;
   private static readonly int EQUAL_NEIGHBORS = 4;
@@ -32,8 +33,6 @@ public class MapGenerator : MonoBehaviour
     {
       smoothMap(map);
     }
-    //maybe make this a List<List<Room>> so that it returns a list for each room type!!!
-    //will help when generating the polygon collider
     List<Room> rooms = filterMapRegions(map);
     //NOTE: postponing corridor connections
     // connectClosestRooms(map, rooms);
@@ -104,7 +103,26 @@ public class MapGenerator : MonoBehaviour
       else
         rooms.Add(new Room(map, region));
     }
+    populateEdgePoints(rooms);
     return rooms;
+  }
+
+  //fills up the public attribute of edgepoints
+  //edgepoints contains lists of vector2 for each room's edgetiles (2D list)
+  private void populateEdgePoints(List<Room> rooms)
+  {
+    edgePoints = new List<List<Vector2>>();
+    foreach(Room room in rooms)
+    {
+      List<Vector2> edgeGroup = new List<Vector2>();
+      foreach(Coord edgeTile in room.edgeTiles)
+      {
+        Vector2 point = new Vector2(-COLS/2 + 0.5f + edgeTile.col, ROWS/2 - 0.5f - edgeTile.row);
+        edgeGroup.Add(point);
+      }
+      edgePoints.Add(edgeGroup);
+      Debug.Log("Room has " + edgeGroup.Count);
+    }
   }
 
   //creates corridors between each room's closest neighbor
