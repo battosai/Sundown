@@ -33,11 +33,11 @@ public class ColliderGenerator : MonoBehaviour
             child.GetComponent<EdgeCollider2D>().points = roomPoints.ToArray();
             child.transform.parent = node.transform;
         }
+        //THE POINTS MIGHT NEED TO BE IN ORDER!
     }
 
     //Does the same thing as mapgen.edgePoints attribute, but this doesn't differentiate between rooms
     //NOT FINISHED, DOESNT RETURN VECTOR2s
-    //KEEP FOR NOW!!!
     // private List<Vector2> getEdgePoints(Vector3[] vertices, int[] triangles)
     // {
     //     //use the triangles to find which points are connected
