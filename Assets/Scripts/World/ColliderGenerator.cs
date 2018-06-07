@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class ColliderGenerator : MonoBehaviour
 {
-    private List<List<Vector2>> points;
     private MapGenerator mapGen;
 
     public void Awake()
@@ -14,84 +13,130 @@ public class ColliderGenerator : MonoBehaviour
 
     public void GenerateCollider(GameObject node)
     {
-        points = new List<List<Vector2>>();
         MeshFilter meshFilter = node.GetComponent<MeshFilter>();
         if(meshFilter == null)
         {
             Debug.Log("[Error] No Mesh Filter!");
             return;
         }
-        points = mapGen.edgePoints;
-        foreach(List<Vector2> roomPoints in points)
-        {
-            GameObject child = new GameObject("EdgeCollider");
-            child.AddComponent<Rigidbody2D>();
-            Rigidbody2D rb = child.GetComponent<Rigidbody2D>();
-            rb.gravityScale = 0f;
-            rb.angularDrag = 0f;
-            child.AddComponent<EdgeCollider2D>();
-            child.GetComponent<EdgeCollider2D>().points = roomPoints.ToArray();
-            child.transform.parent = node.transform;
-        }
-        //THE POINTS MIGHT NEED TO BE IN ORDER!
+        List<Edge> edges = createEdges(meshFilter.mesh.vertices, meshFilter.mesh.triangles);
+        List<List<Edge>> rooms = parseEdges(edges);
+        createColliders(rooms);
     }
 
-    //Does the same thing as mapgen.edgePoints attribute, but this doesn't differentiate between rooms
-    //NOT FINISHED, DOESNT RETURN VECTOR2s
-    // private List<Vector2> getEdgePoints(Vector3[] vertices, int[] triangles)
-    // {
-    //     //use the triangles to find which points are connected
-    //     List<Vector2> edgePoints = new List<Vector2>();
-    //     Dictionary<string, KeyValuePair<int, int>> unique = new Dictionary<string, KeyValuePair<int, int>>();
-    //     for(int i = 0; i < triangles.Length; i += 3)
-    //     {
-    //         for(int e = 0; e < 3; e++)
-    //         {
-    //             int vertA = triangles[i+e];
-    //             int vertB = i+e+1 > i+2 ? triangles[i] : triangles[i+e+1];
-    //             string edge = Mathf.Min(vertA, vertB) + ":" + Mathf.Max(vertA, vertB);
-    //             if(unique.ContainsKey(edge))
-    //                 unique.Remove(edge);
-    //             else
-    //                 unique.Add(edge, new KeyValuePair<int, int>(vertA, vertB));
-    //         }
-    //     }
-    //     Dictionary<int, int> edgeVerts = new Dictionary<int, int>();
-    //     foreach(KeyValuePair<int, int> edge in unique.Values)
-    //     {
-    //         if(!edgeVerts.ContainsKey(edge.Key))
-    //             edgeVerts.Add(edge.Key, edge.Value);
-    //         else
-    //             Debug.Log("hello");
-    //     }
-    //     Debug.Log(edgeVerts.Count);
-    //     return edgePoints;
-    // }
+    //creates edge colliders for each room attached to a child object of the respective node
+    private void createColliders(List<List<Edge>> rooms)
+    {
+        foreach(List<Edge> room in rooms)
+        {
+            Color color = Random.ColorHSV();
+            foreach(Edge edge in room)
+            {
+                Debug.DrawLine(new Vector3(edge.a.x, edge.a.y, 0), new Vector3(edge.b.x, edge.b.y, 0), color, 100);
+            }
+        }
+         // foreach(List<Vector2> roomPoints in points)
+        // {
+        //     GameObject child = new GameObject("EdgeCollider");
+        //     child.AddComponent<Rigidbody2D>();
+        //     Rigidbody2D rb = child.GetComponent<Rigidbody2D>();
+        //     rb.gravityScale = 0f;
+        //     rb.angularDrag = 0f;
+        //     child.AddComponent<EdgeCollider2D>();
+        //     child.GetComponent<EdgeCollider2D>().points = roomPoints.ToArray();
+        //     child.transform.parent = node.transform;
+        // }
+    }
 
-    // private void removeDuplicateEdges()
-    // {
-    //     List<Edge> edgesToBeRemoved = new List<Edge>();
-    //     foreach(Edge a in edges)
-    //     {
-    //         foreach(Edge b in edges)
-    //         {
-    //             if(a == b)
-    //                 continue;
-    //             if((a.a == b.a && a.b == b.b) || (a.b == b.a && a.a == b.b))
-    //                 edgesToBeRemoved.Add(a);
-    //         }
-    //     }
-    //     foreach(Edge removable in edgesToBeRemoved)
-    //         edges.Remove(removable);
-    // }
+    //groups edges into their respective rooms and in proper order
+    private List<List<Edge>> parseEdges(List<Edge> edges)
+    {
+        List<List<Edge>> rooms = new List<List<Edge>>();
+        List<Edge> used = new List<Edge>();
+        while(used.Count < edges.Count)
+        {
+            List<Edge> room = new List<Edge>();
+            Vector2[] endPoints = new Vector2[2];
+            for(int i = 0; i < edges.Count; i++)
+            {
+                Edge edge = edges[i];
+                if(used.Contains(edge))
+                    continue;
+                for(int j = 0; j < edges.Count; j++)
+                {
+                    Edge nextEdge = edges[j];
+                    if(used.Contains(nextEdge))
+                        continue;
+                    //first edge that initializes both endpoints
+                    if(room.Count == 0)
+                    {
+                        room.Add(nextEdge);
+                        endPoints[0] = nextEdge.a;
+                        endPoints[1] = nextEdge.b;
+                        //used.Add(nextEdge);
+                        edges.Remove(nextEdge);
+                    }
+                    //last edge that unites both endpoints
+                    else if((nextEdge.a == endPoints[0] && nextEdge.b == endPoints[1]) || (nextEdge.b == endPoints[0] && nextEdge.a == endPoints[1]))
+                    {
+                        room.Add(nextEdge);
+                        //used.Add(nextEdge);
+                        edges.Remove(nextEdge);
+                        break;
+                    }
+                    //edge that only connects to endpoint[0] (to preserve the order)
+                    else if(nextEdge.a == endPoints[0] || nextEdge.b == endPoints[0])
+                    {
+                        room.Add(nextEdge);
+                        endPoints[0] = nextEdge.a == endPoints[0] ? nextEdge.b : nextEdge.a;
+                        //used.Add(nextEdge);
+                        edges.Remove(nextEdge);
+                    }
+                }
+            }
+            rooms.Add(room);
+        }
+        Debug.Log(rooms.Count);
+        return rooms;
+    }
 
-    // private class Edge
-    // {
-    //     public Vector2 a, b;
-    //     public Edge(Vector2 a, Vector2 b)
-    //     {
-    //         this.a = a;
-    //         this.b = b;
-    //     }
-    // }
+    //acquires list of edges based on an edge only belonging to 1 mesh triangle bc its the outter side
+    private List<Edge> createEdges(Vector3[] vertices, int[] triangles)
+    {
+        List<Edge> edges = new List<Edge>();
+        //filter out edges that appear in multiple triangles with a dictionary
+        Dictionary<string, KeyValuePair<int, int>> unique = new Dictionary<string, KeyValuePair<int, int>>();
+        for(int i = 0; i < triangles.Length; i += 3)
+        {
+            for(int e = 0; e < 3; e++)
+            {
+                int vertA = triangles[i+e];
+                int vertB = i+e+1 > i+2 ? triangles[i] : triangles[i+e+1];
+                string edge = Mathf.Min(vertA, vertB) + ":" + Mathf.Max(vertA, vertB);
+                //edges that are already in the dictionary belong to 2 mesh triangles and thus can be removed
+                if(unique.ContainsKey(edge))
+                    unique.Remove(edge);
+                else
+                    unique.Add(edge, new KeyValuePair<int, int>(vertA, vertB));
+            }
+        }
+        //change dictionary values (keyvaluepair) into edges for list
+        foreach(KeyValuePair<int, int> edge in unique.Values)
+        {
+            Vector2 key = (Vector2) vertices[edge.Key];
+            Vector2 value = (Vector2) vertices[edge.Value];
+            edges.Add(new Edge(key, value));
+        }
+        return edges;
+    }
+
+    private class Edge
+    {
+        public Vector2 a, b;
+        public Edge(Vector2 a, Vector2 b)
+        {
+            this.a = a;
+            this.b = b;
+        }
+    }
 }

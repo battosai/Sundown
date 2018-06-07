@@ -121,7 +121,6 @@ public class MapGenerator : MonoBehaviour
         edgeGroup.Add(point);
       }
       edgePoints.Add(edgeGroup);
-      Debug.Log("Room has " + edgeGroup.Count);
     }
   }
 
