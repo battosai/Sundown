@@ -53,44 +53,38 @@ public class ColliderGenerator : MonoBehaviour
     {
         List<List<Edge>> rooms = new List<List<Edge>>();
         List<Edge> used = new List<Edge>();
-        while(used.Count < edges.Count)
+        while(edges.Count > 0)
         {
+            bool connected = false;
             List<Edge> room = new List<Edge>();
             Vector2[] endPoints = new Vector2[2];
-            for(int i = 0; i < edges.Count; i++)
+            while(!connected) 
             {
-                Edge edge = edges[i];
-                if(used.Contains(edge))
-                    continue;
-                for(int j = 0; j < edges.Count; j++)
+                for(int i = 0; i < edges.Count; i++)
                 {
-                    Edge nextEdge = edges[j];
-                    if(used.Contains(nextEdge))
-                        continue;
+                    Edge edge = edges[i];
                     //first edge that initializes both endpoints
                     if(room.Count == 0)
                     {
-                        room.Add(nextEdge);
-                        endPoints[0] = nextEdge.a;
-                        endPoints[1] = nextEdge.b;
-                        //used.Add(nextEdge);
-                        edges.Remove(nextEdge);
+                        room.Add(edge);
+                        endPoints[0] = edge.a;
+                        endPoints[1] = edge.b;
+                        edges.Remove(edge);
                     }
                     //last edge that unites both endpoints
-                    else if((nextEdge.a == endPoints[0] && nextEdge.b == endPoints[1]) || (nextEdge.b == endPoints[0] && nextEdge.a == endPoints[1]))
+                    else if((edge.a == endPoints[0] && edge.b == endPoints[1]) || (edge.b == endPoints[0] && edge.a == endPoints[1]))
                     {
-                        room.Add(nextEdge);
-                        //used.Add(nextEdge);
-                        edges.Remove(nextEdge);
+                        room.Add(edge);
+                        edges.Remove(edge);
+                        connected = true;
                         break;
                     }
                     //edge that only connects to endpoint[0] (to preserve the order)
-                    else if(nextEdge.a == endPoints[0] || nextEdge.b == endPoints[0])
+                    else if(edge.a == endPoints[0] || edge.b == endPoints[0])
                     {
-                        room.Add(nextEdge);
-                        endPoints[0] = nextEdge.a == endPoints[0] ? nextEdge.b : nextEdge.a;
-                        //used.Add(nextEdge);
-                        edges.Remove(nextEdge);
+                        room.Add(edge);
+                        endPoints[0] = edge.a == endPoints[0] ? edge.b : edge.a;
+                        edges.Remove(edge);
                     }
                 }
             }
