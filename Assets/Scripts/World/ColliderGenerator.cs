@@ -20,43 +20,62 @@ public class ColliderGenerator : MonoBehaviour
             return;
         }
         List<Edge> edges = createEdges(meshFilter.mesh.vertices, meshFilter.mesh.triangles);
-        List<List<Edge>> rooms = parseEdges(edges);
-        createColliders(rooms);
+        List<List<Vector2>> rooms = parseEdges(edges);
+        useColliderPool(rooms, node);
+    }
+
+    private void useColliderPool(List<List<Vector2>> rooms, GameObject node)
+    {
+        List<GameObject> collPool = node.GetComponent<WorldNode>().collPool;
+        for(int i = 0; i < collPool.Count; i++)
+        {
+            if(rooms.Count == 0)
+            {
+                for(int j = i; j < collPool.Count; j++)
+                {
+                    GameObject extraColl = collPool[j];
+                    extraColl.SetActive(false);        
+                }
+                break;
+            }
+            GameObject coll = collPool[i];
+            List<Vector2> room = rooms[0];
+            coll.SetActive(true);
+            coll.GetComponent<EdgeCollider2D>().points = room.ToArray();
+            rooms.Remove(room); 
+        }
+        if(rooms.Count > 0)
+            createColliders(rooms, node); 
     }
 
     //creates edge colliders for each room attached to a child object of the respective node
-    private void createColliders(List<List<Edge>> rooms)
+    //used if node has no unused colliders in pool, add created ones to pool
+    private void createColliders(List<List<Vector2>> rooms, GameObject node)
     {
-        foreach(List<Edge> room in rooms)
+        WorldNode wnode = node.GetComponent<WorldNode>();
+        foreach(List<Vector2> room in rooms)
         {
-            Color color = Random.ColorHSV();
-            foreach(Edge edge in room)
-            {
-                Debug.DrawLine(new Vector3(edge.a.x, edge.a.y, 0), new Vector3(edge.b.x, edge.b.y, 0), color, 100);
-            }
+            GameObject child = new GameObject("EdgeCollider");
+            child.AddComponent<Rigidbody2D>();
+            Rigidbody2D rb = child.GetComponent<Rigidbody2D>();
+            rb.gravityScale = 0f;
+            rb.angularDrag = 0f;
+            child.AddComponent<EdgeCollider2D>();
+            child.GetComponent<EdgeCollider2D>().points = room.ToArray();
+            child.transform.parent = node.transform;
+            wnode.addCollPool(child);
         }
-         // foreach(List<Vector2> roomPoints in points)
-        // {
-        //     GameObject child = new GameObject("EdgeCollider");
-        //     child.AddComponent<Rigidbody2D>();
-        //     Rigidbody2D rb = child.GetComponent<Rigidbody2D>();
-        //     rb.gravityScale = 0f;
-        //     rb.angularDrag = 0f;
-        //     child.AddComponent<EdgeCollider2D>();
-        //     child.GetComponent<EdgeCollider2D>().points = roomPoints.ToArray();
-        //     child.transform.parent = node.transform;
-        // }
     }
 
-    //groups edges into their respective rooms and in proper order
-    private List<List<Edge>> parseEdges(List<Edge> edges)
+    //groups points from edges into their respective rooms and in proper order
+    private List<List<Vector2>> parseEdges(List<Edge> edges)
     {
-        List<List<Edge>> rooms = new List<List<Edge>>();
+        List<List<Vector2>> rooms = new List<List<Vector2>>();
         List<Edge> used = new List<Edge>();
         while(edges.Count > 0)
         {
             bool connected = false;
-            List<Edge> room = new List<Edge>();
+            List<Vector2> room = new List<Vector2>();
             Vector2[] endPoints = new Vector2[2];
             while(!connected) 
             {
@@ -66,7 +85,8 @@ public class ColliderGenerator : MonoBehaviour
                     //first edge that initializes both endpoints
                     if(room.Count == 0)
                     {
-                        room.Add(edge);
+                        room.Add(edge.b);
+                        room.Add(edge.a);
                         endPoints[0] = edge.a;
                         endPoints[1] = edge.b;
                         edges.Remove(edge);
@@ -74,7 +94,7 @@ public class ColliderGenerator : MonoBehaviour
                     //last edge that unites both endpoints
                     else if((edge.a == endPoints[0] && edge.b == endPoints[1]) || (edge.b == endPoints[0] && edge.a == endPoints[1]))
                     {
-                        room.Add(edge);
+                        room.Add(edge.a);
                         edges.Remove(edge);
                         connected = true;
                         break;
@@ -82,7 +102,7 @@ public class ColliderGenerator : MonoBehaviour
                     //edge that only connects to endpoint[0] (to preserve the order)
                     else if(edge.a == endPoints[0] || edge.b == endPoints[0])
                     {
-                        room.Add(edge);
+                        room.Add(edge.a);
                         endPoints[0] = edge.a == endPoints[0] ? edge.b : edge.a;
                         edges.Remove(edge);
                     }
