@@ -105,83 +105,83 @@ public class MapGenerator : MonoBehaviour
     return rooms;
   }
 
-  //creates corridors between each room's closest neighbor
-  //MAYBE JUST MAKE IT FIND ONE ROOMS CLOSEST NEIGHBOR, THEN THAT GROUPS CLOSEST, ETC. so that all are connected
-  private void connectClosestRooms(int[,] map, List<Room> rooms)
-  {
-    foreach(Room a in rooms)
-    {
-      int minDistance = 0;
-      Coord minTileA = new Coord();
-      Coord minTileB = new Coord();
-      Room minRoomB = new Room();
-      foreach(Room b in rooms)
-      {
-        if(a == b)
-          continue;
-        if(a.connected.Contains(b))
-        {
-          minDistance = 0;
-          break;
-        }
-        foreach(Coord tileA in a.edgeTiles)
-        {
-          foreach(Coord tileB in b.edgeTiles)
-          {
-            int distance = (int)(Mathf.Pow(tileA.row-tileB.row, 2) + Mathf.Pow(tileA.col-tileB.col, 2));
-            if(distance < minDistance || minDistance == 0)
-            {
-              minDistance = distance;
-              minTileA = tileA;
-              minTileB = tileB;
-              minRoomB = b;
-            }
-          }
-        }
-      }
-      if(minDistance > 0)
-        createCorridor(map, a, minRoomB, minTileA, minTileB);
-    }
-  }
+  // //creates corridors between each room's closest neighbor
+  // //MAYBE JUST MAKE IT FIND ONE ROOMS CLOSEST NEIGHBOR, THEN THAT GROUPS CLOSEST, ETC. so that all are connected
+  // private void connectClosestRooms(int[,] map, List<Room> rooms)
+  // {
+  //   foreach(Room a in rooms)
+  //   {
+  //     int minDistance = 0;
+  //     Coord minTileA = new Coord();
+  //     Coord minTileB = new Coord();
+  //     Room minRoomB = new Room();
+  //     foreach(Room b in rooms)
+  //     {
+  //       if(a == b)
+  //         continue;
+  //       if(a.connected.Contains(b))
+  //       {
+  //         minDistance = 0;
+  //         break;
+  //       }
+  //       foreach(Coord tileA in a.edgeTiles)
+  //       {
+  //         foreach(Coord tileB in b.edgeTiles)
+  //         {
+  //           int distance = (int)(Mathf.Pow(tileA.row-tileB.row, 2) + Mathf.Pow(tileA.col-tileB.col, 2));
+  //           if(distance < minDistance || minDistance == 0)
+  //           {
+  //             minDistance = distance;
+  //             minTileA = tileA;
+  //             minTileB = tileB;
+  //             minRoomB = b;
+  //           }
+  //         }
+  //       }
+  //     }
+  //     if(minDistance > 0)
+  //       createCorridor(map, a, minRoomB, minTileA, minTileB);
+  //   }
+  // }
 
   //unused, just making for testing later
   //connects all rooms after theyve connected with closest neighbors
-  private void connectRoomGroups(int[,] map, List<Room> rooms)
-  {
-    List<Room> linked = new List<Room>();
-    linked = getLinkedRooms(rooms[0]);
-    foreach(Room room in rooms)
-    {
-      int minDistance = 0;
-      Room minLinkedRoom = new Room();
-      Room minUnlinkedRoom = new Room();
-      Coord minLinkedTile = new Coord();
-      Coord minUnlinkedTile = new Coord();
-      if(linked.Contains(room))
-        continue;
-      List<Room> unlinked = getLinkedRooms(room);
-      foreach(Room linkedRoom in linked)
-        foreach(Room unlinkedRoom in unlinked)
-          foreach(Coord linkedTile in linkedRoom.edgeTiles)
-            foreach(Coord unlinkedTile in unlinkedRoom.edgeTiles)
-            {
-              int distance = (int)(Mathf.Pow(linkedTile.row-unlinkedTile.row, 2)+Mathf.Pow(linkedTile.col-unlinkedTile.col, 2));
-              if(distance < minDistance || minDistance == 0)
-              {
-                minDistance = distance;
-                minLinkedRoom = linkedRoom;
-                minUnlinkedRoom = unlinkedRoom;
-                minLinkedTile = linkedTile;
-                minUnlinkedTile = unlinkedTile;
-              }
-            }
-      if(minDistance > 0)
-        createCorridor(map, minLinkedRoom, minUnlinkedRoom, minLinkedTile, minUnlinkedTile);
-      foreach(Room unlinkedRoom in unlinked)
-        linked.Add(unlinkedRoom);
-    }
-    Debug.Log("Total Rooms Linked: " + linked.Count);
-  }
+  // private void connectRoomGroups(int[,] map, List<Room> rooms)
+  // {
+  //   List<Room> linked = new List<Room>();
+  //   linked = getLinkedRooms(rooms[0]);
+  //   foreach(Room room in rooms)
+  //   {
+  //     int minDistance = 0;
+  //     Room minLinkedRoom = new Room();
+  //     Room minUnlinkedRoom = new Room();
+  //     Coord minLinkedTile = new Coord();
+  //     Coord minUnlinkedTile = new Coord();
+  //     if(linked.Contains(room))
+  //       continue;
+  //     List<Room> unlinked = getLinkedRooms(room);
+  //     foreach(Room linkedRoom in linked)
+  //       foreach(Room unlinkedRoom in unlinked)
+  //         foreach(Coord linkedTile in linkedRoom.edgeTiles)
+  //           foreach(Coord unlinkedTile in unlinkedRoom.edgeTiles)
+  //           {
+  //             int distance = (int)(Mathf.Pow(linkedTile.row-unlinkedTile.row, 2)+Mathf.Pow(linkedTile.col-unlinkedTile.col, 2));
+  //             if(distance < minDistance || minDistance == 0)
+  //             {
+  //               minDistance = distance;
+  //               minLinkedRoom = linkedRoom;
+  //               minUnlinkedRoom = unlinkedRoom;
+  //               minLinkedTile = linkedTile;
+  //               minUnlinkedTile = unlinkedTile;
+  //             }
+  //           }
+  //     if(minDistance > 0)
+  //       createCorridor(map, minLinkedRoom, minUnlinkedRoom, minLinkedTile, minUnlinkedTile);
+  //     foreach(Room unlinkedRoom in unlinked)
+  //       linked.Add(unlinkedRoom);
+  //   }
+  //   Debug.Log("Total Rooms Linked: " + linked.Count);
+  // }
 
   //returns a list of rooms that are linked to each other (connected =/= linked)
   //connected rooms are directly connected, linked can also be indirectly connected
@@ -202,58 +202,58 @@ public class MapGenerator : MonoBehaviour
     return linked;
   }
 
-  private void createCorridor(int[,] map, Room roomA, Room roomB, Coord tileA, Coord tileB)
-  {
-    Room.connectRooms(roomA, roomB);
-    //temp so corridors can be visualized
-    Vector3 start = new Vector3(-COLS/2 + 0.5f + tileA.col, ROWS/2 - 0.5f - tileA.row);
-    Vector3 end = new Vector3(-COLS/2 + 0.5f + tileB.col, ROWS/2 - 0.5f - tileB.row);
-    int dx = tileB.col - tileA.col;
-    int dy = tileB.row - tileA.row;
-    int stepX = Math.Sign(dx);
-    int stepY = Math.Sign(dy);
-    bool isLeadingX = Mathf.Abs(dx) > Mathf.Abs(dy);
-    if(isLeadingX)
-    {
-      Debug.Log("leading X: slope is " + dy + "/" + dx);
-      Debug.DrawLine(start, end, Color.green, 5);
-      int i = 0;
-      for(int j = 0; Mathf.Abs(j) <= Mathf.Abs(dx); j += stepX)
-      {
-        if(stepY >= 0)
-        {
-          if((dy/dx)*j > (i+0.5f))
-            i += stepY;
-        }
-        else
-        {
-          if((-dy/dx)*j > (i-0.5f))
-            i += stepY;
-        }
-        map[tileA.row+i, tileA.col+j] = FLOOR;
-      }
-    }
-    else
-    {
-      Debug.Log("leading Y: slope is " + dy + "/" + dx);
-      Debug.DrawLine(start, end, Color.red, 5);
-      int j = 0;
-      for(int i = 0; Mathf.Abs(i) <= Mathf.Abs(dy); i += stepY)
-      {
-        if(stepX > 0)
-        {
-          if((dx/dy)*i > (j+0.5f))
-            j += stepX;
-        }
-        else
-        {
-          if((-dx/dy)*i > (j-0.5f))
-            j += stepX;
-        }
-        map[tileA.row+i, tileA.col+j] = FLOOR;
-      }
-    }
-  }
+  // private void createCorridor(int[,] map, Room roomA, Room roomB, Coord tileA, Coord tileB)
+  // {
+  //   Room.connectRooms(roomA, roomB);
+  //   //temp so corridors can be visualized
+  //   Vector3 start = new Vector3(-COLS/2 + 0.5f + tileA.col, ROWS/2 - 0.5f - tileA.row);
+  //   Vector3 end = new Vector3(-COLS/2 + 0.5f + tileB.col, ROWS/2 - 0.5f - tileB.row);
+  //   int dx = tileB.col - tileA.col;
+  //   int dy = tileB.row - tileA.row;
+  //   int stepX = Math.Sign(dx);
+  //   int stepY = Math.Sign(dy);
+  //   bool isLeadingX = Mathf.Abs(dx) > Mathf.Abs(dy);
+  //   if(isLeadingX)
+  //   {
+  //     Debug.Log("leading X: slope is " + dy + "/" + dx);
+  //     Debug.DrawLine(start, end, Color.green, 5);
+  //     int i = 0;
+  //     for(int j = 0; Mathf.Abs(j) <= Mathf.Abs(dx); j += stepX)
+  //     {
+  //       if(stepY >= 0)
+  //       {
+  //         if((dy/dx)*j > (i+0.5f))
+  //           i += stepY;
+  //       }
+  //       else
+  //       {
+  //         if((-dy/dx)*j > (i-0.5f))
+  //           i += stepY;
+  //       }
+  //       map[tileA.row+i, tileA.col+j] = FLOOR;
+  //     }
+  //   }
+  //   else
+  //   {
+  //     Debug.Log("leading Y: slope is " + dy + "/" + dx);
+  //     Debug.DrawLine(start, end, Color.red, 5);
+  //     int j = 0;
+  //     for(int i = 0; Mathf.Abs(i) <= Mathf.Abs(dy); i += stepY)
+  //     {
+  //       if(stepX > 0)
+  //       {
+  //         if((dx/dy)*i > (j+0.5f))
+  //           j += stepX;
+  //       }
+  //       else
+  //       {
+  //         if((-dx/dy)*i > (j-0.5f))
+  //           j += stepX;
+  //       }
+  //       map[tileA.row+i, tileA.col+j] = FLOOR;
+  //     }
+  //   }
+  // }
 
   //returns a list of all regions (as lists of tiles) in the map of tileType
   private List<List<Coord>> getRegionsOfType(int[,] map, int tileType)

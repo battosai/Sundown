@@ -49,7 +49,6 @@ public class World : MonoBehaviour
 			Mesh mesh = meshGen.GenerateMesh(map);
 			node.GetComponent<WorldNode>().meshFilter.mesh = mesh;
 			collGen.GenerateCollider(node);
-			break; //temp
 		}
 	}
 

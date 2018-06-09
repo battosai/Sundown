@@ -63,6 +63,7 @@ public class ColliderGenerator : MonoBehaviour
             child.AddComponent<EdgeCollider2D>();
             child.GetComponent<EdgeCollider2D>().points = room.ToArray();
             child.transform.parent = node.transform;
+            child.transform.localPosition = Vector2.zero;
             wnode.addCollPool(child);
         }
     }
