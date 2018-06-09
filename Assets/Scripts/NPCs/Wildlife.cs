@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Wildlife : MonoBehaviour
 {
     public int health {get; private set;}
+    public int food {get; private set;}
     public float speed {get; private set;}
     public List<List<GameObject>> wildlife {get; private set;}
     public Rigidbody2D rb {get; private set;}
