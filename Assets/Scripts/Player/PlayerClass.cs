@@ -13,6 +13,7 @@ public class PlayerClass : CharacterClass
 	public PlayerActions actions {get; private set;}
 	public Collider2D pushBox {get; private set;}
 	private int food;
+	private World world;
 
 	public override void Awake()
 	{
@@ -20,15 +21,7 @@ public class PlayerClass : CharacterClass
 		inputs = GetComponent<PlayerInput>();
 		actions = GetComponent<PlayerActions>();
 		pushBox = GetComponent<Collider2D>();
-	}
-
-	// Use this for initialization
-	void Start()
-	{
-		base.reset();
-		base.setNodeID(0);
-		isHuman = true;
-		isFed = false;
+		world = GameObject.Find("World").GetComponent<World>();
 	}
 
 	// Update is called once per frame
@@ -36,6 +29,16 @@ public class PlayerClass : CharacterClass
 	{
 		//check to see if player is clicking at exit to go to next worldnode
 
+	}
+
+	//called by gamestate in masterreset
+	public override void Reset()
+	{
+		base.Reset();
+		base.setNodeID(0);
+		trans.position = World.nodes[nodeID].GetComponent<WorldNode>().playerSpawn.transform.position;
+		isHuman = true;
+		isFed = false;
 	}
 
 	public void toggleDayNight()

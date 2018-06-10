@@ -16,7 +16,6 @@ public class HeroClass : CharacterClass
 	// Use this for initialization
 	void Start ()
 	{
-		reset();
 	}
 
 	// Update is called once per frame
@@ -51,9 +50,10 @@ public class HeroClass : CharacterClass
 		return velocity;
 	}
 
-	public override void reset()
+	//called by gamestate in masterreset
+	public override void Reset()
 	{
-		base.reset();
+		base.Reset();
 		base.setNodeID(0);//Random.Range(0, World.WORLD_SIZE-1));
 		tracking = 0;
 	}

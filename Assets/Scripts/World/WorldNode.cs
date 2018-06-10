@@ -27,18 +27,14 @@ public class WorldNode : MonoBehaviour
     wildlifePool = new List<GameObject>();
   }
 
-  void Start()
-  {
-    reset();
-  }
-
 	// Update is called once per frame
 	void Update()
 	{
 
 	}
 
-  public void reset()
+  //called by parent class World when being reset
+  public void ParentReset()
   {
     isActive = true;
   }

@@ -13,23 +13,29 @@ public class GameState : MonoBehaviour
 	public static bool isDaytime {get; private set;}
 
 	private readonly float UNSET_TIME = -1f;
-	private CharacterClass player;
+	private World world;
+	private PlayerClass player;
+	private HeroClass hero;
 	private float startTime;
 
 	void Awake()
 	{
+		world = GameObject.Find("World").GetComponent<World>();
+		player = GameObject.Find("Player").GetComponent<PlayerClass>();
+		hero = GameObject.Find("Hero").GetComponent<HeroClass>();
 	}
 
 	// Use this for initialization
 	void Start()
 	{
-		reset();
+		masterReset();
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		checkTimeLimit();
+		if(Input.GetKeyDown(KeyCode.R))
+			masterReset();
 	}
 
 	//switches between daytime and nighttime according to their durations
@@ -55,9 +61,12 @@ public class GameState : MonoBehaviour
 		}
 	}
 
-	private void reset()
+	private void masterReset()
 	{
 		day = 0;
 		isDaytime = true;
+		world.Reset();
+		player.Reset();
+		hero.Reset();
 	}
 }

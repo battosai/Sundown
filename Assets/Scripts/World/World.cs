@@ -26,23 +26,19 @@ public class World : MonoBehaviour
 		collGen = GetComponent<ColliderGenerator>();
 	}
 
-	// Use this for initialization
-	void Start()
-	{
-		generateWorldNodes();
-		reset();
-	}
-
 	// Update is called once per frame
 	void Update()
 	{
-		if(Input.GetMouseButtonDown(0))
-			reset();
 	}
 
-	private void reset()
+	//called by GameState in masterreset
+	public void Reset()
 	{
+		if(nodes.Count == 0)
+			generateWorldNodes();
 		generateMapMeshCollider();
+		foreach(GameObject node in nodes)
+			node.GetComponent<WorldNode>().ParentReset();
 	}
 
 	//populates each worldnode with some wildlife

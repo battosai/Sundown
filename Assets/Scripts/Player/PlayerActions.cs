@@ -68,6 +68,6 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 		player.setNodeID(player.nodeID+1);
 		GameObject node = World.nodes[player.nodeID];
 		GameObject spawn = node.GetComponent<WorldNode>().playerSpawn;
-		player.trans.position = spawn.GetComponent<Transform>().position;
+		player.trans.position = spawn.transform.position;
 	}
 }

@@ -23,7 +23,7 @@ public class CharacterClass : MonoBehaviour
 		rend = GetComponent<SpriteRenderer>();
 	}
 
-	public virtual void reset()
+	public virtual void Reset()
 	{
 		speed = BASE_SPEED;
 	}

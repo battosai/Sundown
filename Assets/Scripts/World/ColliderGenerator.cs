@@ -59,6 +59,7 @@ public class ColliderGenerator : MonoBehaviour
             child.layer = LayerMask.NameToLayer("PushBox");
             child.AddComponent<Rigidbody2D>();
             Rigidbody2D rb = child.GetComponent<Rigidbody2D>();
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
             rb.gravityScale = 0f;
             rb.angularDrag = 0f;
             child.AddComponent<EdgeCollider2D>();
