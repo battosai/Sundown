@@ -56,6 +56,7 @@ public class ColliderGenerator : MonoBehaviour
         foreach(List<Vector2> room in rooms)
         {
             GameObject child = new GameObject("EdgeCollider");
+            child.layer = LayerMask.NameToLayer("PushBox");
             child.AddComponent<Rigidbody2D>();
             Rigidbody2D rb = child.GetComponent<Rigidbody2D>();
             rb.gravityScale = 0f;
@@ -111,7 +112,6 @@ public class ColliderGenerator : MonoBehaviour
             }
             rooms.Add(room);
         }
-        Debug.Log(rooms.Count);
         return rooms;
     }
 

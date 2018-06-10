@@ -185,22 +185,22 @@ public class MapGenerator : MonoBehaviour
 
   //returns a list of rooms that are linked to each other (connected =/= linked)
   //connected rooms are directly connected, linked can also be indirectly connected
-  private List<Room> getLinkedRooms(Room origin)
-  {
-    List<Room> linked = new List<Room>();
-    Queue<Room> queue = new Queue<Room>();
-    queue.Enqueue(origin);
-    while(queue.Count > 0)
-    {
-      Room room = queue.Dequeue();
-      if(!linked.Contains(room))
-        linked.Add(room);
-      foreach(Room connection in room.connected)
-        if(!queue.Contains(connection) && !linked.Contains(connection))
-          queue.Enqueue(connection);
-    }
-    return linked;
-  }
+  // private List<Room> getLinkedRooms(Room origin)
+  // {
+  //   List<Room> linked = new List<Room>();
+  //   Queue<Room> queue = new Queue<Room>();
+  //   queue.Enqueue(origin);
+  //   while(queue.Count > 0)
+  //   {
+  //     Room room = queue.Dequeue();
+  //     if(!linked.Contains(room))
+  //       linked.Add(room);
+  //     foreach(Room connection in room.connected)
+  //       if(!queue.Contains(connection) && !linked.Contains(connection))
+  //         queue.Enqueue(connection);
+  //   }
+  //   return linked;
+  // }
 
   // private void createCorridor(int[,] map, Room roomA, Room roomB, Coord tileA, Coord tileB)
   // {

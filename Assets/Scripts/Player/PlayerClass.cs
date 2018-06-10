@@ -11,6 +11,7 @@ public class PlayerClass : CharacterClass
 	public bool isFed {get; private set;}
 	public PlayerInput inputs {get; private set;}
 	public PlayerActions actions {get; private set;}
+	public Collider2D pushBox {get; private set;}
 	private int food;
 
 	public override void Awake()
@@ -18,6 +19,7 @@ public class PlayerClass : CharacterClass
 		base.Awake();
 		inputs = GetComponent<PlayerInput>();
 		actions = GetComponent<PlayerActions>();
+		pushBox = GetComponent<Collider2D>();
 	}
 
 	// Use this for initialization

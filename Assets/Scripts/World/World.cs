@@ -5,7 +5,6 @@ using UnityEngine;
 //ROLE: handles creation of world (spawn critters, interactables, etc)
 //NOTE: EACH NODE NEEDS A MESHFILTER AND MESHRENDERER AS WELL AS MATERIAL ADDED
 
-
 public class World : MonoBehaviour
 {
 	public static readonly int WORLD_SIZE = GameState.DAYS_TO_WIN;
@@ -42,6 +41,21 @@ public class World : MonoBehaviour
 	}
 
 	private void reset()
+	{
+		generateMapMeshCollider();
+	}
+
+	//populates each worldnode with some wildlife
+	private void generateWildlife()
+	{
+		foreach(GameObject node in nodes)
+		{
+			break;
+		}
+	}
+
+	//rolls a new map, mesh, and pool of colliders for walls
+	private void generateMapMeshCollider()
 	{
 		foreach(GameObject node in nodes)
 		{
