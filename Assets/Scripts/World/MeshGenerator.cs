@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class MeshGenerator : MonoBehaviour
 {
-    private static readonly float SQUARE_SIZE = 1f;
+    public static readonly float SQUARE_SIZE = 3f;
     private SquareGrid squareGrid;
     private List<Vector3> vertices;
     private List<int> triangles;
@@ -14,9 +14,9 @@ public class MeshGenerator : MonoBehaviour
         squareGrid = new SquareGrid(map);
         vertices = new List<Vector3>();
         triangles = new List<int>();
-        for(int i = 0; i < squareGrid.squares.GetLength(1); i++)
+        for(int i = 0; i < squareGrid.squares.GetLength(0); i++)
         {
-            for(int j = 0; j < squareGrid.squares.GetLength(0); j++)
+            for(int j = 0; j < squareGrid.squares.GetLength(1); j++)
             {
                 TriangulateSquare(squareGrid.squares[i, j]);
             }
@@ -138,11 +138,11 @@ public class MeshGenerator : MonoBehaviour
 
         public SquareGrid(int[,] map)
         {
-            int nodeCols = map.GetLength(0);
-            int nodeRows = map.GetLength(1);
+            int nodeCols = map.GetLength(1);
+            int nodeRows = map.GetLength(0);
             float mapWidth = nodeCols*SQUARE_SIZE;
             float mapHeight = nodeRows*SQUARE_SIZE;
-            ControlNode[,] controlNodes = new ControlNode[nodeCols, nodeRows];
+            ControlNode[,] controlNodes = new ControlNode[nodeRows, nodeCols];
             for(int i = 0; i < nodeRows; i++)
             {
                 for(int j = 0; j < nodeCols; j++)

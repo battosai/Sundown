@@ -11,8 +11,8 @@ public class MapGenerator : MonoBehaviour
   [Range(0, 100)]
   public int randomFillPercent;
   public bool isRandomSeed;
-  private static readonly int COLS = 100;
-  private static readonly int ROWS = 100;
+  public static readonly int COLS = 100;
+  public static readonly int ROWS = 100;
   private static readonly int EQUAL_NEIGHBORS = 4;
   private static readonly int SMOOTH_EPOCHS = 5;
   private static readonly int WALL = 1;

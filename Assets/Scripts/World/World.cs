@@ -8,7 +8,7 @@ using UnityEngine;
 public class World : MonoBehaviour
 {
 	public static readonly int WORLD_SIZE = GameState.DAYS_TO_WIN;
-	public static readonly float NODE_SPACING = 100f;
+	public static readonly float NODE_SPACING = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
 	public static List<GameObject> nodes {get; private set;}
 	private GameObject startNode;
 	private Transform trans;
@@ -83,7 +83,7 @@ public class World : MonoBehaviour
 			node.name = "Node" + i;
 			node.GetComponent<WorldNode>().setNodeID(i);
 			nodes.Add(node);
-			node.GetComponent<Transform>().position = new Vector2(i*NODE_SPACING, i*NODE_SPACING);
+			node.GetComponent<Transform>().position = new Vector2(i*NODE_SPACING, 0f);
 		}
 	}
 }
