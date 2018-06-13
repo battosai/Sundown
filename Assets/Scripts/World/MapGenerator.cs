@@ -17,10 +17,10 @@ public class MapGenerator : MonoBehaviour
   private static readonly int SMOOTH_EPOCHS = 5;
   private static readonly int WALL = 1;
   private static readonly int FLOOR = 0;
-  private static readonly int WALL_FILTER = 10;
-  private static readonly int FLOOR_FILTER = 10;
-  private static readonly int CORRIDOR_HEIGHT = 3;
-  private static readonly int CORRIDOR_WIDTH = 3;
+  private static readonly int WALL_FILTER = 30;
+  private static readonly int FLOOR_FILTER = 30;
+  // private static readonly int CORRIDOR_HEIGHT = 3;
+  // private static readonly int CORRIDOR_WIDTH = 3;
   private float randomizer = 0f;
   private string seed = "";
 

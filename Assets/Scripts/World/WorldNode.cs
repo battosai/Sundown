@@ -7,6 +7,9 @@ using UnityEngine;
 public class WorldNode : MonoBehaviour
 {
   public int nodeID {get; private set;}
+  public int width {get; private set;}
+  public int height {get; private set;}
+  public int[,] map {get; private set;}
   public bool isActive {get; private set;}
   public List<GameObject> collPool {get; private set;}
   public List<GameObject> wildlifePool {get; private set;}
@@ -14,9 +17,12 @@ public class WorldNode : MonoBehaviour
   public GameObject playerExit {get; private set;}
   public MeshFilter meshFilter {get; private set;}
 
-  public void setNodeID(int nodeID){this.nodeID = nodeID;}
-  public void addCollPool(GameObject coll){this.collPool.Add(coll);}
-  public void addWildlifePool(GameObject wildlife){this.wildlifePool.Add(wildlife);}
+  public void SetNodeID(int nodeID){this.nodeID = nodeID;}
+  public void SetWidth(int width){this.width = width;}
+  public void SetHeight(int height){this.height = height;}
+  public void SetMap(int[,] map){this.map = map;}
+  public void AddCollPool(GameObject coll){this.collPool.Add(coll);}
+  public void AddWildlifePool(GameObject wildlife){this.wildlifePool.Add(wildlife);}
 
   void Awake()
   {

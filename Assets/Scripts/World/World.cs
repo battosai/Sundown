@@ -37,6 +37,7 @@ public class World : MonoBehaviour
 		if(nodes.Count == 0)
 			generateWorldNodes();
 		generateMapMeshCollider();
+		generateBuildings();
 		foreach(GameObject node in nodes)
 			node.GetComponent<WorldNode>().ParentReset();
 	}
@@ -49,15 +50,39 @@ public class World : MonoBehaviour
 			break;
 		}
 	}
+	
+	//currently trying to see if a point is a wall or not
+	private void generateBuildings()
+	{
+		foreach(GameObject node in nodes)
+		{
+			WorldNode wnode = node.GetComponent<WorldNode>();
+			int row = Random.Range(0, MapGenerator.ROWS-1);
+			int col = Random.Range(0, MapGenerator.COLS-1);	
+			Vector2 point = new Vector2(wnode.nodeID*NODE_SPACING+col*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2, row*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2);
+			if(wnode.map[row, col] == 1)
+			{
+				Debug.Log("WALL");
+				Debug.DrawLine(new Vector2(point.x-5f, point.y), new Vector2(point.x+5f, point.y), Color.red, 100f);
+			}
+			else
+			{
+				Debug.Log("OPEN");
+				Debug.DrawLine(new Vector2(point.x-5f, point.y), new Vector2(point.x+5f, point.y), Color.green, 100f);
+			}
+		}
+	}
 
 	//rolls a new map, mesh, and pool of colliders for walls
 	private void generateMapMeshCollider()
 	{
 		foreach(GameObject node in nodes)
 		{
+			WorldNode wnode = node.GetComponent<WorldNode>();
 			int[,] map = mapGen.GenerateMap();
+			wnode.SetMap(map);
 			Mesh mesh = meshGen.GenerateMesh(map);
-			node.GetComponent<WorldNode>().meshFilter.mesh = mesh;
+			wnode.meshFilter.mesh = mesh;
 			collGen.GenerateCollider(node);
 		}
 	}
@@ -71,13 +96,13 @@ public class World : MonoBehaviour
 			return;
 		}
 		nodes.Clear();
-		startNode.GetComponent<WorldNode>().setNodeID(nodes.Count);
+		startNode.GetComponent<WorldNode>().SetNodeID(nodes.Count);
 		nodes.Add(startNode);
 		for(int i = 1; i < WORLD_SIZE; i++)
 		{
 			GameObject node = Instantiate(startNode, trans);
 			node.name = "Node" + i;
-			node.GetComponent<WorldNode>().setNodeID(i);
+			node.GetComponent<WorldNode>().SetNodeID(i);
 			nodes.Add(node);
 			node.GetComponent<Transform>().position = new Vector2(i*NODE_SPACING, 0f);
 		}
