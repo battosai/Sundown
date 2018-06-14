@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class ColliderGenerator : MonoBehaviour
 {
+	public GameObject collPrefab;
     private MapGenerator mapGen;
 
     public void Awake()
@@ -55,18 +56,22 @@ public class ColliderGenerator : MonoBehaviour
         WorldNode wnode = node.GetComponent<WorldNode>();
         foreach(List<Vector2> room in rooms)
         {
-            GameObject child = new GameObject("EdgeCollider");
-            child.layer = LayerMask.NameToLayer("PushBox");
-            child.AddComponent<Rigidbody2D>();
-            Rigidbody2D rb = child.GetComponent<Rigidbody2D>();
-            rb.constraints = RigidbodyConstraints2D.FreezeAll;
-            rb.gravityScale = 0f;
-            rb.angularDrag = 0f;
-            child.AddComponent<EdgeCollider2D>();
+            GameObject child = Instantiate(collPrefab, node.transform.Find("Colliders"));
             child.GetComponent<EdgeCollider2D>().points = room.ToArray();
-            child.transform.parent = node.transform;
             child.transform.localPosition = Vector2.zero;
             wnode.AddCollPool(child);
+            // GameObject child = new GameObject("EdgeCollider");
+            // child.layer = LayerMask.NameToLayer("PushBox");
+            // child.AddComponent<Rigidbody2D>();
+            // Rigidbody2D rb = child.GetComponent<Rigidbody2D>();
+            // rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            // rb.gravityScale = 0f;
+            // rb.angularDrag = 0f;
+            // child.AddComponent<EdgeCollider2D>();
+            // child.GetComponent<EdgeCollider2D>().points = room.ToArray();
+            // child.transform.parent = node.transform;
+            // child.transform.localPosition = Vector2.zero;
+            // wnode.AddCollPool(child);
         }
     }
 

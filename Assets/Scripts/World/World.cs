@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class World : MonoBehaviour
 {
+	public List<GameObject> wildlifePrefabs;
+
 	public static readonly int WORLD_SIZE = GameState.DAYS_TO_WIN;
 	public static readonly float NODE_SPACING = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
 	public static List<GameObject> nodes {get; private set;}
@@ -37,7 +39,7 @@ public class World : MonoBehaviour
 		if(nodes.Count == 0)
 			generateWorldNodes();
 		generateMapMeshCollider();
-		generateBuildings();
+		generateWildlife();
 		foreach(GameObject node in nodes)
 			node.GetComponent<WorldNode>().ParentReset();
 	}
@@ -47,32 +49,25 @@ public class World : MonoBehaviour
 	{
 		foreach(GameObject node in nodes)
 		{
-			break;
+			WorldNode wnode = node.GetComponent<WorldNode>();
+			float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
+			float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
+			int row = Random.Range(0, MapGenerator.COLS-1);
+			int col = Random.Range(0, MapGenerator.ROWS-1);
+			float x = node.transform.position.x-mapWidth/2+col*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
+			float y = node.transform.position.y-mapHeight/2+row*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
+			Vector2 point = new Vector2(x, y); 
+			if(wnode.map[row, col] == MapGenerator.FLOOR)
+			{
+				// Debug.Log("OPEN");
+				// Debug.DrawLine(new Vector2(point.x-5f, point.y), new Vector2(point.x+5f, point.y), Color.green, 100f);
+				GameObject animal = Instantiate(wildlifePrefabs[1], node.transform.Find("Wildlife"));	
+				animal.transform.position = point;
+				wnode.AddWildlifePool(animal);
+			}
 		}
 	}
 	
-	//currently trying to see if a point is a wall or not
-	private void generateBuildings()
-	{
-		foreach(GameObject node in nodes)
-		{
-			WorldNode wnode = node.GetComponent<WorldNode>();
-			int row = Random.Range(0, MapGenerator.ROWS-1);
-			int col = Random.Range(0, MapGenerator.COLS-1);	
-			Vector2 point = new Vector2(wnode.nodeID*NODE_SPACING+col*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2, row*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2);
-			if(wnode.map[row, col] == 1)
-			{
-				Debug.Log("WALL");
-				Debug.DrawLine(new Vector2(point.x-5f, point.y), new Vector2(point.x+5f, point.y), Color.red, 100f);
-			}
-			else
-			{
-				Debug.Log("OPEN");
-				Debug.DrawLine(new Vector2(point.x-5f, point.y), new Vector2(point.x+5f, point.y), Color.green, 100f);
-			}
-		}
-	}
-
 	//rolls a new map, mesh, and pool of colliders for walls
 	private void generateMapMeshCollider()
 	{
