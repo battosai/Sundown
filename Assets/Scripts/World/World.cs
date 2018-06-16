@@ -119,6 +119,7 @@ public class World : MonoBehaviour
 	}
 
 	//returns a point in the node that is not a wall
+	//DOESNT SEEM TO BE ACCURATE STILL, DRAWLINES FOR ALL VALID POINTS!!!
 	private Vector2 getValidPoint(GameObject node)
 	{
 		WorldNode wnode = node.GetComponent<WorldNode>();
