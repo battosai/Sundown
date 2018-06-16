@@ -21,8 +21,7 @@ public class WorldNode : MonoBehaviour
   public void SetWidth(int width){this.width = width;}
   public void SetHeight(int height){this.height = height;}
   public void SetMap(int[,] map){this.map = map;}
-  public void AddCollPool(GameObject coll){this.collPool.Add(coll);}
-  public void AddWildlifePool(GameObject wildlife){this.wildlifePool.Add(wildlife);}
+  public void AddPoolObject(GameObject obj, List<GameObject> pool){pool.Add(obj);}
 
   void Awake()
   {

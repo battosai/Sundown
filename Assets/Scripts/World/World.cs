@@ -50,36 +50,35 @@ public class World : MonoBehaviour
 		foreach(GameObject node in nodes)
 		{
 			WorldNode wnode = node.GetComponent<WorldNode>();
-			int wildlifePoolSize = wnode.wildlifePool.Count;
-			int wildlifeCount = Random.Range(1, 10);
-			Debug.Log("adding "+wildlifeCount+" deer");
-			for(int i = 0; i < wildlifeCount; i++)
+			List<Vector2> points = new List<Vector2>();
+			//get list of valid wildlife spawn points
+			for(int i = 0; i < Random.Range(1, 10); i++)
 			{
-				float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
-				float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
-				int row = Random.Range(1, MapGenerator.COLS-2);
-				int col = Random.Range(1, MapGenerator.ROWS-2);
-				float x = node.transform.position.x-mapWidth/2+col*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
-				float y = node.transform.position.y-mapHeight/2+row*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
-				Vector2 point = new Vector2(x, y); 
-				if(wnode.map[row, col] == MapGenerator.FLOOR)
-				{
-					if(wildlifePoolSize == 0)
-					{
-						GameObject animal = Instantiate(wildlifePrefabs[1], node.transform.Find("Wildlife"));	
-						animal.transform.position = point;
-						wnode.AddWildlifePool(animal);
-						continue;
-					}
-					wnode.wildlifePool[0].transform.position = point;
-					wnode.wildlifePool[0].active = true;
-					wildlifePoolSize -= 1;
-					continue;
-				}
+				Vector2 point = getValidPoint(node);
+				points.Add(point);	
 			}
-			for(int i = 0; i < wildlifePoolSize-wildlifeCount; i++)
+			//use wildlife object pool or spawn new ones
+			for(int i = 0; i < wnode.wildlifePool.Count; i++)
 			{
-				wnode.wildlifePool[i+wildlifeCount-1].active = false;
+				if(points.Count == 0)
+				{
+					for(int j = i; j < wnode.wildlifePool.Count; j++)
+						wnode.wildlifePool[j].SetActive(false);
+					break;
+				}
+				Vector2 point = points[0];
+				wnode.wildlifePool[i].transform.position = point;
+				wnode.wildlifePool[i].SetActive(true);
+				points.Remove(point);
+			}
+			for(int i = 0; i < points.Count; i++)
+			{
+				Vector2 point = points[i];
+				GameObject animal = Instantiate(wildlifePrefabs[0], node.transform.Find("Wildlife"));
+				//do below when pool works for any wildlife prefab, right now will not change sprite
+				// GameObject animal = Instantiate(wildlifePrefabs[Random.Range(0, wildlifePrefabs.Count)], node.transform.Find("Wildlife"));
+				animal.transform.position = point;
+				wnode.AddPoolObject(animal, wnode.wildlifePool);
 			}
 		}
 	}
@@ -116,6 +115,26 @@ public class World : MonoBehaviour
 			node.GetComponent<WorldNode>().SetNodeID(i);
 			nodes.Add(node);
 			node.GetComponent<Transform>().position = new Vector2(i*NODE_SPACING, 0f);
+		}
+	}
+
+	//returns a point in the node that is not a wall
+	private Vector2 getValidPoint(GameObject node)
+	{
+		WorldNode wnode = node.GetComponent<WorldNode>();
+		while(true)
+		{
+			float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
+			float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
+			int row = Random.Range(1, MapGenerator.COLS-2);
+			int col = Random.Range(1, MapGenerator.ROWS-2);
+			if(wnode.map[row, col] == MapGenerator.FLOOR)
+			{
+				float x = node.transform.position.x-mapWidth/2+col*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
+				float y = node.transform.position.y-mapHeight/2+row*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
+				Debug.DrawLine(new Vector2(x-0.5f, y), new Vector2(x+0.5f, y), Color.cyan, 100f);
+				return new Vector2(x, y); 
+			}
 		}
 	}
 }
