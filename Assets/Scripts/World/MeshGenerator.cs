@@ -9,6 +9,35 @@ public class MeshGenerator : MonoBehaviour
     private List<Vector3> vertices;
     private List<int> triangles;
 
+    // void OnDrawGizmos() {
+    //     if (squareGrid != null) {
+    //         for (int x = 0; x < squareGrid.squares.GetLength(0); x ++) {
+    //             for (int y = 0; y < squareGrid.squares.GetLength(1); y ++) {
+
+    //                 Gizmos.color = (squareGrid.squares[x,y].topLeft.active)?Color.black:Color.white;
+    //                 Gizmos.DrawCube(squareGrid.squares[x,y].topLeft.position, Vector3.one * .4f);
+
+    //                 Gizmos.color = (squareGrid.squares[x,y].topRight.active)?Color.black:Color.white;
+    //                 Gizmos.DrawCube(squareGrid.squares[x,y].topRight.position, Vector3.one * .4f);
+
+    //                 Gizmos.color = (squareGrid.squares[x,y].bottomRight.active)?Color.black:Color.white;
+    //                 Gizmos.DrawCube(squareGrid.squares[x,y].bottomRight.position, Vector3.one * .4f);
+
+    //                 Gizmos.color = (squareGrid.squares[x,y].bottomLeft.active)?Color.black:Color.white;
+    //                 Gizmos.DrawCube(squareGrid.squares[x,y].bottomLeft.position, Vector3.one * .4f);
+
+
+    //                 Gizmos.color = Color.grey;
+    //                 Gizmos.DrawCube(squareGrid.squares[x,y].centerTop.position, Vector3.one * .15f);
+    //                 Gizmos.DrawCube(squareGrid.squares[x,y].centerRight.position, Vector3.one * .15f);
+    //                 Gizmos.DrawCube(squareGrid.squares[x,y].centerBottom.position, Vector3.one * .15f);
+    //                 Gizmos.DrawCube(squareGrid.squares[x,y].centerLeft.position, Vector3.one * .15f);
+
+    //             }
+    //         }
+    //     }
+    // }
+
     public Mesh GenerateMesh(int[,] map)
     {
         squareGrid = new SquareGrid(map);
@@ -147,7 +176,7 @@ public class MeshGenerator : MonoBehaviour
             {
                 for(int j = 0; j < nodeCols; j++)
                 {
-                    Vector3 position = new Vector3(-mapWidth/2 + j*SQUARE_SIZE + SQUARE_SIZE/2, mapHeight/2 - i*SQUARE_SIZE - SQUARE_SIZE/2, 0);
+                    Vector3 position = new Vector3(-mapWidth/2 + j*SQUARE_SIZE + SQUARE_SIZE/2, -mapHeight/2 + i*SQUARE_SIZE + SQUARE_SIZE/2, 0);
                     controlNodes[i, j] = new ControlNode(position, map[i, j] == 1);
                 }
             }
@@ -158,7 +187,7 @@ public class MeshGenerator : MonoBehaviour
             {
                 for(int j = 0; j < cols; j++)
                 {
-                    squares[i, j] = new Square(controlNodes[i, j], controlNodes[i, j+1], controlNodes[i+1, j+1], controlNodes[i+1, j]);
+                    squares[i, j] = new Square(controlNodes[i+1, j], controlNodes[i+1, j+1], controlNodes[i, j+1], controlNodes[i, j]);
                 }
             }
         }

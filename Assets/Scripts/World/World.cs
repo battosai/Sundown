@@ -28,18 +28,34 @@ public class World : MonoBehaviour
 		collGen = GetComponent<ColliderGenerator>();
 	}
 	
-	public void Start()
+	public void DisplayFloor()
 	{
-
+		foreach(GameObject node in nodes)
+		{
+			WorldNode wnode = node.GetComponent<WorldNode>();
+			for(int i = 0; i < MapGenerator.ROWS; i++)
+			{
+				for(int j = 0; j < MapGenerator.COLS; j++)
+				{
+					if(wnode.map[i, j] == MapGenerator.FLOOR)
+					{
+						float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
+						float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
+						float x = node.transform.position.x-mapWidth/2+j*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
+						float y = node.transform.position.y-mapHeight/2+i*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
+						Debug.DrawLine(new Vector2(x-0.5f, y), new Vector2(x+0.5f, y), Color.cyan, 100f);
+					}
+				}
+			}
+		}
 	}
-
 	//called by GameState in masterreset
 	public void Reset()
 	{
 		if(nodes.Count == 0)
 			generateWorldNodes();
 		generateMapMeshCollider();
-		generateWildlife();
+		// generateWildlife();
 		foreach(GameObject node in nodes)
 			node.GetComponent<WorldNode>().ParentReset();
 	}
@@ -95,6 +111,7 @@ public class World : MonoBehaviour
 			wnode.meshFilter.mesh = mesh;
 			collGen.GenerateCollider(node);
 		}
+		DisplayFloor();
 	}
 
 	//should only be used once at the start to instantiate the nodes
@@ -110,6 +127,7 @@ public class World : MonoBehaviour
 		nodes.Add(startNode);
 		for(int i = 1; i < WORLD_SIZE; i++)
 		{
+			// break; //temp
 			GameObject node = Instantiate(startNode, trans);
 			node.name = "Node" + i;
 			node.GetComponent<WorldNode>().SetNodeID(i);
