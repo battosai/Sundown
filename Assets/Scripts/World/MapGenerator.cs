@@ -13,8 +13,8 @@ public class MapGenerator : MonoBehaviour
   public bool isRandomSeed;
   public static readonly int FLOOR = 0;
   public static readonly int WALL = 1;
-  public static readonly int COLS = 50;
-  public static readonly int ROWS = 50;
+  public static readonly int COLS = 100;
+  public static readonly int ROWS = 100;
   private static readonly int EQUAL_NEIGHBORS = 4;
   private static readonly int SMOOTH_EPOCHS = 5;
   private static readonly int WALL_FILTER = 30;

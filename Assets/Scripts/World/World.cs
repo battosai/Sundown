@@ -42,7 +42,7 @@ public class World : MonoBehaviour
 						float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
 						float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
 						float x = node.transform.position.x-mapWidth/2+j*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
-						float y = node.transform.position.y-mapHeight/2+i*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
+						float y = node.transform.position.y+mapHeight/2-i*MeshGenerator.SQUARE_SIZE-MeshGenerator.SQUARE_SIZE/2;
 						Debug.DrawLine(new Vector2(x-0.5f, y), new Vector2(x+0.5f, y), Color.cyan, 100f);
 					}
 				}
@@ -55,7 +55,7 @@ public class World : MonoBehaviour
 		if(nodes.Count == 0)
 			generateWorldNodes();
 		generateMapMeshCollider();
-		// generateWildlife();
+		generateWildlife();
 		foreach(GameObject node in nodes)
 			node.GetComponent<WorldNode>().ParentReset();
 	}
@@ -68,7 +68,8 @@ public class World : MonoBehaviour
 			WorldNode wnode = node.GetComponent<WorldNode>();
 			List<Vector2> points = new List<Vector2>();
 			//get list of valid wildlife spawn points
-			for(int i = 0; i < Random.Range(1, 10); i++)
+			int population = Random.Range(0, 10);
+			for(int i = 0; i < population; i++)
 			{
 				Vector2 point = getValidPoint(node);
 				points.Add(point);	
@@ -111,7 +112,7 @@ public class World : MonoBehaviour
 			wnode.meshFilter.mesh = mesh;
 			collGen.GenerateCollider(node);
 		}
-		DisplayFloor();
+		// DisplayFloor();
 	}
 
 	//should only be used once at the start to instantiate the nodes
@@ -127,7 +128,6 @@ public class World : MonoBehaviour
 		nodes.Add(startNode);
 		for(int i = 1; i < WORLD_SIZE; i++)
 		{
-			// break; //temp
 			GameObject node = Instantiate(startNode, trans);
 			node.name = "Node" + i;
 			node.GetComponent<WorldNode>().SetNodeID(i);
@@ -150,8 +150,7 @@ public class World : MonoBehaviour
 			if(wnode.map[row, col] == MapGenerator.FLOOR)
 			{
 				float x = node.transform.position.x-mapWidth/2+col*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
-				float y = node.transform.position.y-mapHeight/2+row*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
-				Debug.DrawLine(new Vector2(x-0.5f, y), new Vector2(x+0.5f, y), Color.cyan, 100f);
+				float y = node.transform.position.y+mapHeight/2-row*MeshGenerator.SQUARE_SIZE-MeshGenerator.SQUARE_SIZE/2;
 				return new Vector2(x, y); 
 			}
 		}

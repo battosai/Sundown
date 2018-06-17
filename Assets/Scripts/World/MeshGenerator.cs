@@ -176,7 +176,7 @@ public class MeshGenerator : MonoBehaviour
             {
                 for(int j = 0; j < nodeCols; j++)
                 {
-                    Vector3 position = new Vector3(-mapWidth/2 + j*SQUARE_SIZE + SQUARE_SIZE/2, -mapHeight/2 + i*SQUARE_SIZE + SQUARE_SIZE/2, 0);
+                    Vector3 position = new Vector3(-mapWidth/2 + j*SQUARE_SIZE + SQUARE_SIZE/2, mapHeight/2 - i*SQUARE_SIZE - SQUARE_SIZE/2, 0);
                     controlNodes[i, j] = new ControlNode(position, map[i, j] == 1);
                 }
             }
@@ -187,7 +187,7 @@ public class MeshGenerator : MonoBehaviour
             {
                 for(int j = 0; j < cols; j++)
                 {
-                    squares[i, j] = new Square(controlNodes[i+1, j], controlNodes[i+1, j+1], controlNodes[i, j+1], controlNodes[i, j]);
+                    squares[i, j] = new Square(controlNodes[i, j], controlNodes[i, j+1], controlNodes[i+1, j+1], controlNodes[i+1, j]);
                 }
             }
         }
