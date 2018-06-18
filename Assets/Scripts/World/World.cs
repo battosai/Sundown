@@ -81,6 +81,7 @@ public class World : MonoBehaviour
 				{
 					for(int j = i; j < wnode.wildlifePool.Count; j++)
 						wnode.wildlifePool[j].SetActive(false);
+					Debug.Log("wat");
 					break;
 				}
 				Vector2 point = points[0];
@@ -91,7 +92,7 @@ public class World : MonoBehaviour
 			for(int i = 0; i < points.Count; i++)
 			{
 				Vector2 point = points[i];
-				GameObject animal = Instantiate(wildlifePrefabs[0], node.transform.Find("Wildlife"));
+				GameObject animal = Instantiate(wildlifePrefabs[1], node.transform.Find("Wildlife"));
 				//do below when pool works for any wildlife prefab, right now will not change sprite
 				// GameObject animal = Instantiate(wildlifePrefabs[Random.Range(0, wildlifePrefabs.Count)], node.transform.Find("Wildlife"));
 				animal.transform.position = point;
@@ -112,7 +113,6 @@ public class World : MonoBehaviour
 			wnode.meshFilter.mesh = mesh;
 			collGen.GenerateCollider(node);
 		}
-		// DisplayFloor();
 	}
 
 	//should only be used once at the start to instantiate the nodes
@@ -137,7 +137,6 @@ public class World : MonoBehaviour
 	}
 
 	//returns a point in the node that is not a wall
-	//DOESNT SEEM TO BE ACCURATE STILL, DRAWLINES FOR ALL VALID POINTS!!!
 	private Vector2 getValidPoint(GameObject node)
 	{
 		WorldNode wnode = node.GetComponent<WorldNode>();
@@ -149,6 +148,7 @@ public class World : MonoBehaviour
 			int col = Random.Range(1, MapGenerator.ROWS-2);
 			if(wnode.map[row, col] == MapGenerator.FLOOR)
 			{
+				//row,col convert to x,y has to be treating row,col as x,y
 				float x = node.transform.position.x-mapWidth/2+col*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
 				float y = node.transform.position.y+mapHeight/2-row*MeshGenerator.SQUARE_SIZE-MeshGenerator.SQUARE_SIZE/2;
 				return new Vector2(x, y); 

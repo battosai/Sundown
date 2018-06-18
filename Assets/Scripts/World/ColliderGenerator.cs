@@ -50,7 +50,6 @@ public class ColliderGenerator : MonoBehaviour
     }
 
     //creates edge colliders for each room attached to a child object of the respective node
-    //used if node has no unused colliders in pool, add created ones to pool
     private void createColliders(List<List<Vector2>> rooms, GameObject node)
     {
         WorldNode wnode = node.GetComponent<WorldNode>();
@@ -67,7 +66,6 @@ public class ColliderGenerator : MonoBehaviour
     private List<List<Vector2>> parseEdges(List<Edge> edges)
     {
         List<List<Vector2>> rooms = new List<List<Vector2>>();
-        List<Edge> used = new List<Edge>();
         while(edges.Count > 0)
         {
             bool connected = false;
