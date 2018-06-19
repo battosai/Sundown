@@ -7,8 +7,15 @@ public class Wildlife : CharacterClass
     public readonly int nutrition = 5;
     public bool isHidden {get; private set;}
     private enum State {CALM, ALERTED, DEAD};
+    private PlayerClass player;
     private State state;
     private float time;
+
+    public void Awake()
+    {
+        base.Awake();
+        player = GameObject.Find("Player").GetComponent<PlayerClass>();
+    }
 
     public void Start()
     {
@@ -31,6 +38,8 @@ public class Wildlife : CharacterClass
                 }
                 break;
             case State.DEAD:
+                player.SetFood(player.food+nutrition);
+                Debug.Log("Player now has "+player.food+" food");
                 this.gameObject.SetActive(false);
                 break;
             default:

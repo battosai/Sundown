@@ -10,11 +10,13 @@ public class PlayerClass : CharacterClass
 	public bool isHuman {get; private set;}
 	public bool isFed {get; private set;}
 	public int strength {get; private set;}
+	public int food {get; private set;}
 	public PlayerInput inputs {get; private set;}
 	public PlayerActions actions {get; private set;}
 	public Collider2D pushBox {get; private set;}
-	private int food;
 	private World world;
+
+	public void SetFood(int food){this.food = food;}
 
 	public override void Awake()
 	{
@@ -28,8 +30,6 @@ public class PlayerClass : CharacterClass
 	// Update is called once per frame
 	void Update()
 	{
-		//check to see if player is clicking at exit to go to next worldnode
-
 	}
 
 	//called by gamestate in masterreset
@@ -41,13 +41,5 @@ public class PlayerClass : CharacterClass
 		isHuman = true;
 		isFed = false;
 		strength = 5;
-	}
-
-	public void AddFood(int value)
-	{
-		food += value;
-		if(food >= DAILY_FOOD_REQUIREMENT)
-			isFed = true;
-		Debug.Log("Player has "+food+" food!");
 	}
 }

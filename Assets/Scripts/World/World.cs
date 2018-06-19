@@ -100,6 +100,17 @@ public class World : MonoBehaviour
 			}
 		}
 	}
+
+	//use reservedMap to determine where buildings and future things are placed
+	private void generateBuildings()
+	{
+		foreach(GameObject node in nodes)
+		{
+			WorldNode wnode = node.GetComponent<WorldNode>();
+			int[,] reservedMap = new int[MapGenerator.ROWS, MapGenerator.COLS];
+			reservedMap = wnode.map;
+		}
+	}
 	
 	//rolls a new map, mesh, and pool of colliders for walls
 	private void generateMapMeshCollider()

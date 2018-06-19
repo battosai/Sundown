@@ -78,10 +78,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	{
 		Debug.Log("You just got slapped for 5hp bitch!");
 		Hurtbox hurtbox = other.GetComponent<Hurtbox>();	
-		Wildlife wildlife = other.GetComponent<Wildlife>();	
 		hurtbox.Hurt(player.strength);
-		if(wildlife != null)
-			player.AddFood(wildlife.nutrition);
 	}
 
 	//implement the actual functionality of traveling
