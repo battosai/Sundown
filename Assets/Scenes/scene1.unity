@@ -443,7 +443,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 823036379}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &823036378
 GameObject:
@@ -478,6 +478,7 @@ Transform:
   - {fileID: 346538532}
   - {fileID: 207487492}
   - {fileID: 289811371}
+  - {fileID: 1297216121}
   - {fileID: 548795185}
   m_Father: {fileID: 1516122079}
   m_RootOrder: 0
@@ -725,6 +726,34 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 6.5779133, y: 2.0629501}
   m_EdgeRadius: 0
+--- !u!1 &1297216120
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1297216121}
+  m_Layer: 0
+  m_Name: Buildings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1297216121
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1297216120}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 823036379}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1516122078
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,6 +798,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6aa28bfd7de44a0bb074f7f14edbfaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingPrefabs:
+  - {fileID: 1396995122327182, guid: a115f4920b359c248a60811c9da2271d, type: 2}
   wildlifePrefabs:
   - {fileID: 1210274243789370, guid: 625603c49686fad4e8c9a026191596df, type: 2}
   - {fileID: 1885917050711660, guid: 3be11939e233fff4a84c1d659fad4c38, type: 2}

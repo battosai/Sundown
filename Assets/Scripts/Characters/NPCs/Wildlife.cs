@@ -19,10 +19,9 @@ public class Wildlife : CharacterClass
 
     public void Start()
     {
-        SetHealth(5);
-        time = Time.time;
-        state = State.CALM;
+       Reset();
     }
+
 
     public void Update()
     {
@@ -59,4 +58,12 @@ public class Wildlife : CharacterClass
         else
             rb.velocity = Vector2.zero;
     } 
+
+    public override void Reset()
+    {
+        base.Reset();
+        SetHealth(5);
+        time = Time.time;
+        state = State.CALM;
+    }
 }

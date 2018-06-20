@@ -10,10 +10,10 @@ public class WorldNode : MonoBehaviour
   public int width {get; private set;}
   public int height {get; private set;}
   public int[,] map {get; private set;}
-  public int[,] reservedMap {get; private set;}
   public bool isActive {get; private set;}
   public List<GameObject> collPool {get; private set;}
   public List<GameObject> wildlifePool {get; private set;}
+  public List<GameObject> buildingPool {get; private set;}
   public GameObject playerSpawn {get; private set;}
   public GameObject playerExit {get; private set;}
   public MeshFilter meshFilter {get; private set;}
@@ -22,7 +22,6 @@ public class WorldNode : MonoBehaviour
   public void SetWidth(int width){this.width = width;}
   public void SetHeight(int height){this.height = height;}
   public void SetMap(int[,] map){this.map = map;}
-  public void SetReservedMap(int[,] reservedMap){this.reservedMap = reservedMap;}
   public void AddPoolObject(GameObject obj, List<GameObject> pool){pool.Add(obj);}
 
   void Awake()
@@ -32,6 +31,7 @@ public class WorldNode : MonoBehaviour
     meshFilter = GetComponent<MeshFilter>();
     collPool = new List<GameObject>();
     wildlifePool = new List<GameObject>();
+    buildingPool = new List<GameObject>();
   }
 
 	// Update is called once per frame

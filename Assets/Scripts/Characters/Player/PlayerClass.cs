@@ -41,5 +41,6 @@ public class PlayerClass : CharacterClass
 		isHuman = true;
 		isFed = false;
 		strength = 5;
+		food = 0;
 	}
 }

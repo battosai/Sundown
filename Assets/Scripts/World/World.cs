@@ -7,8 +7,10 @@ using UnityEngine;
 
 public class World : MonoBehaviour
 {
+	public List<GameObject> buildingPrefabs;
 	public List<GameObject> wildlifePrefabs;
 
+	public static readonly int RESERVED = 2;
 	public static readonly int WORLD_SIZE = GameState.DAYS_TO_WIN;
 	public static readonly float NODE_SPACING = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
 	public static List<GameObject> nodes {get; private set;}
@@ -55,6 +57,7 @@ public class World : MonoBehaviour
 		if(nodes.Count == 0)
 			generateWorldNodes();
 		generateMapMeshCollider();
+		generateBuildings();
 		generateWildlife();
 		foreach(GameObject node in nodes)
 			node.GetComponent<WorldNode>().ParentReset();
@@ -68,8 +71,8 @@ public class World : MonoBehaviour
 			WorldNode wnode = node.GetComponent<WorldNode>();
 			List<Vector2> points = new List<Vector2>();
 			//get list of valid wildlife spawn points
-			int population = Random.Range(0, 10);
-			for(int i = 0; i < population; i++)
+			int count = Random.Range(0, 10);
+			for(int i = 0; i < count; i++)
 			{
 				Vector2 point = getValidPoint(node);
 				points.Add(point);	
@@ -81,12 +84,12 @@ public class World : MonoBehaviour
 				{
 					for(int j = i; j < wnode.wildlifePool.Count; j++)
 						wnode.wildlifePool[j].SetActive(false);
-					Debug.Log("wat");
 					break;
 				}
 				Vector2 point = points[0];
 				wnode.wildlifePool[i].transform.position = point;
 				wnode.wildlifePool[i].SetActive(true);
+				wnode.wildlifePool[i].GetComponent<Wildlife>().Reset();
 				points.Remove(point);
 			}
 			for(int i = 0; i < points.Count; i++)
@@ -107,8 +110,35 @@ public class World : MonoBehaviour
 		foreach(GameObject node in nodes)
 		{
 			WorldNode wnode = node.GetComponent<WorldNode>();
-			int[,] reservedMap = new int[MapGenerator.ROWS, MapGenerator.COLS];
-			reservedMap = wnode.map;
+			List<Vector2> points = new List<Vector2>();
+			//get list of valid wildlife spawn points
+			int count = Random.Range(0, 5);
+			for(int i = 0; i < count; i++)
+			{
+				Vector2 point = getValidPoint(node);
+				points.Add(point);	
+			}
+			//use wildlife object pool or spawn new ones
+			for(int i = 0; i < wnode.buildingPool.Count; i++)
+			{
+				if(points.Count == 0)
+				{
+					for(int j = i; j < wnode.buildingPool.Count; j++)
+						wnode.buildingPool[j].SetActive(false);
+					break;
+				}
+				Vector2 point = points[0];
+				wnode.buildingPool[i].transform.position = point;
+				wnode.buildingPool[i].SetActive(true);
+				points.Remove(point);
+			}
+			for(int i = 0; i < points.Count; i++)
+			{
+				Vector2 point = points[i];
+				GameObject building = Instantiate(buildingPrefabs[0], node.transform.Find("Buildings"));
+				building.transform.position = point;
+				wnode.AddPoolObject(building, wnode.buildingPool);
+			}
 		}
 	}
 	
@@ -159,11 +189,18 @@ public class World : MonoBehaviour
 			int col = Random.Range(1, MapGenerator.ROWS-2);
 			if(wnode.map[row, col] == MapGenerator.FLOOR)
 			{
+				reserveMapPoint(node, row, col);
 				//row,col convert to x,y has to be treating row,col as x,y
 				float x = node.transform.position.x-mapWidth/2+col*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
 				float y = node.transform.position.y+mapHeight/2-row*MeshGenerator.SQUARE_SIZE-MeshGenerator.SQUARE_SIZE/2;
 				return new Vector2(x, y); 
 			}
 		}
+	}
+
+	private void reserveMapPoint(GameObject node, int row, int col)
+	{
+		WorldNode wnode = node.GetComponent<WorldNode>();
+		wnode.map[row, col] = RESERVED;
 	}
 }
