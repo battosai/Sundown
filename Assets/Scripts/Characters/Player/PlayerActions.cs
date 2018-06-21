@@ -38,8 +38,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 		switch(action)
 		{
 			case Action.TRAVEL:
-				if(other.gameObject.name == "PlayerExit")
-					travel();
+				travel(other);
 				break;
 			case Action.ATTACK:
 				attack(other);
@@ -53,7 +52,6 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 
 	public void AttackCheck()
 	{
-		Debug.Log("checking for attack");
 		hitbox.mask.useTriggers = false;
 		hitbox.SetAction(Action.ATTACK);
 		hitbox.SetOffset(ATTACK[0]);
@@ -66,7 +64,6 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	//triggers hitbox to check for travel colliders
 	public void TravelCheck()
 	{
-		Debug.Log("checking for travel");
 		hitbox.mask.useTriggers = true;
 		hitbox.SetAction(Action.TRAVEL);
 		hitbox.SetOffset(TRAVEL[0]);
@@ -78,22 +75,39 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 
 	private void attack(Collider2D other)
 	{
-		Debug.Log("You just got slapped for 5hp bitch!");
 		Hurtbox hurtbox = other.GetComponent<Hurtbox>();	
 		hurtbox.Hurt(player.strength);
 	}
 
 	//implement the actual functionality of traveling
-	private void travel()
+	private void travel(Collider2D other)
 	{
-		Debug.Log("Traveling!");
-		World.nodes[player.nodeID].SetActive(false);
-		Debug.Log("deactivating node "+player.nodeID);
-		player.SetNodeID(player.nodeID+1);
-		Debug.Log("activating node "+player.nodeID);
-		World.nodes[player.nodeID].SetActive(true);
-		GameObject node = World.nodes[player.nodeID];
-		GameObject spawn = node.GetComponent<WorldNode>().playerSpawn;
-		player.trans.position = spawn.transform.position;
+		switch(other.gameObject.name)
+		{
+			case "PlayerExit":
+				World.nodes[player.nodeID].SetActive(false);
+				player.SetNodeID(player.nodeID+1);
+				World.nodes[player.nodeID].SetActive(true);
+				GameObject node = World.nodes[player.nodeID];
+				GameObject spawn = node.GetComponent<WorldNode>().playerSpawn;
+				player.trans.position = spawn.transform.position;
+				break;
+			case "BuildingEntrance":
+				//deactivate current node BUT THE BUILDING IS UNDER THIS NODE. FK. and activate building interior
+				other.transform.parent.GetComponent<Building>().Load();
+				World.activeBuilding.SetActive(true);
+				World.nodes[player.nodeID].SetActive(false);
+				Debug.Log("Entered building in "+other.transform.parent.parent.parent.gameObject.name);
+				break;
+			case "BuildingExit":
+				//deactivate building interrior and reactivate node
+				other.transform.parent.GetComponent<Building>().Store();
+				World.nodes[player.nodeID].SetActive(true);
+				World.activeBuilding.SetActive(false);
+				Debug.Log("Exit building in "+other.transform.parent.parent.parent.gameObject.name);
+				break;	
+			default:
+				break;
+		}
 	}
 }

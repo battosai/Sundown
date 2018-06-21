@@ -14,6 +14,7 @@ public class World : MonoBehaviour
 	public static readonly int WORLD_SIZE = GameState.DAYS_TO_WIN;
 	public static readonly float NODE_SPACING = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
 	public static List<GameObject> nodes {get; private set;}
+	public static GameObject activeBuilding {get; private set;}
 	private GameObject startNode;
 	private Transform trans;
 	private MapGenerator mapGen;
@@ -23,11 +24,12 @@ public class World : MonoBehaviour
 	public void Awake()
 	{
 		startNode = GameObject.Find("Node0");
+		activeBuilding = GameObject.Find("ActiveBuilding");
 		trans = GetComponent<Transform>();
-		nodes = new List<GameObject>();
 		mapGen = GetComponent<MapGenerator>();
 		meshGen = GetComponent<MeshGenerator>();
 		collGen = GetComponent<ColliderGenerator>();
+		nodes = new List<GameObject>();
 	}
 	
 	public void DisplayFloor()
@@ -108,6 +110,7 @@ public class World : MonoBehaviour
 	//use reservedMap to determine where buildings and future things are placed
 	private void generateBuildings()
 	{
+		// activeBuilding.SetActive(false);
 		foreach(GameObject node in nodes)
 		{
 			WorldNode wnode = node.GetComponent<WorldNode>();
