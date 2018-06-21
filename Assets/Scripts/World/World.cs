@@ -56,6 +56,7 @@ public class World : MonoBehaviour
 	{
 		if(nodes.Count == 0)
 			generateWorldNodes();
+		resetWorldNodes();
 		generateMapMeshCollider();
 		generateBuildings();
 		generateWildlife();
@@ -154,6 +155,13 @@ public class World : MonoBehaviour
 			wnode.meshFilter.mesh = mesh;
 			collGen.GenerateCollider(node);
 		}
+	}
+
+	//deactivates all world nodes
+	private void resetWorldNodes()
+	{
+		foreach(GameObject node in nodes)
+			node.SetActive(false);
 	}
 
 	//should only be used once at the start to instantiate the nodes

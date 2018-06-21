@@ -12,12 +12,14 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	private PlayerClass player;
 	private PlayerInput input;
 	private Hitbox hitbox;
+	private World world;
 
 	void Awake()
 	{
 		player = GetComponent<PlayerClass>();
 		input = GetComponent<PlayerInput>();
 		hitbox = GetComponent<Hitbox>();
+		world = GameObject.Find("World").GetComponent<World>();
 	}
 
 	// Use this for initialization
@@ -85,7 +87,11 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	private void travel()
 	{
 		Debug.Log("Traveling!");
+		World.nodes[player.nodeID].SetActive(false);
+		Debug.Log("deactivating node "+player.nodeID);
 		player.SetNodeID(player.nodeID+1);
+		Debug.Log("activating node "+player.nodeID);
+		World.nodes[player.nodeID].SetActive(true);
 		GameObject node = World.nodes[player.nodeID];
 		GameObject spawn = node.GetComponent<WorldNode>().playerSpawn;
 		player.trans.position = spawn.transform.position;

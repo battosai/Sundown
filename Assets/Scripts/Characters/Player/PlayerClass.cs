@@ -36,7 +36,9 @@ public class PlayerClass : CharacterClass
 	public override void Reset()
 	{
 		base.Reset();
-		base.SetNodeID(0);
+		SetNodeID(0);
+		World.nodes[nodeID].SetActive(true);
+		Debug.Log(nodeID+" is active");
 		trans.position = World.nodes[nodeID].GetComponent<WorldNode>().playerSpawn.transform.position;
 		isHuman = true;
 		isFed = false;
