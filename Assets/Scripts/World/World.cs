@@ -110,7 +110,7 @@ public class World : MonoBehaviour
 	//use reservedMap to determine where buildings and future things are placed
 	private void generateBuildings()
 	{
-		// activeBuilding.SetActive(false);
+		activeBuilding.SetActive(false);
 		foreach(GameObject node in nodes)
 		{
 			WorldNode wnode = node.GetComponent<WorldNode>();

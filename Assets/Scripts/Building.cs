@@ -19,17 +19,22 @@ public class Building : MonoBehaviour
     {
     }
 
-    public void Load()
+    //load into active building
+    public void Load(PlayerClass player)
     {
         Interior interior = World.activeBuilding.GetComponent<Interior>();
         interior.SetObjects(objects);
-       //load into activeBuilding 
+        interior.SetBuilding(this);
+        interior.SavePlayerPos(player.trans.position);
+        player.trans.position = interior.spawnPos;
     }
 
-    public void Store()
+    //remove from active building
+    public void Store(PlayerClass player)
     {
         Interior interior = World.activeBuilding.GetComponent<Interior>();
         interior.SetObjects(null);
-        //take from activeBuilding
+        interior.SetBuilding(null);
+        player.trans.position = interior.savedPos;
     }
 }

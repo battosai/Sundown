@@ -93,18 +93,17 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 				player.trans.position = spawn.transform.position;
 				break;
 			case "BuildingEntrance":
-				//deactivate current node BUT THE BUILDING IS UNDER THIS NODE. FK. and activate building interior
-				other.transform.parent.GetComponent<Building>().Load();
+				Building building = other.transform.parent.GetComponent<Building>();
+				building.Load(player);
 				World.activeBuilding.SetActive(true);
 				World.nodes[player.nodeID].SetActive(false);
 				Debug.Log("Entered building in "+other.transform.parent.parent.parent.gameObject.name);
 				break;
 			case "BuildingExit":
-				//deactivate building interrior and reactivate node
-				other.transform.parent.GetComponent<Building>().Store();
+				Interior interior = other.transform.parent.GetComponent<Interior>();
+				interior.building.Store(player);
 				World.nodes[player.nodeID].SetActive(true);
 				World.activeBuilding.SetActive(false);
-				Debug.Log("Exit building in "+other.transform.parent.parent.parent.gameObject.name);
 				break;	
 			default:
 				break;

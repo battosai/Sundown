@@ -14,7 +14,6 @@ public class PlayerClass : CharacterClass
 	public PlayerInput inputs {get; private set;}
 	public PlayerActions actions {get; private set;}
 	public Collider2D pushBox {get; private set;}
-	private World world;
 
 	public void SetFood(int food){this.food = food;}
 
@@ -24,7 +23,6 @@ public class PlayerClass : CharacterClass
 		inputs = GetComponent<PlayerInput>();
 		actions = GetComponent<PlayerActions>();
 		pushBox = GetComponent<Collider2D>();
-		world = GameObject.Find("World").GetComponent<World>();
 	}
 
 	// Update is called once per frame
