@@ -11,7 +11,7 @@ public class Wildlife : CharacterClass
     private State state;
     private float time;
 
-    public override void Awake()
+    public void Init()
     {
         base.Awake();
         player = GameObject.Find("Player").GetComponent<PlayerClass>();

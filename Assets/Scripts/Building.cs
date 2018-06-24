@@ -15,7 +15,7 @@ public class Building : MonoBehaviour
 
     public void SetNodeID(int nodeID){this.nodeID = nodeID;}
 
-    public void Awake()
+    public void Init()
     {
         objects = new List<GameObject>();
         trans = GetComponent<Transform>();
@@ -55,8 +55,7 @@ public class Building : MonoBehaviour
     //sets position so that floor position is at target
 	public Vector2 SetFloorPosition(Vector2 target)
 	{
-		// float yOffset = rend.bounds.size.y/2;//this line will fail bc awake is not called in wildlife etc. and rend will be null
-		float yOffset = transform.position.y-floorHeight;
+		float yOffset = rend.bounds.size.y/2;
 		return new Vector2(target.x, target.y+yOffset);
 	}
 

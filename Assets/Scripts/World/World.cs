@@ -92,7 +92,7 @@ public class World : MonoBehaviour
 				Vector2 point = points[0];
 				GameObject poolObject = wnode.wildlifePool[i];
 				Wildlife wildlife = poolObject.GetComponent<Wildlife>();
-				poolObject.transform.position = point;//wildlife.setFloorPosition(point);
+				poolObject.transform.position = wildlife.SetFloorPosition(point);
 				poolObject.SetActive(true);
 				wildlife.Reset();
 				points.Remove(point);
@@ -101,9 +101,8 @@ public class World : MonoBehaviour
 			{
 				Vector2 point = points[i];
 				GameObject animal = Instantiate(wildlifePrefabs[1], node.transform.Find("Wildlife"));
-				//do below when pool works for any wildlife prefab, right now will not change sprite
-				// GameObject animal = Instantiate(wildlifePrefabs[Random.Range(0, wildlifePrefabs.Count)], node.transform.Find("Wildlife"));
 				Wildlife wildlife = animal.GetComponent<Wildlife>();
+				wildlife.Init();
 				animal.transform.position = wildlife.SetFloorPosition(point);
 				wnode.AddPoolObject(animal, wnode.wildlifePool);
 			}
@@ -146,6 +145,7 @@ public class World : MonoBehaviour
 				Vector2 point = points[i];
 				GameObject obj = Instantiate(buildingPrefabs[0], node.transform.Find("Buildings"));
 				Building building = obj.GetComponent<Building>();
+				building.Init();
 				obj.transform.position = building.SetFloorPosition(point);
 				wnode.AddPoolObject(obj, wnode.buildingPool);
 			}
