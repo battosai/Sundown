@@ -14,8 +14,8 @@ public class Interior : MonoBehaviour
     private Dictionary<Size, Vector2[]> points = new Dictionary<Size, Vector2[]>
     {
         {Size.SMALL, new Vector2[] {new Vector2(-25f, -2.5f), new Vector2(25f, -2.5f), new Vector2(25f, 50f), new Vector2(-25f, 50f), new Vector2(-25f, -2.5f)}},
-        {Size.MEDIUM, new Vector2[] {new Vector2(-25f, -2.5f), new Vector2(25f, -2.5f), new Vector2(25f, 50f), new Vector2(-25f, 50f), new Vector2(-25f, -2.5f)}},
-        {Size.LARGE, new Vector2[] {new Vector2(-25f, -2.5f), new Vector2(25f, -2.5f), new Vector2(25f, 50f), new Vector2(-25f, 50f), new Vector2(-25f, -2.5f)}}
+        {Size.MEDIUM, new Vector2[] {new Vector2(-30f, -2.5f), new Vector2(30f, -2.5f), new Vector2(30f, 50f), new Vector2(-30f, 50f), new Vector2(-30f, -2.5f)}},
+        {Size.LARGE, new Vector2[] {new Vector2(-40f, -2.5f), new Vector2(40f, -2.5f), new Vector2(40f, 50f), new Vector2(-40f, 50f), new Vector2(-40f, -2.5f)}}
     }; 
 
     public void SetObjects(List<GameObject> objects){this.objects = objects;}

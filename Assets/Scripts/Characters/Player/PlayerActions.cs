@@ -91,6 +91,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 				GameObject node = World.nodes[player.nodeID];
 				GameObject spawn = node.GetComponent<WorldNode>().playerSpawn;
 				player.trans.position = spawn.transform.position;
+				player.Shapeshift();
 				break;
 			case "BuildingEntrance":
 				Building building = other.transform.parent.GetComponent<Building>();

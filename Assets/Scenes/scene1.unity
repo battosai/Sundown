@@ -586,6 +586,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5d531e7b96e6e84cbf6f1904d41508b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  human: {fileID: 21300000, guid: 715364bcefd243a43852cd7b8f254626, type: 3}
+  halfHuman: {fileID: 0}
+  werewolf: {fileID: 21300000, guid: 148ff5372453f8a479a50b1f9810dde1, type: 3}
 --- !u!212 &1149566504
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -900,7 +903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingPrefabs:
-  - {fileID: 1396995122327182, guid: a115f4920b359c248a60811c9da2271d, type: 2}
+  - {fileID: 1396995122327182, guid: 14f0501825f314dd486e36b145f4b0d4, type: 2}
   wildlifePrefabs:
   - {fileID: 1210274243789370, guid: 625603c49686fad4e8c9a026191596df, type: 2}
   - {fileID: 1885917050711660, guid: 3be11939e233fff4a84c1d659fad4c38, type: 2}

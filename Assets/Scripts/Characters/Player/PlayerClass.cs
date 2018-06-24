@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerClass : CharacterClass
 {
 	public readonly int DAILY_FOOD_REQUIREMENT = 30;
+	public Sprite human, halfHuman, werewolf;
 	public bool isHuman {get; private set;}
 	public bool isFed {get; private set;}
 	public int strength {get; private set;}
@@ -38,9 +39,20 @@ public class PlayerClass : CharacterClass
 		World.nodes[nodeID].SetActive(true);
 		Debug.Log(nodeID+" is active");
 		trans.position = World.nodes[nodeID].GetComponent<WorldNode>().playerSpawn.transform.position;
+		rend.sprite = human;
 		isHuman = true;
 		isFed = false;
 		strength = 5;
 		food = 0;
+	}
+
+	//called whenever player goes to next node or maybe by will
+	public void Shapeshift()
+	{
+		isHuman = !isHuman;
+		if(isHuman)
+			rend.sprite = human;
+		else
+			rend.sprite = werewolf; //will be half human eventually
 	}
 }
