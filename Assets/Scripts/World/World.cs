@@ -117,14 +117,14 @@ public class World : MonoBehaviour
 		{
 			WorldNode wnode = node.GetComponent<WorldNode>();
 			List<Vector2> points = new List<Vector2>();
-			//get list of valid wildlife spawn points
+			//get list of valid building spawn points
 			int count = Random.Range(0, 5);
 			for(int i = 0; i < count; i++)
 			{
 				Vector2 point = getValidPoint(node);
 				points.Add(point);	
 			}
-			//use wildlife object pool or spawn new ones
+			//use building object pool or spawn new ones
 			for(int i = 0; i < wnode.buildingPool.Count; i++)
 			{
 				if(points.Count == 0)
@@ -137,6 +137,7 @@ public class World : MonoBehaviour
 				GameObject poolObject = wnode.buildingPool[i];
 				Building building = poolObject.GetComponent<Building>();
 				poolObject.transform.position = building.SetFloorPosition(point);
+				building.Reset();
 				poolObject.SetActive(true);
 				points.Remove(point);
 			}
@@ -210,6 +211,7 @@ public class World : MonoBehaviour
 				//row,col convert to x,y has to be treating row,col as x,y
 				float x = node.transform.position.x-mapWidth/2+col*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
 				float y = node.transform.position.y+mapHeight/2-row*MeshGenerator.SQUARE_SIZE-MeshGenerator.SQUARE_SIZE/2;
+				Debug.DrawLine(new Vector2(x-2f, y), new Vector2(x+2f, y), Color.cyan, 100f);
 				return new Vector2(x, y); 
 			}
 		}

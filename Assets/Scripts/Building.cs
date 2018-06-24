@@ -28,8 +28,11 @@ public class Building : MonoBehaviour
         setFloorHeight();
     }
 
-    public void Update()
+    //called in World.cs when reusing a building pool object after setting its new position
+    public void  Reset()
     {
+        size = randomSize();
+        setFloorHeight();
     }
 
     //load into active building

@@ -10,6 +10,7 @@ public class Interior : MonoBehaviour
     public Vector2 savedPos {get; private set;}
     public Vector2 spawnPos {get; private set;}
     private GameObject buildingExit;
+    private SpriteRenderer rend;
     private EdgeCollider2D edgeColl;
     private Dictionary<Size, Vector2[]> points = new Dictionary<Size, Vector2[]>
     {
@@ -21,11 +22,16 @@ public class Interior : MonoBehaviour
     public void SetObjects(List<GameObject> objects){this.objects = objects;}
     public void SetBuilding(Building building){this.building = building;}
     public void SavePlayerPos(Vector2 savedPos){this.savedPos = savedPos;} 
-    public void SetColl(Size size){edgeColl.points = points[size];}
+    public void SetColl(Size size)
+    {
+        edgeColl.points = points[size];
+        rend.size = edgeColl.bounds.size;
+    }
 
     public void Awake()
     {
         buildingExit = GameObject.Find("BuildingExit");
+        rend = GetComponent<SpriteRenderer>();
         edgeColl = GetComponent<EdgeCollider2D>();
     }
 
