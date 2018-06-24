@@ -24,6 +24,7 @@ public class Wildlife : CharacterClass
 
     public void Update()
     {
+        getFloorHeight();
         if(health <= 0)
             state = State.DEAD;
         switch(state)

@@ -9,6 +9,7 @@ public class CharacterClass : MonoBehaviour
 	public int nodeID {get; private set;}
 	public int health {get; private set;}
 	public float speed {get; private set;}
+	public float floorHeight {get; private set;}
 	public bool isLeft {get; private set;}
 	public Transform trans {get; private set;}
 	public Rigidbody2D rb {get; private set;}
@@ -29,5 +30,11 @@ public class CharacterClass : MonoBehaviour
 	public virtual void Reset()
 	{
 		speed = BASE_SPEED;
+	}
+	
+	protected void getFloorHeight()
+	{
+		floorHeight = trans.position.y-(rend.bounds.size.y/2);
+		trans.position = new Vector3(trans.position.x, trans.position.y, floorHeight);
 	}
 }

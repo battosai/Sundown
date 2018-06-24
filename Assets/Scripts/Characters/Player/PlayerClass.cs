@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //ROLE: controls player status
-//NOTE: https://stackoverflow.com/questions/23535304/getting-the-width-of-a-sprite
 //set all objects with sprites to use floorHeight to decide rendering order
 
 public class PlayerClass : CharacterClass
@@ -28,9 +27,15 @@ public class PlayerClass : CharacterClass
 		pushBox = GetComponent<Collider2D>();
 	}
 
+	public void Start()
+	{
+		getFloorHeight();
+	}
+
 	// Update is called once per frame
 	void Update()
 	{
+		getFloorHeight();
 	}
 
 	//called by gamestate in masterreset
@@ -57,4 +62,6 @@ public class PlayerClass : CharacterClass
 		else
 			rend.sprite = werewolf; //will be half human eventually
 	}
+
+	
 }

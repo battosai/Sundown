@@ -21,6 +21,7 @@ public class HeroClass : CharacterClass
 	// Update is called once per frame
 	void Update ()
 	{
+		getFloorHeight();
 		follow();
 	}
 
