@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //ROLE: controls player status
+//NOTE: https://stackoverflow.com/questions/23535304/getting-the-width-of-a-sprite
+//set all objects with sprites to use floorHeight to decide rendering order
 
 public class PlayerClass : CharacterClass
 {
