@@ -25,7 +25,7 @@ public class Building : MonoBehaviour
     public void Start()
     {
         size = randomSize();
-        getFloorHeight();
+        setFloorHeight();
     }
 
     public void Update()
@@ -40,7 +40,7 @@ public class Building : MonoBehaviour
         interior.SetBuilding(this);
         interior.SetColl(size);
         interior.SavePlayerPos(player.trans.position);
-        player.trans.position = interior.spawnPos;
+        player.trans.position = player.SetFloorPosition(interior.spawnPos);
     }
 
     //remove from active building
@@ -51,6 +51,14 @@ public class Building : MonoBehaviour
         interior.SetBuilding(null);
         player.trans.position = interior.savedPos;
     }
+    
+    //sets position so that floor position is at target
+	public Vector2 SetFloorPosition(Vector2 target)
+	{
+		// float yOffset = rend.bounds.size.y/2;//this line will fail bc awake is not called in wildlife etc. and rend will be null
+		float yOffset = transform.position.y-floorHeight;
+		return new Vector2(target.x, target.y+yOffset);
+	}
 
     //returns a random value from Size enum (in Interior.cs)
     private Size randomSize()
@@ -60,7 +68,7 @@ public class Building : MonoBehaviour
         return size;
     }
 
-    private void getFloorHeight()
+    private void setFloorHeight()
     {
 		floorHeight = trans.position.y-(rend.bounds.size.y/2);
 		trans.position = new Vector3(trans.position.x, trans.position.y, floorHeight);

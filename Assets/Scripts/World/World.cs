@@ -90,9 +90,11 @@ public class World : MonoBehaviour
 					break;
 				}
 				Vector2 point = points[0];
-				wnode.wildlifePool[i].transform.position = point;
-				wnode.wildlifePool[i].SetActive(true);
-				wnode.wildlifePool[i].GetComponent<Wildlife>().Reset();
+				GameObject poolObject = wnode.wildlifePool[i];
+				Wildlife wildlife = poolObject.GetComponent<Wildlife>();
+				poolObject.transform.position = point;//wildlife.setFloorPosition(point);
+				poolObject.SetActive(true);
+				wildlife.Reset();
 				points.Remove(point);
 			}
 			for(int i = 0; i < points.Count; i++)
@@ -101,7 +103,8 @@ public class World : MonoBehaviour
 				GameObject animal = Instantiate(wildlifePrefabs[1], node.transform.Find("Wildlife"));
 				//do below when pool works for any wildlife prefab, right now will not change sprite
 				// GameObject animal = Instantiate(wildlifePrefabs[Random.Range(0, wildlifePrefabs.Count)], node.transform.Find("Wildlife"));
-				animal.transform.position = point;
+				Wildlife wildlife = animal.GetComponent<Wildlife>();
+				animal.transform.position = wildlife.SetFloorPosition(point);
 				wnode.AddPoolObject(animal, wnode.wildlifePool);
 			}
 		}
@@ -132,16 +135,19 @@ public class World : MonoBehaviour
 					break;
 				}
 				Vector2 point = points[0];
-				wnode.buildingPool[i].transform.position = point;
-				wnode.buildingPool[i].SetActive(true);
+				GameObject poolObject = wnode.buildingPool[i];
+				Building building = poolObject.GetComponent<Building>();
+				poolObject.transform.position = building.SetFloorPosition(point);
+				poolObject.SetActive(true);
 				points.Remove(point);
 			}
 			for(int i = 0; i < points.Count; i++)
 			{
 				Vector2 point = points[i];
-				GameObject building = Instantiate(buildingPrefabs[0], node.transform.Find("Buildings"));
-				building.transform.position = point;
-				wnode.AddPoolObject(building, wnode.buildingPool);
+				GameObject obj = Instantiate(buildingPrefabs[0], node.transform.Find("Buildings"));
+				Building building = obj.GetComponent<Building>();
+				obj.transform.position = building.SetFloorPosition(point);
+				wnode.AddPoolObject(obj, wnode.buildingPool);
 			}
 		}
 	}

@@ -29,13 +29,13 @@ public class PlayerClass : CharacterClass
 
 	public void Start()
 	{
-		getFloorHeight();
+		setFloorHeight();
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		getFloorHeight();
+		setFloorHeight();
 	}
 
 	//called by gamestate in masterreset
@@ -44,8 +44,7 @@ public class PlayerClass : CharacterClass
 		base.Reset();
 		SetNodeID(0);
 		World.nodes[nodeID].SetActive(true);
-		Debug.Log(nodeID+" is active");
-		trans.position = World.nodes[nodeID].GetComponent<WorldNode>().playerSpawn.transform.position;
+		trans.position = SetFloorPosition(World.nodes[nodeID].GetComponent<WorldNode>().playerSpawn.transform.position);
 		rend.sprite = human;
 		isHuman = true;
 		isFed = false;
