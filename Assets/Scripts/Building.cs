@@ -41,7 +41,7 @@ public class Building : MonoBehaviour
         Interior interior = World.activeBuilding.GetComponent<Interior>();
         interior.SetObjects(objects);
         interior.SetBuilding(this);
-        interior.SetColl(size);
+        interior.SetSize(size);
         interior.SavePlayerPos(player.trans.position);
         player.trans.position = player.SetFloorPosition(interior.spawnPos);
     }

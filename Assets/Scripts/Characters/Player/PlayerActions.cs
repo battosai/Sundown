@@ -95,9 +95,9 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 				break;
 			case "BuildingEntrance":
 				Building building = other.transform.parent.GetComponent<Building>();
-				building.Load(player);
 				World.activeBuilding.SetActive(true);
 				World.nodes[player.nodeID].SetActive(false);
+				building.Load(player);
 				// Debug.Log("Entered building in "+other.transform.parent.parent.parent.gameObject.name);
 				break;
 			case "BuildingExit":

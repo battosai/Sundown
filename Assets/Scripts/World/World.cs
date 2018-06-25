@@ -112,6 +112,7 @@ public class World : MonoBehaviour
 	//use reservedMap to determine where buildings and future things are placed
 	private void generateBuildings()
 	{
+		activeBuilding.GetComponent<Interior>().Start();//called to initialize interior's mesh pool
 		activeBuilding.SetActive(false);
 		foreach(GameObject node in nodes)
 		{
@@ -211,7 +212,6 @@ public class World : MonoBehaviour
 				//row,col convert to x,y has to be treating row,col as x,y
 				float x = node.transform.position.x-mapWidth/2+col*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
 				float y = node.transform.position.y+mapHeight/2-row*MeshGenerator.SQUARE_SIZE-MeshGenerator.SQUARE_SIZE/2;
-				Debug.DrawLine(new Vector2(x-2f, y), new Vector2(x+2f, y), Color.cyan, 100f);
 				return new Vector2(x, y); 
 			}
 		}
