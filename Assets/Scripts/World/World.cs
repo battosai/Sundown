@@ -60,10 +60,23 @@ public class World : MonoBehaviour
 			generateWorldNodes();
 		resetWorldNodes();
 		generateMapMeshCollider();
+		placeSpawnAndExit();
 		generateBuildings();
 		generateWildlife();
 		foreach(GameObject node in nodes)
 			node.GetComponent<WorldNode>().ParentReset();
+	}
+
+	//place spawn and exits in each node
+	private void placeSpawnAndExit()
+	{
+		foreach(GameObject node in nodes)
+		{
+			GameObject spawn = node.transform.Find("PlayerSpawn").gameObject;
+			GameObject exit = node.transform.Find("PlayerExit").gameObject;
+			spawn.transform.position = getValidPoint(node);
+			exit.transform.position = getValidPoint(node);
+		}
 	}
 
 	//populates each worldnode with some wildlife
