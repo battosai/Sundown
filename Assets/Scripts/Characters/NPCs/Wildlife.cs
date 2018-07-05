@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Wildlife : CharacterClass
 {
-    public readonly int nutrition = 50;
+    public readonly int nutrition = 1;
     public bool isHidden {get; private set;}
     private enum State {CALM, ALERTED, DEAD};
     private PlayerClass player;

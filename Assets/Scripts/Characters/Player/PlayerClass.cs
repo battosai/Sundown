@@ -7,24 +7,19 @@ using UnityEngine;
 
 public class PlayerClass : CharacterClass
 {
-	public readonly int DAILY_FOOD_REQUIREMENT = 30;
 	public Sprite human, halfHuman, werewolf;
 	public bool isHuman {get; private set;}
-	public bool isHungry {get; private set;}
 	public int strength {get; private set;}
 	public int food {get; private set;}
+	public int hunger {get; private set;}
 	public PlayerInput inputs {get; private set;}
 	public PlayerActions actions {get; private set;}
 	public Collider2D pushBox {get; private set;}
-	// private readonly int FOOD_LOSS = 10;
-	// private readonly int HUNGER_RATE = 5;
-	// private readonly int HUMAN_THRESHOLD = 10;
-	// private float time;
+	private readonly int succumbedToHungerPenalty = 10;
 
 	public void SetFood(int food)
 	{
 		this.food = food;
-		// time = Time.time;
 	}
 
 	public override void Awake()
@@ -44,7 +39,7 @@ public class PlayerClass : CharacterClass
 	void Update()
 	{
 		setFloorHeight();
-		// hungerHandler();
+		hungerHandler();
 	}
 
 	//called by gamestate in masterreset
@@ -56,10 +51,9 @@ public class PlayerClass : CharacterClass
 		trans.position = SetFloorPosition(World.nodes[nodeID].GetComponent<WorldNode>().playerSpawn.transform.position);
 		rend.sprite = human;
 		isHuman = true;
-		isHungry = false;
 		strength = 5;
-		food = 100;
-		// time = Time.time;
+		food = 5;
+		hunger = 0;
 	}
 
 	//called whenever player goes to next node or maybe by will
@@ -67,29 +61,26 @@ public class PlayerClass : CharacterClass
 	{
 		isHuman = !isHuman;
 		if(isHuman)
+		{
 			rend.sprite = human;
+		}
 		else
+		{
 			rend.sprite = werewolf; //will be half human eventually
+			SetFood(food+succumbedToHungerPenalty);
+		}
 	}
 
-	// private void hungerHandler()
-	// {
-	// 	if(Time.time-time > HUNGER_RATE)
-	// 	{
-	// 		time = Time.time;
-	// 		SetFood(Mathf.Max(food-FOOD_LOSS, 0));
-	// 		Debug.Log("Player has "+food+" food!");
-	// 	}
-	// 	if(food == 0 && isHuman)
-	// 	{
-	// 		Debug.Log("Becoming a werewolf!");
-	// 		Shapeshift();
-	// 	}
-	// 	else if(food > HUMAN_THRESHOLD && !isHuman)
-	// 	{
-	// 		Debug.Log("Returning to human!");
-	// 		Shapeshift();
-	// 	}
-	// }
-	
+	//handles player form with respect to hunger/food levels
+	private void hungerHandler()
+	{
+		if(hunger > food && isHuman)
+		{
+			Shapeshift();
+		}
+		else if(hunger <= food && !isHuman)
+		{
+			Shapeshift();
+		}
+	}
 }
