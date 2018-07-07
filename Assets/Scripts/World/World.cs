@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //ROLE: handles creation of world (spawn critters, interactables, etc)
-//NOTE: EACH NODE NEEDS A MESHFILTER AND MESHRENDERER AS WELL AS MATERIAL ADDED
 
 public class World : MonoBehaviour
 {

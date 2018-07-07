@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Action {NONE, TRAVEL, ATTACK};
+public enum Action {NONE, TRAVEL, ATTACK, INTERACT}; //interact could hide in bushes, talk to npcs, search containers
 public class PlayerActions : MonoBehaviour, IHitboxResponder
 {
 	//Vector2: Position, Vector2: Size
@@ -45,16 +45,17 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 				break;
 			case Action.NONE:
 			default:
-				Debug.Log("Uknown Action!");
+				Debug.Log("Unknown Action!");
 				break;
 		}
 	}
 
 	public void AttackCheck()
 	{
+		int dir = player.isLeft ? -1 : 1;
 		hitbox.mask.useTriggers = false;
 		hitbox.SetAction(Action.ATTACK);
-		hitbox.SetOffset(ATTACK[0]);
+		hitbox.SetOffset(new Vector2(ATTACK[0].x*dir, ATTACK[0].y));
 		hitbox.SetSize(ATTACK[1]);
 		hitbox.StartCheckingCollision();
 		hitbox.CheckCollision();
@@ -97,7 +98,6 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 				World.activeBuilding.SetActive(true);
 				World.nodes[player.nodeID].SetActive(false);
 				building.Load(player);
-				// Debug.Log("Entered building in "+other.transform.parent.parent.parent.gameObject.name);
 				break;
 			case "BuildingExit":
 				Interior interior = other.transform.parent.GetComponent<Interior>();
