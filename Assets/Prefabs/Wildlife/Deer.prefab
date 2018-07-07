@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 50299728666299344}
   - component: {fileID: 61503067288255998}
   - component: {fileID: 212320349760762614}
-  - component: {fileID: 114469063053343064}
+  - component: {fileID: 114507158340585894}
   - component: {fileID: 114504706897715852}
   m_Layer: 11
   m_Name: Deer
@@ -89,17 +89,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 13.077146, y: 2.8293247}
   m_EdgeRadius: 0
---- !u!114 &114469063053343064
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1885917050711660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3eefbb7c1999ca744acca9a1b3ed7313, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114504706897715852
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -109,6 +98,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 391aba0f39d291f43923cec8a04a1f2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114507158340585894
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1885917050711660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38dc0665d35f9ff40ba0885603d15921, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212320349760762614

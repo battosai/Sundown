@@ -12,7 +12,8 @@ public class WorldNode : MonoBehaviour
   public int[,] map {get; private set;}
   public bool isActive {get; private set;}
   public List<GameObject> collPool {get; private set;}
-  public List<GameObject> wildlifePool {get; private set;}
+  public List<GameObject> bigAnimalPool {get; private set;}
+  public List<GameObject> smallAnimalPool {get; private set;}
   public List<GameObject> buildingPool {get; private set;}
   public GameObject playerSpawn {get; private set;}
   public GameObject playerExit {get; private set;}
@@ -30,7 +31,8 @@ public class WorldNode : MonoBehaviour
     playerExit = GameObject.Find(this.name + "/PlayerExit");
     meshFilter = GetComponent<MeshFilter>();
     collPool = new List<GameObject>();
-    wildlifePool = new List<GameObject>();
+    bigAnimalPool = new List<GameObject>();
+    smallAnimalPool = new List<GameObject>();
     buildingPool = new List<GameObject>();
   }
 

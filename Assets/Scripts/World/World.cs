@@ -8,13 +8,17 @@ using UnityEngine;
 public class World : MonoBehaviour
 {
 	public List<GameObject> buildingPrefabs;
-	public List<GameObject> wildlifePrefabs;
+	public List<GameObject> bigAnimalPrefabs;
+	public List<GameObject> smallAnimalPrefabs;
+	public Dictionary<string, List<GameObject>> wildlifePrefabs;
 
 	public static readonly int RESERVED = 2;
 	public static readonly int WORLD_SIZE = GameState.DAYS_TO_WIN;
 	public static readonly float NODE_SPACING = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
 	public static List<GameObject> nodes {get; private set;}
 	public static GameObject activeBuilding {get; private set;}
+	private readonly string SMALL_ANIMAL = "Small";
+	private readonly string BIG_ANIMAL = "Big";
 	private GameObject startNode;
 	private Transform trans;
 	private MapGenerator mapGen;
@@ -30,6 +34,13 @@ public class World : MonoBehaviour
 		meshGen = GetComponent<MeshGenerator>();
 		collGen = GetComponent<ColliderGenerator>();
 		nodes = new List<GameObject>();
+	}
+
+	public void Start()
+	{
+		wildlifePrefabs = new Dictionary<string, List<GameObject>>();
+		wildlifePrefabs[BIG_ANIMAL] = bigAnimalPrefabs;
+		wildlifePrefabs[SMALL_ANIMAL] = smallAnimalPrefabs;
 	}
 	
 	public void DisplayFloor()
@@ -85,41 +96,83 @@ public class World : MonoBehaviour
 		foreach(GameObject node in nodes)
 		{
 			WorldNode wnode = node.GetComponent<WorldNode>();
-			List<Vector2> points = new List<Vector2>();
 			//get list of valid wildlife spawn points
-			int count = Random.Range(0, 10);
-			for(int i = 0; i < count; i++)
-			{
-				Vector2 point = getValidPoint(node);
-				points.Add(point);	
-			}
+			int bigCount = Random.Range(0, 4);
+			int smallCount = Random.Range(0, 10);
+			List<Vector2> bigPoints = getPoints(node, bigCount);
+			List<Vector2> smallPoints = getPoints(node, smallCount);
+			useAnimalPool(node, wnode.bigAnimalPool, bigPoints, BIG_ANIMAL);
+			useAnimalPool(node, wnode.smallAnimalPool, smallPoints, SMALL_ANIMAL);
 			//use wildlife object pool or spawn new ones
-			for(int i = 0; i < wnode.wildlifePool.Count; i++)
-			{
-				if(points.Count == 0)
-				{
-					for(int j = i; j < wnode.wildlifePool.Count; j++)
-						wnode.wildlifePool[j].SetActive(false);
-					break;
-				}
-				Vector2 point = points[0];
-				GameObject poolObject = wnode.wildlifePool[i];
-				Wildlife wildlife = poolObject.GetComponent<Wildlife>();
-				poolObject.transform.position = wildlife.SetFloorPosition(point);
-				poolObject.SetActive(true);
-				wildlife.Reset();
-				points.Remove(point);
-			}
-			for(int i = 0; i < points.Count; i++)
-			{
-				Vector2 point = points[i];
-				GameObject animal = Instantiate(wildlifePrefabs[1], node.transform.Find("Wildlife"));
-				Wildlife wildlife = animal.GetComponent<Wildlife>();
-				wildlife.Init();
-				animal.transform.position = wildlife.SetFloorPosition(point);
-				wnode.AddPoolObject(animal, wnode.wildlifePool);
-			}
+			// for(int i = 0; i < wnode.wildlifePool.Count; i++)
+			// {
+			// 	if(points.Count == 0)
+			// 	{
+			// 		for(int j = i; j < wnode.wildlifePool.Count; j++)
+			// 			wnode.wildlifePool[j].SetActive(false);
+			// 		break;
+			// 	}
+			// 	Vector2 point = points[0];
+			// 	GameObject poolObject = wnode.wildlifePool[i];
+			// 	Wildlife wildlife = poolObject.GetComponent<Wildlife>();
+			// 	poolObject.transform.position = wildlife.SetFloorPosition(point);
+			// 	poolObject.SetActive(true);
+			// 	wildlife.Reset();
+			// 	points.Remove(point);
+			// }
+			// for(int i = 0; i < points.Count; i++)
+			// {
+			// 	Vector2 point = points[i];
+			// 	GameObject animal = Instantiate(wildlifePrefabs[1], node.transform.Find("Wildlife"));
+			// 	Wildlife wildlife = animal.GetComponent<Wildlife>();
+			// 	wildlife.Init();
+			// 	animal.transform.position = wildlife.SetFloorPosition(point);
+			// 	wnode.AddPoolObject(animal, wnode.wildlifePool);
+			// }
 		}
+	}
+	private void useAnimalPool(GameObject node, List<GameObject> pool, List<Vector2> points, string size)
+	{
+		WorldNode wnode = node.GetComponent<WorldNode>();
+		for(int i = 0; i < pool.Count; i++)
+		{
+			if(points.Count == 0)
+			{
+				for(int j = i; j < pool.Count; j++)
+					pool[j].SetActive(false);
+				break;
+			}
+			Debug.Log("EXISTING POOL OBJECT");
+			Vector2 point = points[0];
+			GameObject poolObject = pool[i];
+			Wildlife wildlife = poolObject.GetComponent<Wildlife>();
+			poolObject.transform.position = wildlife.SetFloorPosition(point);
+			poolObject.SetActive(true);
+			wildlife.Reset();
+			points.Remove(point);
+		}
+		for(int i = 0; i < points.Count; i++)
+		{
+			Debug.Log("CREATING NEW POOL OBJECT");
+			Vector2 point = points[i];
+			List<GameObject> animals = wildlifePrefabs[size];
+			GameObject animal = Instantiate(animals[Random.Range(0, animals.Count)], node.transform.Find("Wildlife").Find(size));
+			Wildlife wildlife = animal.GetComponent<Wildlife>();
+			wildlife.Init();
+			animal.transform.position = wildlife.SetFloorPosition(point);
+			wnode.AddPoolObject(animal, pool);
+		}
+	}
+	//return list of valid points
+	private List<Vector2> getPoints(GameObject node, int count)
+	{
+		List<Vector2> points = new List<Vector2>();
+		for(int i = 0; i < count; i++)
+		{
+			Vector2 point = getValidPoint(node);
+			points.Add(point);	
+		}
+		return points;
 	}
 
 	//use reservedMap to determine where buildings and future things are placed

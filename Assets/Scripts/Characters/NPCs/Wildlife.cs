@@ -4,12 +4,15 @@ using System.Collections.Generic;
 
 public class Wildlife : CharacterClass
 {
-    public readonly int nutrition = 1;
     public bool isHidden {get; private set;}
+    public int nutrition {get; private set;}
+    public float blood {get; private set;}
     private enum State {CALM, ALERTED, DEAD};
     private PlayerClass player;
     private State state;
     private float time;
+    public void SetNutrition(int nutrition){this.nutrition=nutrition;}
+    public void SetBlood(float blood){this.blood=blood;}
 
     public void Init()
     {
@@ -19,7 +22,7 @@ public class Wildlife : CharacterClass
 
     public void Start()
     {
-       Reset();
+    //    Reset();
     }
 
     public void Update()
@@ -61,8 +64,8 @@ public class Wildlife : CharacterClass
 
     public override void Reset()
     {
+        Debug.Log("Wildlife Reset");
         base.Reset();
-        SetHealth(5);
         time = Time.time;
         state = State.CALM;
     }

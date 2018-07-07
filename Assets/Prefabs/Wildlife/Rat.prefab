@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 50645885514442894}
   - component: {fileID: 61739902887109250}
   - component: {fileID: 212820707349959314}
-  - component: {fileID: 114171862891156808}
+  - component: {fileID: 114988704463689750}
   - component: {fileID: 114742344817077386}
   m_Layer: 11
   m_Name: Rat
@@ -89,17 +89,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.9947467, y: 0.9645586}
   m_EdgeRadius: 0
---- !u!114 &114171862891156808
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1210274243789370}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3eefbb7c1999ca744acca9a1b3ed7313, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114742344817077386
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -109,6 +98,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 391aba0f39d291f43923cec8a04a1f2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114988704463689750
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1210274243789370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b022bd82f6c0eb64186188778c07ff63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212820707349959314
