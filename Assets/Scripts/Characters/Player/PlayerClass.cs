@@ -12,15 +12,14 @@ public class PlayerClass : CharacterClass
 	public int strength {get; private set;}
 	public int food {get; private set;}
 	public int hunger {get; private set;}
+	public int gold {get; private set;}
 	public PlayerInput inputs {get; private set;}
 	public PlayerActions actions {get; private set;}
 	public Collider2D pushBox {get; private set;}
 	private readonly int succumbedToHungerPenalty = 10;
 
-	public void SetFood(int food)
-	{
-		this.food = food;
-	}
+	public void SetFood(int food){this.food=food;}
+	public void SetGold(int gold){this.gold=gold;}
 
 	public override void Awake()
 	{
@@ -54,6 +53,7 @@ public class PlayerClass : CharacterClass
 		strength = 5;
 		food = 5;
 		hunger = 0;
+		gold = 0;
 	}
 
 	//called whenever player goes to next node or maybe by will

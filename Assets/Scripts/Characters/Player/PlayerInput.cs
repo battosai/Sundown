@@ -57,7 +57,7 @@ public class PlayerInput : MonoBehaviour
     if(isRightClick)
       player.actions.AttackCheck();
     if(E)
-      player.actions.TravelCheck();
+      player.actions.InteractCheck();
   }
 
   private Vector2 calculateVelocity()

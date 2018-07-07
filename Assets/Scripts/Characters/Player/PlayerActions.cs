@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Action {NONE, TRAVEL, ATTACK, INTERACT}; //interact could hide in bushes, talk to npcs, search containers
+public enum Action {ATTACK, TRAVEL, INTERACT}; //interact could hide in bushes, talk to npcs, search containers
 public class PlayerActions : MonoBehaviour, IHitboxResponder
 {
 	//Vector2: Position, Vector2: Size
 	//position should default to the right side, use isLeft to flip
 	private Vector2[] ATTACK = {new Vector2(5, 0), new Vector2(5, 2)};
-	private Vector2[] TRAVEL = {new Vector2(0, -12), new Vector2(5, 2)};
+	private Vector2[] INTERACT = {new Vector2(0, -12), new Vector2(5, 2)};
 	private PlayerClass player;
 	private PlayerInput input;
 	private Hitbox hitbox;
@@ -37,13 +37,12 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	{
 		switch(action)
 		{
-			case Action.TRAVEL:
-				travel(other);
+			case Action.INTERACT:
+				interact(other);
 				break;
 			case Action.ATTACK:
 				attack(other);
 				break;
-			case Action.NONE:
 			default:
 				Debug.Log("Unknown Action!");
 				break;
@@ -63,12 +62,12 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	}
 
 	//triggers hitbox to check for travel colliders
-	public void TravelCheck()
+	public void InteractCheck()
 	{
 		hitbox.mask.useTriggers = true;
-		hitbox.SetAction(Action.TRAVEL);
-		hitbox.SetOffset(TRAVEL[0]);
-		hitbox.SetSize(TRAVEL[1]);
+		hitbox.SetAction(Action.INTERACT);
+		hitbox.SetOffset(INTERACT[0]);
+		hitbox.SetSize(INTERACT[1]);
 		hitbox.StartCheckingCollision();
 		hitbox.CheckCollision();
 		hitbox.StopCheckingCollision();
@@ -80,8 +79,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 		hurtbox.Hurt(player.strength);
 	}
 
-	//implement the actual functionality of traveling
-	private void travel(Collider2D other)
+	private void interact(Collider2D other)
 	{
 		switch(other.gameObject.name)
 		{
@@ -92,21 +90,38 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 				GameObject node = World.nodes[player.nodeID];
 				GameObject spawn = node.GetComponent<WorldNode>().playerSpawn;
 				player.trans.position = player.SetFloorPosition(spawn.transform.position);
-				break;
+				return;
 			case "BuildingEntrance":
 				Building building = other.transform.parent.GetComponent<Building>();
 				World.activeBuilding.SetActive(true);
 				World.nodes[player.nodeID].SetActive(false);
 				building.Load(player);
-				break;
+				return;
 			case "BuildingExit":
 				Interior interior = other.transform.parent.GetComponent<Interior>();
 				interior.building.Store(player);
 				World.nodes[player.nodeID].SetActive(true);
 				World.activeBuilding.SetActive(false);
-				break;	
+				return;	
 			default:
 				break;
+		}
+		Container container = other.gameObject.GetComponent<Container>();
+		if(container != null)
+		{
+			if(!container.isEmpty)
+			{
+				player.SetGold(player.gold+container.gold);
+				Debug.Log("player now has "+player.gold+" gold");
+				container.isEmpty = true;
+				return;
+			}
+			else
+				Debug.Log("Container is empty!");
+		}
+		else
+		{
+			Debug.Log(other.gameObject.name+" is not a container");
 		}
 	}
 }
