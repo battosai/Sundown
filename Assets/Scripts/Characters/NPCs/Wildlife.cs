@@ -5,12 +5,14 @@ using System.Collections.Generic;
 public class Wildlife : CharacterClass
 {
     public bool isHidden {get; private set;}
+    public int maxHealth {get; private set;}
     public int nutrition {get; private set;}
     public float blood {get; private set;}
     private enum State {CALM, ALERTED, DEAD};
     private PlayerClass player;
     private State state;
     private float time;
+    public void SetMaxHealth(int maxHealth){this.maxHealth=maxHealth;}
     public void SetNutrition(int nutrition){this.nutrition=nutrition;}
     public void SetBlood(float blood){this.blood=blood;}
 
@@ -18,11 +20,6 @@ public class Wildlife : CharacterClass
     {
         base.Awake();
         player = GameObject.Find("Player").GetComponent<PlayerClass>();
-    }
-
-    public void Start()
-    {
-    //    Reset();
     }
 
     public void Update()
@@ -64,9 +61,9 @@ public class Wildlife : CharacterClass
 
     public override void Reset()
     {
-        Debug.Log("Wildlife Reset");
         base.Reset();
         time = Time.time;
         state = State.CALM;
+        SetHealth(maxHealth);
     }
 }

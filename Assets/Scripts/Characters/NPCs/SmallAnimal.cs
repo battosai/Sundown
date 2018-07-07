@@ -8,12 +8,11 @@ public class SmallAnimal : Wildlife
     {
         Reset();
     }
-    public  void Reset()
+    public override void Reset()
     {
-        Debug.Log("SmallAnimal Reset");
-        base.Reset();
-        SetHealth(5);
+        SetMaxHealth(5);
         SetNutrition(1);
         SetBlood(0.2f);
+        base.Reset();
     }
 }
