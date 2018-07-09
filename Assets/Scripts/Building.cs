@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class Building : MonoBehaviour
 {
+    public GameObject objects;
     public bool isEnterable {get; private set;}
     public int nodeID {get; private set;}
     public float floorHeight {get; private set;}
     public Size size {get; private set;}
-    public List<GameObject> objects;
+    private Interior interior;
     private Transform trans;
     private SpriteRenderer rend;
 
@@ -17,7 +18,7 @@ public class Building : MonoBehaviour
 
     public void Init()
     {
-        objects = new List<GameObject>();
+        interior = World.activeBuilding.GetComponent<Interior>();
         trans = GetComponent<Transform>();
         rend = GetComponent<SpriteRenderer>();
     }
@@ -25,6 +26,7 @@ public class Building : MonoBehaviour
     public void Start()
     {
         size = randomSize();
+        selectInterior(size);
         setFloorHeight();
     }
 
@@ -38,7 +40,7 @@ public class Building : MonoBehaviour
     //load into active building
     public void Load(PlayerClass player)
     {
-        Interior interior = World.activeBuilding.GetComponent<Interior>();
+        objects.SetActive(true);
         interior.SetObjects(objects);
         interior.SetBuilding(this);
         interior.SetSize(size);
@@ -49,7 +51,7 @@ public class Building : MonoBehaviour
     //remove from active building
     public void Store(PlayerClass player)
     {
-        Interior interior = World.activeBuilding.GetComponent<Interior>();
+        objects.SetActive(false);
         interior.SetObjects(null);
         interior.SetBuilding(null);
         player.trans.position = interior.savedPos;
@@ -61,6 +63,14 @@ public class Building : MonoBehaviour
 		float yOffset = rend.bounds.size.y/2;
 		return new Vector2(target.x, target.y+yOffset);
 	}
+
+    //selects a set of objects from the possible blueprints for the size
+    private void selectInterior(Size size)
+    {
+        List<GameObject> blueprints = interior.blueprints[size]; 
+        objects = Instantiate(blueprints[UnityEngine.Random.Range(0, blueprints.Count)], interior.transform);
+        objects.SetActive(false);
+    }
 
     //returns a random value from Size enum (in Interior.cs)
     private Size randomSize()

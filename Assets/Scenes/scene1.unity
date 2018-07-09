@@ -1166,6 +1166,12 @@ MonoBehaviour:
   - {x: 500, y: 200, z: 0}
   - {x: -500, y: 200, z: 0}
   - {x: -500, y: -200, z: 0}
+  smallInteriors:
+  - {fileID: 1414064970266414, guid: 92ea1df71240f5e41b2b4563195bb602, type: 2}
+  mediumInteriors:
+  - {fileID: 1722327731187528, guid: bb70d1b1ef71f12418c69ebb0f0df25a, type: 2}
+  largeInteriors:
+  - {fileID: 1609680499188418, guid: 00f9bcd14998ead4483f57519f7a96e8, type: 2}
 --- !u!68 &1825139588
 EdgeCollider2D:
   m_ObjectHideFlags: 0

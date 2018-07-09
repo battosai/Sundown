@@ -6,7 +6,11 @@ public enum Size {SMALL, MEDIUM, LARGE};
 public class Interior : MonoBehaviour
 {
     public Vector3[] outter;
-    public List<GameObject> objects {get; private set;}    
+    public List<GameObject> smallInteriors;
+    public List<GameObject> mediumInteriors;
+    public List<GameObject> largeInteriors;
+    public Dictionary<Size, List<GameObject>> blueprints {get; private set;}
+    public GameObject objects {get; private set;}    
     public Building building {get; private set;}
     public Vector2 savedPos {get; private set;}
     public Vector2 spawnPos {get; private set;}
@@ -24,7 +28,7 @@ public class Interior : MonoBehaviour
         {Size.LARGE, new Vector2[] {new Vector2(-LARGE, -LARGE), new Vector2(LARGE, -LARGE), new Vector2(LARGE, LARGE), new Vector2(-LARGE, LARGE), new Vector2(-LARGE, -LARGE)}}
     }; 
 
-    public void SetObjects(List<GameObject> objects){this.objects = objects;}
+    public void SetObjects(GameObject objects){this.objects = objects;}
     public void SetBuilding(Building building){this.building = building;}
     public void SavePlayerPos(Vector2 savedPos){this.savedPos = savedPos;} 
     public void SetSize(Size size)
@@ -39,6 +43,7 @@ public class Interior : MonoBehaviour
     public void Awake()
     {
         buildingExit = GameObject.Find("BuildingExit");
+        blueprints = new Dictionary<Size, List<GameObject>>();
         meshFilter = GetComponent<MeshFilter>();
         edgeColl = GetComponent<EdgeCollider2D>();
     }
@@ -46,6 +51,10 @@ public class Interior : MonoBehaviour
     public void Start()
     {
         meshPool = new Dictionary<Size, Mesh>();
+        blueprints = new Dictionary<Size, List<GameObject>>();
+        blueprints[Size.SMALL] = smallInteriors;
+        blueprints[Size.MEDIUM] = mediumInteriors;
+        blueprints[Size.LARGE] = largeInteriors;
     }
 
     //checks pool for mesh, otherwise add a new one to the pool
