@@ -4,8 +4,9 @@ using System.Collections.Generic;
 
 public class SmallAnimal : Wildlife
 {
-    public void Awake()
+    public override void Awake()
     {
+        base.Init();
         Reset();
     }
     public override void Reset()

@@ -9,7 +9,7 @@ public class Building : MonoBehaviour
     public bool isEnterable {get; private set;}
     public int nodeID {get; private set;}
     public float floorHeight {get; private set;}
-    public Size size {get; private set;}
+    public Size size;// {get; private set;}
     private Interior interior;
     private Transform trans;
     private SpriteRenderer rend;
@@ -25,15 +25,19 @@ public class Building : MonoBehaviour
 
     public void Start()
     {
-        size = randomSize();
-        selectInterior(size);
-        setFloorHeight();
+        Reset();
     }
 
     //called in World.cs when reusing a building pool object after setting its new position
     public void  Reset()
     {
+        if(objects != null)
+        {
+            Destroy(objects);
+            Debug.Log("DELETED OBJECTS");
+        }
         size = randomSize();
+        selectLayout(size);
         setFloorHeight();
     }
 
@@ -65,7 +69,7 @@ public class Building : MonoBehaviour
 	}
 
     //selects a set of objects from the possible blueprints for the size
-    private void selectInterior(Size size)
+    private void selectLayout(Size size)
     {
         List<GameObject> blueprints = interior.blueprints[size]; 
         objects = Instantiate(blueprints[UnityEngine.Random.Range(0, blueprints.Count)], interior.transform);

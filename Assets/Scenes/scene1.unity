@@ -1167,7 +1167,7 @@ MonoBehaviour:
   - {x: -500, y: 200, z: 0}
   - {x: -500, y: -200, z: 0}
   smallInteriors:
-  - {fileID: 1414064970266414, guid: 92ea1df71240f5e41b2b4563195bb602, type: 2}
+  - {fileID: 1285614231813852, guid: 5d19978600fdc8745a0e56e62855cfe0, type: 2}
   mediumInteriors:
   - {fileID: 1722327731187528, guid: bb70d1b1ef71f12418c69ebb0f0df25a, type: 2}
   largeInteriors:

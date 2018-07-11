@@ -6,7 +6,7 @@ public enum Size {SMALL, MEDIUM, LARGE};
 public class Interior : MonoBehaviour
 {
     public Vector3[] outter;
-    public List<GameObject> smallInteriors;
+    public List<GameObject> smallInteriors; //these hold the possible layouts for room sizes
     public List<GameObject> mediumInteriors;
     public List<GameObject> largeInteriors;
     public Dictionary<Size, List<GameObject>> blueprints {get; private set;}
@@ -47,7 +47,6 @@ public class Interior : MonoBehaviour
         meshFilter = GetComponent<MeshFilter>();
         edgeColl = GetComponent<EdgeCollider2D>();
     }
-
     public void Start()
     {
         meshPool = new Dictionary<Size, Mesh>();

@@ -110,12 +110,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 		if(container != null)
 		{
 			if(!container.isEmpty)
-			{
-				player.SetGold(player.gold+container.gold);
-				Debug.Log("player now has "+player.gold+" gold");
-				container.isEmpty = true;
-				return;
-			}
+				container.Search();
 			else
 				Debug.Log("Container is empty!");
 		}
