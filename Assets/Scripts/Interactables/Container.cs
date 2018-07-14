@@ -47,9 +47,7 @@ public class Container : MonoBehaviour
 
     private void setFloorHeight()
     {
-        Debug.Log(trans.gameObject.name+" Position: "+trans.position);
 		floorHeight = trans.position.y-(rend.bounds.size.y/2);
-        Debug.Log("Z should be set to "+floorHeight);
 		trans.position = new Vector3(trans.position.x, trans.position.y, floorHeight);
     }
 }

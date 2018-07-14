@@ -7,7 +7,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 {
 	//Vector2: Position, Vector2: Size
 	//position should default to the right side, use isLeft to flip
-	private Vector2[] ATTACK = {new Vector2(5, 0), new Vector2(5, 2)};
+	private Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
 	private Vector2[] INTERACT = {new Vector2(0, -12), new Vector2(5, 2)};
 	private PlayerClass player;
 	private PlayerInput input;
@@ -76,7 +76,8 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	private void attack(Collider2D other)
 	{
 		Hurtbox hurtbox = other.GetComponent<Hurtbox>();	
-		hurtbox.Hurt(player.strength);
+		if(hurtbox != null)
+			hurtbox.Hurt(player.strength);
 	}
 
 	private void interact(Collider2D other)
@@ -90,6 +91,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 				GameObject node = World.nodes[player.nodeID];
 				GameObject spawn = node.GetComponent<WorldNode>().playerSpawn;
 				player.trans.position = player.SetFloorPosition(spawn.transform.position);
+				player.gameState.NodeTransition();
 				return;
 			case "BuildingEntrance":
 				Building building = other.transform.parent.GetComponent<Building>();

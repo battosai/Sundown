@@ -18,24 +18,30 @@ public class GameState : MonoBehaviour
 	private HeroClass hero;
 	private float startTime;
 
-	void Awake()
+	public void SetHero(HeroClass hero){this.hero = hero;}
+
+	public void Awake()
 	{
 		world = GameObject.Find("World").GetComponent<World>();
 		player = GameObject.Find("Player").GetComponent<PlayerClass>();
-		hero = GameObject.Find("Hero").GetComponent<HeroClass>();
 	}
 
 	// Use this for initialization
-	void Start()
+	public void Start()
 	{
 		masterReset();
 	}
 
 	// Update is called once per frame
-	void Update()
+	public void Update()
 	{
 		if(Input.GetKeyDown(KeyCode.R))
 			masterReset();
+	}
+
+	public void NodeTransition()
+	{
+		hero.Track();	
 	}
 
 	//switches between daytime and nighttime according to their durations
