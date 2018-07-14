@@ -73,6 +73,7 @@ public class Building : MonoBehaviour
     {
         List<GameObject> blueprints = interior.blueprints[size]; 
         objects = Instantiate(blueprints[UnityEngine.Random.Range(0, blueprints.Count)], interior.transform);
+        objects.transform.localPosition = Vector3.zero;
         objects.SetActive(false);
     }
 
