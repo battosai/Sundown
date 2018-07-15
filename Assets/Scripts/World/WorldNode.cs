@@ -9,6 +9,7 @@ public class WorldNode : MonoBehaviour
   public int nodeID {get; private set;}
   public int width {get; private set;}
   public int height {get; private set;}
+  public int clues {get; private set;}
   public int[,] map {get; private set;}
   public bool isActive {get; private set;}
   public List<GameObject> collPool {get; private set;}
@@ -22,6 +23,7 @@ public class WorldNode : MonoBehaviour
   public void SetNodeID(int nodeID){this.nodeID = nodeID;}
   public void SetWidth(int width){this.width = width;}
   public void SetHeight(int height){this.height = height;}
+  public void SetClues(int clues){this.clues = clues;}
   public void SetMap(int[,] map){this.map = map;}
   public void AddPoolObject(GameObject obj, List<GameObject> pool){pool.Add(obj);}
 

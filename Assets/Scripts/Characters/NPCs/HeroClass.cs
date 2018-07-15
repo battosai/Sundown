@@ -4,19 +4,27 @@ using UnityEngine;
 
 public class HeroClass : CharacterClass
 {
-	private float tracking; //used to determine how likely a clue will be discovered
-	private float leash = 20f;
-	private PlayerClass player;
+	public float tracking {get; private set;}//used to determine how likely a clue will be discovered
+	public float lead {get; private set;}
+	protected float leash = 20f;
+	protected readonly int PLAYER_FOUND = 15;
+	protected PlayerClass player;
+	public void SetTracking(float tracking){this.tracking=tracking;}
+	public void SetLead(float lead){this.lead=lead;}
 
-	public override void Awake()
-	{
-		base.Awake();
-		player = GameObject.Find("Player").GetComponent<PlayerClass>();
-	}
-
-	public virtual void Track()
+	public virtual void Track(int nodeID)
 	{
 		Debug.Log("Default Track!");
+ 		if(tracking >= PLAYER_FOUND)
+        {
+            SetNodeID(nodeID+1);
+            SetLead(0);
+        }
+        else
+        {
+            WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();
+            SetLead(lead+wnode.clues*tracking);
+        }
 	}
 
 	// private void follow()
@@ -44,12 +52,4 @@ public class HeroClass : CharacterClass
 	// 	velocity = new Vector2((direction.x*speed)/distance, (direction.y*speed)/distance);
 	// 	return velocity;
 	// }
-
-	//called by gamestate in masterreset
-	public override void Reset()
-	{
-		base.Reset();
-		base.SetNodeID(0);//Random.Range(0, World.WORLD_SIZE-1));
-		tracking = 0;
-	}
 }

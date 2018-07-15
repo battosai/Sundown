@@ -4,20 +4,39 @@ using UnityEngine;
 
 public class Ranger : HeroClass
 {
-    public readonly int FOLLOW = 15;
-    public readonly int MASTERY = 2;
+    private readonly int MASTERY = 2;
 
-    public void Start()
-    {
+	public override void Awake()
+	{
+		base.Awake();
         gameState.SetHero(this);
-    }
+		player = GameObject.Find("Player").GetComponent<PlayerClass>();
+	}
 
     public void Update()
     {
         setFloorHeight();
     }
-    public override void Track()
+
+    public override void Track(int nodeID)
     {
-       Debug.Log("Ranger Mastery Track!"); 
+        Debug.Log("Ranger Mastery Track!"); 
+        if(tracking >= PLAYER_FOUND)
+        {
+            SetNodeID(nodeID+1);
+            SetLead(0);
+        }
+        else
+        {
+            WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();
+            SetLead(lead+wnode.clues*tracking*MASTERY);
+        }
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+        SetTracking(0.8f); 
+        SetLead(0f);
     }
 }

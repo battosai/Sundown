@@ -39,9 +39,9 @@ public class GameState : MonoBehaviour
 			masterReset();
 	}
 
-	public void NodeTransition()
+	public void NodeTransition(int currentNodeID)
 	{
-		hero.Track();	
+		hero.Track(currentNodeID);	
 	}
 
 	//switches between daytime and nighttime according to their durations

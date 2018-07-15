@@ -8,10 +8,10 @@ public class Wildlife : CharacterClass
     public int maxHealth {get; private set;}
     public int nutrition {get; private set;}
     public float blood {get; private set;}
-    private enum State {CALM, ALERTED, DEAD};
-    private PlayerClass player;
-    private State state;
-    private float time;
+    protected enum State {CALM, ALERTED, DEAD};
+    protected PlayerClass player;
+    protected State state;
+    protected float time;
     public void SetMaxHealth(int maxHealth){this.maxHealth=maxHealth;}
     public void SetNutrition(int nutrition){this.nutrition=nutrition;}
     public void SetBlood(float blood){this.blood=blood;}
