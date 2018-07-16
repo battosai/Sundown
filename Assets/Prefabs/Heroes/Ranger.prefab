@@ -20,8 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4356116538636414}
   - component: {fileID: 50546280732409688}
+  - component: {fileID: 61374828321005338}
   - component: {fileID: 212135468449056146}
-  - component: {fileID: 114707578434286814}
+  - component: {fileID: 114502804030520796}
   m_Layer: 12
   m_Name: Ranger
   m_TagString: Untagged
@@ -62,7 +63,32 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &114707578434286814
+--- !u!61 &61374828321005338
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1418218222290802}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.42333317, y: -10.865141}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 25, y: 25}
+    newSize: {x: 0.25, y: 0.25}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 9.760546, y: 3.2697182}
+  m_EdgeRadius: 0
+--- !u!114 &114502804030520796
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -70,7 +96,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1418218222290802}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfa14aae12bf2614babc686ae05c1650, type: 3}
+  m_Script: {fileID: 11500000, guid: c1e2bfe6f7a6c6a4f93c28a05b016472, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212135468449056146

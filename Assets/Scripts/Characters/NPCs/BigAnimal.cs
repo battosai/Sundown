@@ -13,6 +13,7 @@ public class BigAnimal : Wildlife
     {
         SetMaxHealth(15);
         SetNutrition(5);
+        SetClue(4);
         SetBlood(0.5f);
         base.Reset();
     }

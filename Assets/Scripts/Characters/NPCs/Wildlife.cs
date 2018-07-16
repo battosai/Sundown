@@ -7,6 +7,7 @@ public class Wildlife : CharacterClass
     public bool isHidden {get; private set;}
     public int maxHealth {get; private set;}
     public int nutrition {get; private set;}
+    public int clue {get; private set;}
     public float blood {get; private set;}
     protected enum State {CALM, ALERTED, DEAD};
     protected PlayerClass player;
@@ -14,6 +15,7 @@ public class Wildlife : CharacterClass
     protected float time;
     public void SetMaxHealth(int maxHealth){this.maxHealth=maxHealth;}
     public void SetNutrition(int nutrition){this.nutrition=nutrition;}
+    public void SetClue(int clue){this.clue = clue;}
     public void SetBlood(float blood){this.blood=blood;}
 
     public void Init()
@@ -39,6 +41,9 @@ public class Wildlife : CharacterClass
             case State.DEAD:
                 player.SetFood(player.food+nutrition);
                 Debug.Log("Player now has "+player.food+" food");
+                WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();
+                wnode.SetClues(wnode.clues+clue);
+                Debug.Log("WorldNode now has "+wnode.clues+" clues");
                 this.gameObject.SetActive(false);
                 break;
             default:

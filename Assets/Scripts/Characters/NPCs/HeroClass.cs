@@ -9,6 +9,7 @@ public class HeroClass : CharacterClass
 	protected float leash = 20f;
 	protected readonly int PLAYER_FOUND = 15;
 	protected PlayerClass player;
+	protected Collider2D pushBox;
 	public void SetTracking(float tracking){this.tracking=tracking;}
 	public void SetLead(float lead){this.lead=lead;}
 
@@ -25,6 +26,14 @@ public class HeroClass : CharacterClass
             WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();
             SetLead(lead+wnode.clues*tracking);
         }
+	}
+
+	//handles making the hero (not) present in the player's node, but not making the game object inactive
+	protected void presentInNode(bool isPresent, int nodeID=-1)
+	{
+		rend.enabled = isPresent;
+		pushBox.enabled = isPresent;
+		SetNodeID(nodeID);
 	}
 
 	// private void follow()

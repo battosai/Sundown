@@ -48,5 +48,6 @@ public class WorldNode : MonoBehaviour
   public void ParentReset()
   {
     isActive = true;
+    clues = 0;
   }
 }

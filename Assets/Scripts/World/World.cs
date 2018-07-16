@@ -129,6 +129,7 @@ public class World : MonoBehaviour
 			GameObject animal = Instantiate(animals[Random.Range(0, animals.Count)], node.transform.Find("Wildlife").Find(size));
 			Wildlife wildlife = animal.GetComponent<Wildlife>();
 			wildlife.Init();
+			wildlife.SetNodeID(nodes.IndexOf(node));
 			animal.transform.position = wildlife.SetFloorPosition(point);
 			wnode.AddPoolObject(animal, pool);
 		}

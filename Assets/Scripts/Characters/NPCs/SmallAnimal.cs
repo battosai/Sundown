@@ -13,6 +13,7 @@ public class SmallAnimal : Wildlife
     {
         SetMaxHealth(5);
         SetNutrition(1);
+        SetClue(2);
         SetBlood(0.2f);
         base.Reset();
     }
