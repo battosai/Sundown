@@ -22,17 +22,14 @@ public class Ranger : HeroClass
     public override void Track(int nodeID)
     {
         Debug.Log("Ranger Mastery Track!"); 
-        if(tracking >= PLAYER_FOUND)
+        WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();
+        SetLead(lead+wnode.clues*tracking*MASTERY);
+        presentInNode(false);
+        if(lead >= PLAYER_FOUND)
         {
             Debug.Log("Ranger has found your current location!");
             presentInNode(true, nodeID+1);
             SetLead(0);
-        }
-        else
-        {
-            presentInNode(false);
-            WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();
-            SetLead(lead+wnode.clues*tracking*MASTERY);
         }
         Debug.Log("Ranger now has "+lead+" leads");
     }
