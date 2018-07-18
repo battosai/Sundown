@@ -12,6 +12,7 @@ public class CharacterClass : MonoBehaviour
 	public float floorHeight {get; private set;}
 	public bool isLeft {get; private set;}
 	public GameState gameState {get; private set;}
+	public World world {get; private set;}
 	public Transform trans {get; private set;}
 	public Rigidbody2D rb {get; private set;}
 	public SpriteRenderer rend {get; private set;}
@@ -24,6 +25,7 @@ public class CharacterClass : MonoBehaviour
 	public virtual void Awake()
 	{
 		gameState = GameObject.Find("GameState").GetComponent<GameState>();
+		world = GameObject.Find("World").GetComponent<World>(); 
 		trans = GetComponent<Transform>();
 		rb = GetComponent<Rigidbody2D>();
 		rend = GetComponent<SpriteRenderer>();

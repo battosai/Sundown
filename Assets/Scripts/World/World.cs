@@ -85,8 +85,8 @@ public class World : MonoBehaviour
 		{
 			GameObject spawn = node.transform.Find("PlayerSpawn").gameObject;
 			GameObject exit = node.transform.Find("PlayerExit").gameObject;
-			spawn.transform.position = getValidPoint(node);
-			exit.transform.position = getValidPoint(node);
+			spawn.transform.position = GetValidPoint(node);
+			exit.transform.position = GetValidPoint(node);
 		}
 	}
 
@@ -218,7 +218,7 @@ public class World : MonoBehaviour
 	}
 
 	//returns a point in the node that is still empty floor
-	private Vector2 getValidPoint(GameObject node)
+	public Vector2 GetValidPoint(GameObject node)
 	{
 		WorldNode wnode = node.GetComponent<WorldNode>();
 		while(true)
@@ -250,7 +250,7 @@ public class World : MonoBehaviour
 		List<Vector2> points = new List<Vector2>();
 		for(int i = 0; i < count; i++)
 		{
-			Vector2 point = getValidPoint(node);
+			Vector2 point = GetValidPoint(node);
 			points.Add(point);	
 		}
 		return points;

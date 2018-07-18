@@ -34,6 +34,16 @@ public class HeroClass : CharacterClass
 		rend.enabled = isPresent;
 		pushBox.enabled = isPresent;
 		SetNodeID(nodeID);
+		if(isPresent)
+		{
+			if(nodeID < 0)
+			{
+				Debug.Log("[Error] Invalid NodeID when making Hero present in node");
+				return;
+			}
+			Vector2 spawn = world.GetValidPoint(World.nodes[nodeID]);
+			trans.position = spawn;
+		}
 	}
 
 	// private void follow()
