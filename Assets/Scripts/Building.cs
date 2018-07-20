@@ -7,6 +7,7 @@ public class Building : MonoBehaviour
 {
     public GameObject objects;
     public bool isEnterable {get; private set;}
+    public bool isOccupied {get; private set;}
     public int nodeID {get; private set;}
     public float floorHeight {get; private set;}
     public Size size;// {get; private set;}
@@ -39,6 +40,8 @@ public class Building : MonoBehaviour
         size = randomSize();
         selectLayout(size);
         setFloorHeight();
+        isEnterable = true; //temp
+        isOccupied = false; //temp
     }
 
     //load into active building
