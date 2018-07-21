@@ -9,6 +9,7 @@ public class HeroClass : CharacterClass
 	protected float leash = 20f;
 	protected float tracking;
 	protected float visionRange;
+	protected bool isPresent;
 	protected PlayerClass player;
 	protected Collider2D pushBox;
 	public void SetLead(float lead){this.lead=lead;}
@@ -31,11 +32,21 @@ public class HeroClass : CharacterClass
 	//is the player in the ranger's line of sight
     protected bool playerSpotted()
     {
-        Vector2 direction = player.trans.position-trans.position;
+        Vector2 direction = player.floorPosition-floorPosition;
         if(isLeft && Mathf.Sign(direction.x) < 0 || !isLeft && Mathf.Sign(direction.x) > 0)
         {
-
-            RaycastHit2D vision = Physics2D.Raycast(trans.position, player.trans.position-trans.position, visionRange);
+            RaycastHit2D vision = Physics2D.Raycast(floorPosition, player.floorPosition-floorPosition, visionRange);
+			if(vision.collider != null)
+			{
+				if(vision.collider.gameObject.name == "Player")
+				{
+					return true;
+				}
+				else
+				{
+					Debug.Log("Seeing "+vision.collider.gameObject.name);
+				}
+			}
         }
         return false;
     }
@@ -43,6 +54,7 @@ public class HeroClass : CharacterClass
 	//handles making the hero (not) present in the player's node, but not making the game object inactive
 	protected void presentInNode(bool isPresent, int nodeID=-1)
 	{
+		this.isPresent = isPresent;
 		rend.enabled = isPresent;
 		pushBox.enabled = isPresent;
 		SetNodeID(nodeID);

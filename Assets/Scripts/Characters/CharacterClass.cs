@@ -10,6 +10,7 @@ public class CharacterClass : MonoBehaviour
 	public int health {get; private set;}
 	public float speed {get; private set;}
 	public float floorHeight {get; private set;}
+	public Vector2 floorPosition {get; private set;}
 	public bool isLeft {get; private set;}
 	public GameState gameState {get; private set;}
 	public World world {get; private set;}
@@ -47,5 +48,6 @@ public class CharacterClass : MonoBehaviour
 	{
 		floorHeight = trans.position.y-(rend.bounds.size.y/2);
 		trans.position = new Vector3(trans.position.x, trans.position.y, floorHeight);
+		floorPosition = new Vector2(trans.position.x, floorHeight);
 	}
 }

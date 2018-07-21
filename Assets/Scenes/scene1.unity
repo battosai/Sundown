@@ -1305,6 +1305,16 @@ Prefab:
       propertyPath: m_Name
       value: Hero
       objectReference: {fileID: 0}
+    - target: {fileID: 61374828321005338, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
+        type: 2}
+      propertyPath: m_Offset.y
+      value: -10.933091
+      objectReference: {fileID: 0}
+    - target: {fileID: 61374828321005338, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
+        type: 2}
+      propertyPath: m_Size.y
+      value: 3.4056187
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ee4c68029c7d5a64cba18ef6cd9f1973, type: 2}
   m_IsPrefabParent: 0

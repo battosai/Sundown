@@ -16,8 +16,14 @@ public class Ranger : HeroClass
 
     public void Update()
     {
-        if(playerSpotted())
-            Debug.Log("YOU'VE BEEN SPOTTED!");
+        if(isPresent)
+        {
+            Debug.Log("Ranger is in place");
+            if(playerSpotted())
+            {
+                Debug.Log("YOU'VE BEEN SPOTTED!");
+            }
+        }
         setFloorHeight();
     }
 
