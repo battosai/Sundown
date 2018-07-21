@@ -16,6 +16,8 @@ public class Ranger : HeroClass
 
     public void Update()
     {
+        if(playerSpotted())
+            Debug.Log("YOU'VE BEEN SPOTTED!");
         setFloorHeight();
     }
 
@@ -37,8 +39,9 @@ public class Ranger : HeroClass
     public override void Reset()
     {
         base.Reset();
-        SetTracking(0.8f); 
         SetLead(0f);
         presentInNode(false);
+        tracking = 0.8f;
+        visionRange = 100f;
     }
 }

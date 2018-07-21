@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class HeroClass : CharacterClass
 {
-	public float tracking {get; private set;}//used to determine how likely a clue will be discovered
 	public float lead {get; private set;}
-	protected float leash = 20f;
 	protected readonly int PLAYER_FOUND = 15;
+	protected float leash = 20f;
+	protected float tracking;
+	protected float visionRange;
 	protected PlayerClass player;
 	protected Collider2D pushBox;
-	public void SetTracking(float tracking){this.tracking=tracking;}
 	public void SetLead(float lead){this.lead=lead;}
 
 	public virtual void Track(int nodeID)
@@ -27,6 +27,18 @@ public class HeroClass : CharacterClass
             SetLead(lead+wnode.clues*tracking);
         }
 	}
+
+	//is the player in the ranger's line of sight
+    protected bool playerSpotted()
+    {
+        Vector2 direction = player.trans.position-trans.position;
+        if(isLeft && Mathf.Sign(direction.x) < 0 || !isLeft && Mathf.Sign(direction.x) > 0)
+        {
+
+            RaycastHit2D vision = Physics2D.Raycast(trans.position, player.trans.position-trans.position, visionRange);
+        }
+        return false;
+    }
 
 	//handles making the hero (not) present in the player's node, but not making the game object inactive
 	protected void presentInNode(bool isPresent, int nodeID=-1)

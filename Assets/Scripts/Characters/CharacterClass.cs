@@ -16,7 +16,6 @@ public class CharacterClass : MonoBehaviour
 	public Transform trans {get; private set;}
 	public Rigidbody2D rb {get; private set;}
 	public SpriteRenderer rend {get; private set;}
-
 	public void SetNodeID(int id){nodeID = id;}
 	public void SetIsLeft(bool isLeft){this.isLeft = isLeft;}
 	public void SetHealth(int health){this.health = health;}
@@ -49,5 +48,4 @@ public class CharacterClass : MonoBehaviour
 		floorHeight = trans.position.y-(rend.bounds.size.y/2);
 		trans.position = new Vector3(trans.position.x, trans.position.y, floorHeight);
 	}
-
 }
