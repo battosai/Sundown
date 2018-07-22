@@ -18,7 +18,6 @@ public class Ranger : HeroClass
     {
         if(isPresent)
         {
-            Debug.Log("Ranger is in place");
             if(playerSpotted())
             {
                 Debug.Log("YOU'VE BEEN SPOTTED!");

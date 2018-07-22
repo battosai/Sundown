@@ -35,6 +35,11 @@ public class CharacterClass : MonoBehaviour
 	{
 		speed = BASE_SPEED;
 	}
+
+	public virtual void UpdateAnimator()
+	{
+		Debug.Log(gameObject.name+" has no proper UpdateAnimator() method");
+	}
 	
 	//sets position so that floor position is at target
 	public Vector2 SetFloorPosition(Vector2 target)

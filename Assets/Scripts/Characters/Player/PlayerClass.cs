@@ -17,7 +17,7 @@ public class PlayerClass : CharacterClass
 	public PlayerActions actions {get; private set;}
 	public Collider2D pushBox {get; private set;}
 	private readonly int succumbedToHungerPenalty = 10;
-
+	private Animator anim;
 	public void SetFood(int food){this.food=food;}
 	public void SetGold(int gold){this.gold=gold;}
 
@@ -27,6 +27,7 @@ public class PlayerClass : CharacterClass
 		inputs = GetComponent<PlayerInput>();
 		actions = GetComponent<PlayerActions>();
 		pushBox = GetComponent<Collider2D>();
+		anim = GetComponent<Animator>();
 	}
 
 	public void Start()
@@ -39,6 +40,7 @@ public class PlayerClass : CharacterClass
 	{
 		setFloorHeight();
 		hungerHandler();
+		UpdateAnimator();
 	}
 
 	//called by gamestate in masterreset
@@ -54,6 +56,13 @@ public class PlayerClass : CharacterClass
 		food = 5;
 		hunger = 0;
 		gold = 0;
+		UpdateAnimator();
+	}
+
+	public override void UpdateAnimator()
+	{
+		anim.SetBool("isHuman", isHuman);
+		anim.SetFloat("speed", Mathf.Abs(rb.velocity.x)+Mathf.Abs(rb.velocity.y));
 	}
 
 	//called whenever player goes to next node or maybe by will
@@ -83,4 +92,5 @@ public class PlayerClass : CharacterClass
 			Shapeshift();
 		}
 	}
+
 }

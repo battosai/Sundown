@@ -59,6 +59,7 @@ public class Wildlife : CharacterClass
             float horizontal = Random.Range(-speed, speed);
             float vertical = Random.Range(-speed, speed);
             rb.velocity = new Vector2(horizontal, vertical);
+            SetIsLeft(horizontal < 0);
         }
         else
             rb.velocity = Vector2.zero;

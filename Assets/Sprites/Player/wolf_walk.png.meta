@@ -1,15 +1,17 @@
 fileFormatVersion: 2
-guid: 0ba81d8bf29217e4985cf1f59027c8b4
+guid: 24be20de10adc1b459e5a82740ba4009
 TextureImporter:
   fileIDToRecycleName:
-    21300000: human_walk_0
-    21300002: human_walk_1
-    21300004: human_walk_2
-    21300006: human_walk_3
-    21300008: human_walk_4
-    21300010: human_walk_5
-    21300012: human_walk_6
-    21300014: human_walk_7
+    21300000: wolf_walk_0
+    21300002: wolf_walk_1
+    21300004: wolf_walk_2
+    21300006: wolf_walk_3
+    21300008: wolf_walk_4
+    21300010: wolf_walk_5
+    21300012: wolf_walk_6
+    21300014: wolf_walk_7
+    21300016: wolf_walk_8
+    21300018: wolf_walk_9
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -123,7 +125,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: human_walk_0
+      name: wolf_walk_0
       rect:
         serializedVersion: 2
         x: 0
@@ -137,13 +139,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 49d1ff91364786441b91e54bc41ffe4d
+      spriteID: 9759d6a4380d39f4fab21cd0fd4502a3
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: human_walk_1
+      name: wolf_walk_1
       rect:
         serializedVersion: 2
         x: 25
@@ -157,13 +159,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: aadbcaeec9fb9074f804b1df81c1f5ba
+      spriteID: 2442e5783af070146874f9c865f58b63
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: human_walk_2
+      name: wolf_walk_2
       rect:
         serializedVersion: 2
         x: 50
@@ -177,13 +179,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 871eaf29e1990ab4aa92d7374dd82838
+      spriteID: 74d47769b0f04c24cb65327db59a35b1
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: human_walk_3
+      name: wolf_walk_3
       rect:
         serializedVersion: 2
         x: 75
@@ -197,13 +199,33 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9a601b63f82dea44da331c553cb6419f
+      spriteID: efb83e30d12dd6a4db672f0700889a2c
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: human_walk_4
+      name: wolf_walk_4
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 25
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18cc7598cb27a13428980492740faaf7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf_walk_5
       rect:
         serializedVersion: 2
         x: 0
@@ -217,13 +239,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6be294ac174b80444bf2dc25cd5dd68a
+      spriteID: 99c328f2fdc53044fa5bf287addd36f3
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: human_walk_5
+      name: wolf_walk_6
       rect:
         serializedVersion: 2
         x: 25
@@ -237,13 +259,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3d983caf688f1284f8d5695a276867cf
+      spriteID: 0f14613ca52912a4d81fa44bf6e730e2
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: human_walk_6
+      name: wolf_walk_7
       rect:
         serializedVersion: 2
         x: 50
@@ -257,13 +279,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 550f1f7ff400f64429f7df2e98eb48f7
+      spriteID: def22ff8489d00349bd38fc01c92d2b5
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: human_walk_7
+      name: wolf_walk_8
       rect:
         serializedVersion: 2
         x: 75
@@ -277,7 +299,27 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 014c2814c2f7da443bb0a8578e783555
+      spriteID: 4682598d21b8dcb468d163c5c1cd27fb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wolf_walk_9
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 0
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b72a5b2e88d3ec4993ef8e4b25f9b44
       vertices: []
       indices: 
       edges: []
@@ -285,7 +327,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 563116a3157e971479b892ea5b5ec53f
+    spriteID: 04f23238c4f68ef4583d72bf8440bd48
     vertices: []
     indices: 
     edges: []

@@ -42,10 +42,6 @@ public class HeroClass : CharacterClass
 				{
 					return true;
 				}
-				else
-				{
-					Debug.Log("Seeing "+vision.collider.gameObject.name);
-				}
 			}
         }
         return false;
