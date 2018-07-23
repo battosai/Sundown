@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 50546280732409688}
   - component: {fileID: 61374828321005338}
   - component: {fileID: 212135468449056146}
+  - component: {fileID: 114180781985000638}
   - component: {fileID: 114502804030520796}
   m_Layer: 12
   m_Name: Ranger
@@ -88,6 +89,34 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 9.760546, y: 3.2697182}
   m_EdgeRadius: 0
+--- !u!114 &114180781985000638
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1418218222290802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c70360e90a96bf41b019c5f32456c76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mask:
+    useTriggers: 0
+    useLayerMask: 0
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 0
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
+  closedColor: {r: 0, g: 0, b: 0, a: 0}
+  openColor: {r: 0, g: 0, b: 0, a: 0}
+  collidingColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &114502804030520796
 MonoBehaviour:
   m_ObjectHideFlags: 1

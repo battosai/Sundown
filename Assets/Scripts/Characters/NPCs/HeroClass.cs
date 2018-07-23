@@ -6,11 +6,11 @@ public class HeroClass : CharacterClass
 {
 	public float lead {get; private set;}
 	protected readonly int PLAYER_FOUND = 15;
-	protected float leash = 20f;
 	protected float tracking;
 	protected float visionRange;
 	protected bool isPresent;
 	protected PlayerClass player;
+	protected Hitbox hitBox;
 	protected Collider2D pushBox;
 	public void SetLead(float lead){this.lead=lead;}
 

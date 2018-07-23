@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ranger : HeroClass
+public class Ranger : HeroClass, IHitboxResponder
 {
     private readonly int MASTERY = 2;
+    private readonly float AGGRO_RANGE = 100f;
 
 	public override void Awake()
 	{
 		base.Awake();
         gameState.SetHero(this);
 		player = GameObject.Find("Player").GetComponent<PlayerClass>();
+        hitBox = GetComponent<Hitbox>();
         pushBox = GetComponent<Collider2D>();
 	}
+
+    public void Start()
+    {
+       hitBox.SetResponder(this); 
+    }
 
     public void Update()
     {
@@ -48,5 +55,25 @@ public class Ranger : HeroClass
         presentInNode(false);
         tracking = 0.8f;
         visionRange = 100f;
+    }
+
+    public void Hit(Collider2D other, Action action)
+    {
+        switch(action)
+        {
+            case Action.INTERACT:
+                interact(other);
+                break;
+            case Action.ATTACK:
+                break;
+            default:
+                Debug.Log("[Error] Unrecognized Ranger Action");
+                break;
+        }
+    }
+
+    private void interact(Collider2D other)
+    {
+        
     }
 }

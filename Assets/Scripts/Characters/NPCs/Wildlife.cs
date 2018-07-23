@@ -4,7 +4,10 @@ using System.Collections.Generic;
 
 public class Wildlife : CharacterClass
 {
+    public Sprite alive;
+    public Sprite dead;
     public bool isHidden {get; private set;}
+    public bool isDead {get; private set;}
     public int maxHealth {get; private set;}
     public int nutrition {get; private set;}
     public int clue {get; private set;}
@@ -29,26 +32,29 @@ public class Wildlife : CharacterClass
         setFloorHeight();
         if(health <= 0)
             state = State.DEAD;
-        switch(state)
-        {
-            case State.CALM:
-                if(Time.time - time > 1f)
-                {
-                    time = Time.time;
-                    idleWalk();
-                }
-                break;
-            case State.DEAD:
-                player.SetFood(player.food+nutrition);
-                Debug.Log("Player now has "+player.food+" food");
-                WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();
-                wnode.SetClues(wnode.clues+clue);
-                Debug.Log("WorldNode now has "+wnode.clues+" clues");
-                this.gameObject.SetActive(false);
-                break;
-            default:
-                break;
-        }
+        if(!isDead)
+            switch(state)
+            {
+                case State.CALM:
+                    if(Time.time - time > 1f)
+                    {
+                        time = Time.time;
+                        idleWalk();
+                    }
+                    break;
+                case State.DEAD:
+                    isDead = true;
+                    rend.sprite = dead;
+                    player.SetFood(player.food+nutrition);
+                    Debug.Log("Player now has "+player.food+" food");
+                    WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();
+                    wnode.SetClues(wnode.clues+clue);
+                    Debug.Log("WorldNode now has "+wnode.clues+" clues");
+                    // this.gameObject.SetActive(false);
+                    break;
+                default:
+                    break;
+            }
     }
 
     private void idleWalk()
@@ -68,6 +74,8 @@ public class Wildlife : CharacterClass
     public override void Reset()
     {
         base.Reset();
+        rend.sprite = alive;
+        isDead = false;
         time = Time.time;
         state = State.CALM;
         SetHealth(maxHealth);

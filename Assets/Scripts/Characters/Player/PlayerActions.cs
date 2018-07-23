@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Action {ATTACK, TRAVEL, INTERACT}; //interact could hide in bushes, talk to npcs, search containers
 public class PlayerActions : MonoBehaviour, IHitboxResponder
 {
 	//Vector2: Position, Vector2: Size
@@ -44,7 +43,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 				attack(other);
 				break;
 			default:
-				Debug.Log("Unknown Action!");
+				Debug.Log("[Error] Unknown Player Action");
 				break;
 		}
 	}
