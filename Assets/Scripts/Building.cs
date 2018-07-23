@@ -35,7 +35,6 @@ public class Building : MonoBehaviour
         if(objects != null)
         {
             Destroy(objects);
-            Debug.Log("DELETED OBJECTS");
         }
         size = randomSize();
         selectLayout(size);

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//CONSIDER MAKING THIS CLASS NON MONOBEHAVIOUR SO WE CAN USE A NORMAL CONSTRUCTOR INSTEAD OF THE AWAKE FNC
+public enum CharacterType {PLAYER, HERO, WILDLIFE, TOWNSPERSON};
 public class CharacterClass : MonoBehaviour
 {
 	public readonly float BASE_SPEED = 20f;
+	public CharacterType type {get; private set;}
 	public int nodeID {get; private set;}
 	public int health {get; private set;}
 	public float speed {get; private set;}
@@ -17,6 +18,7 @@ public class CharacterClass : MonoBehaviour
 	public Transform trans {get; private set;}
 	public Rigidbody2D rb {get; private set;}
 	public SpriteRenderer rend {get; private set;}
+	public void SetType(CharacterType type){this.type = type;}
 	public void SetNodeID(int id){nodeID = id;}
 	public void SetIsLeft(bool isLeft){this.isLeft = isLeft;}
 	public void SetHealth(int health){this.health = health;}

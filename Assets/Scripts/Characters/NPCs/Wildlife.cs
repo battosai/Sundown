@@ -6,7 +6,6 @@ public class Wildlife : CharacterClass
 {
     public Sprite alive;
     public Sprite dead;
-    public bool isHidden {get; private set;}
     public bool isDead {get; private set;}
     public int maxHealth {get; private set;}
     public int nutrition {get; private set;}
@@ -25,6 +24,7 @@ public class Wildlife : CharacterClass
     {
         base.Awake();
         player = GameObject.Find("Player").GetComponent<PlayerClass>();
+        SetType(CharacterType.WILDLIFE);
     }
 
     public void Update()

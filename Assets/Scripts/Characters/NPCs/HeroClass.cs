@@ -14,6 +14,12 @@ public class HeroClass : CharacterClass
 	protected Collider2D pushBox;
 	public void SetLead(float lead){this.lead=lead;}
 
+	//common one time setups
+	protected void init()
+	{
+		SetType(CharacterType.HERO);
+	}
+
 	public virtual void Track(int nodeID)
 	{
 		Debug.Log("Default Track!");

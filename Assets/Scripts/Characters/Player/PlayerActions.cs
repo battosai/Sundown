@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerActions : MonoBehaviour, IHitboxResponder
 {
-	//Vector2: Position, Vector2: Size
+	//Vector2: Offset, Vector2: Size
 	//position should default to the right side, use isLeft to flip
 	private Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
 	private Vector2[] INTERACT = {new Vector2(0, -12), new Vector2(5, 2)};

@@ -6,6 +6,12 @@ public class Ranger : HeroClass, IHitboxResponder
 {
     private readonly int MASTERY = 2;
     private readonly float AGGRO_RANGE = 100f;
+    private enum State {MOVING, INSPECTING, IDLE, CHASING};
+    private State state;
+	private Vector2 INTERACT_SIZE = new Vector2(50f, 50f);
+    private List<GameObject> usedLeads;
+    private float time;
+    private GameObject target;
 
 	public override void Awake()
 	{
@@ -18,7 +24,9 @@ public class Ranger : HeroClass, IHitboxResponder
 
     public void Start()
     {
-       hitBox.SetResponder(this); 
+        init();
+        hitBox.SetResponder(this); 
+    //    usedLeads = new List<GameObject>();
     }
 
     public void Update()
@@ -28,6 +36,19 @@ public class Ranger : HeroClass, IHitboxResponder
             if(playerSpotted())
             {
                 Debug.Log("YOU'VE BEEN SPOTTED!");
+            }
+            switch(state)
+            {
+                case State.IDLE:
+                    break;
+                case State.MOVING:
+                    break;
+                case State.INSPECTING:
+                    interactCheck();
+                    break;
+                default:
+                    Debug.Log("[Error] Unknown Ranger Action: "+state);
+                    break;
             }
         }
         setFloorHeight();
@@ -55,6 +76,9 @@ public class Ranger : HeroClass, IHitboxResponder
         presentInNode(false);
         tracking = 0.8f;
         visionRange = 100f;
+        state = State.IDLE;
+        time = Time.time;
+        usedLeads = new List<GameObject>();
     }
 
     public void Hit(Collider2D other, Action action)
@@ -72,8 +96,48 @@ public class Ranger : HeroClass, IHitboxResponder
         }
     }
 
+    private void interactCheck()
+    {
+        hitBox.mask.useTriggers = false;
+		hitBox.SetAction(Action.INTERACT);
+		hitBox.SetOffset(floorPosition);
+		hitBox.SetSize(INTERACT_SIZE);
+		hitBox.StartCheckingCollision();
+		hitBox.CheckCollision();
+		hitBox.StopCheckingCollision();
+    }
+
+    //effectively the ranger's "scout" ability
     private void interact(Collider2D other)
     {
-        
+        target = null;
+        GameObject obj = other.gameObject;
+        if(!usedLeads.Contains(obj))
+        {
+            CharacterClass character = obj.GetComponent<CharacterClass>();
+            if(character != null)
+            {
+               switch(character.type)
+               {
+                    case CharacterType.PLAYER:
+                        break;
+                    case CharacterType.WILDLIFE:
+                        Wildlife animal = obj.GetComponent<Wildlife>();
+                        if(animal.isDead)
+                            target = obj;
+                        break;
+                    case CharacterType.TOWNSPERSON:
+                        break;
+                    default:
+                        Debug.Log("[Error] "+obj.name+" has no CharacterType");
+                        break;
+               } 
+               if(target != null)
+               {
+                    usedLeads.Add(obj);
+               }
+            }
+        }
+        state = State.MOVING;
     }
 }
