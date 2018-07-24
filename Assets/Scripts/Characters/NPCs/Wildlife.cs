@@ -45,6 +45,7 @@ public class Wildlife : CharacterClass
                 case State.DEAD:
                     isDead = true;
                     rend.sprite = dead;
+                    rb.velocity = Vector2.zero;
                     player.SetFood(player.food+nutrition);
                     Debug.Log("Player now has "+player.food+" food");
                     WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();

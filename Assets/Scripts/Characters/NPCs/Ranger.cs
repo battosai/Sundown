@@ -33,6 +33,7 @@ public class Ranger : HeroClass, IHitboxResponder
     {
         if(isPresent)
         {
+            world.NearestMapCoords(trans.position, nodeID);
             if(playerSpotted())
             {
                 Debug.Log("YOU'VE BEEN SPOTTED!");

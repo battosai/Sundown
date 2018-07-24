@@ -245,15 +245,18 @@ public class World : MonoBehaviour
     	float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
     	float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
     	Vector2Int coords = new Vector2Int(-1, -1);
+		Vector2 draw = Vector2.zero;
     	float min = -1;
     	for(int i = 0; i < MapGenerator.ROWS; i++)
     	{
-      		for(int j = 0; i < MapGenerator.COLS; j++)
+      		for(int j = 0; j < MapGenerator.COLS; j++)
       		{
+				// Debug.Log("i = "+i+", j = "+j);
         		if(map[i,j] == MapGenerator.FLOOR)
         		{
           			float x = transform.position.x-mapWidth/2+j*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
 					float y = transform.position.y+mapHeight/2-i*MeshGenerator.SQUARE_SIZE-MeshGenerator.SQUARE_SIZE/2;
+					draw = new Vector2(x, y);
 					float distance = (pos.x-x)*(pos.x-x)+(pos.y-y)*(pos.y-y);
 					if(distance < min || min < 0)
 					{
@@ -263,6 +266,7 @@ public class World : MonoBehaviour
 				}
       		}
     	}
+		Debug.DrawLine(new Vector3(draw.x-0.5f,draw.y,0f), new Vector3(draw.x+0.5f,draw.y,0f), Color.cyan, 1f);	
 		//SHOULD PROBABLY DEBUG.DRAWLINE THIS TO CHECK
     	return coords;
 	}

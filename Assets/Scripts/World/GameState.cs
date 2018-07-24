@@ -45,27 +45,27 @@ public class GameState : MonoBehaviour
 	}
 
 	//switches between daytime and nighttime according to their durations
-	private void checkTimeLimit()
-	{
-		if(startTime == UNSET_TIME)
-			startTime = Time.time;
-		if(isDaytime)
-		{
-			if(Time.time - startTime >= DAY_LENGTH)
-			{
-				isDaytime = false;
-				startTime = UNSET_TIME;
-			}
-		}
-		else
-		{
-			if(Time.time - startTime >= NIGHT_LENGTH)
-			{
-				isDaytime = true;
-				startTime = UNSET_TIME;
-			}
-		}
-	}
+	// private void checkTimeLimit()
+	// {
+	// 	if(startTime == UNSET_TIME)
+	// 		startTime = Time.time;
+	// 	if(isDaytime)
+	// 	{
+	// 		if(Time.time - startTime >= DAY_LENGTH)
+	// 		{
+	// 			isDaytime = false;
+	// 			startTime = UNSET_TIME;
+	// 		}
+	// 	}
+	// 	else
+	// 	{
+	// 		if(Time.time - startTime >= NIGHT_LENGTH)
+	// 		{
+	// 			isDaytime = true;
+	// 			startTime = UNSET_TIME;
+	// 		}
+	// 	}
+	// }
 
 	private void masterReset()
 	{
