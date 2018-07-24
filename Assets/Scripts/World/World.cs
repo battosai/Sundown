@@ -237,6 +237,35 @@ public class World : MonoBehaviour
 			}
 		}
 	}
+	
+	//returns closest row,col pair from pos
+  	public Vector2Int NearestMapCoords(Vector2 pos, int nodeID)
+	{
+		int[,] map = nodes[nodeID].GetComponent<WorldNode>().map;
+    	float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
+    	float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
+    	Vector2Int coords = new Vector2Int(-1, -1);
+    	float min = -1;
+    	for(int i = 0; i < MapGenerator.ROWS; i++)
+    	{
+      		for(int j = 0; i < MapGenerator.COLS; j++)
+      		{
+        		if(map[i,j] == MapGenerator.FLOOR)
+        		{
+          			float x = transform.position.x-mapWidth/2+j*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
+					float y = transform.position.y+mapHeight/2-i*MeshGenerator.SQUARE_SIZE-MeshGenerator.SQUARE_SIZE/2;
+					float distance = (pos.x-x)*(pos.x-x)+(pos.y-y)*(pos.y-y);
+					if(distance < min || min < 0)
+					{
+						min = distance;
+						coords = new Vector2Int(i, j);
+					}
+				}
+      		}
+    	}
+		//SHOULD PROBABLY DEBUG.DRAWLINE THIS TO CHECK
+    	return coords;
+	}
 
 	private void reserveMapPoint(GameObject node, int row, int col)
 	{
