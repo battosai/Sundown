@@ -35,7 +35,8 @@ public class Ranger : HeroClass, IHitboxResponder
     	float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
         if(isPresent)
         {
-            Vector2 coords = world.NearestMapCoords(trans.position, nodeID);
+            Vector2Int rowcol = world.NearestMapPair(trans.position, nodeID);
+            Vector2 coords = World.ConvertMapToWorld(rowcol.x, rowcol.y, nodeID);
             Debug.DrawLine(new Vector3(coords.x-2f, coords.y,0f), new Vector3(coords.x+2f, coords.y, 0f), Color.cyan, 1f);
             if(playerSpotted())
             {
@@ -77,7 +78,7 @@ public class Ranger : HeroClass, IHitboxResponder
     {
         base.Reset();
         SetLead(0f);
-        presentInNode(false);
+        presentInNode(true, 0);
         tracking = 0.8f;
         visionRange = 100f;
         state = State.IDLE;

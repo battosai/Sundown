@@ -230,21 +230,18 @@ public class World : MonoBehaviour
 			if(wnode.map[row, col] == MapGenerator.FLOOR)
 			{
 				reserveMapPoint(node, row, col);
-				//row,col convert to x,y has to be treating row,col as x,y
-				float x = node.transform.position.x-mapWidth/2+col*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
-				float y = node.transform.position.y+mapHeight/2-row*MeshGenerator.SQUARE_SIZE-MeshGenerator.SQUARE_SIZE/2;
-				return new Vector2(x, y); 
+				return ConvertMapToWorld(row, col, wnode.nodeID);
 			}
 		}
 	}
 	
 	//returns world coords of closest map row,col pair from pos
-  	public Vector2 NearestMapCoords(Vector2 pos, int nodeID)
+  	public Vector2Int NearestMapPair(Vector2 pos, int nodeID)
 	{
 		int[,] map = nodes[nodeID].GetComponent<WorldNode>().map;
     	float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
     	float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
-    	Vector2 coords = new Vector2(-1f, -1f);
+    	Vector2Int closest = new Vector2Int(-1, -1);
     	float min = -1;
     	for(int i = 0; i < MapGenerator.ROWS; i++)
     	{
@@ -252,20 +249,51 @@ public class World : MonoBehaviour
       		{
         		if(map[i,j] == MapGenerator.FLOOR)
         		{
-          			float x = NODE_SPACING*nodeID-mapWidth/2+j*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
-					float y = mapHeight/2-i*MeshGenerator.SQUARE_SIZE-MeshGenerator.SQUARE_SIZE/2;
-					float distance = (pos.x-x)*(pos.x-x)+(pos.y-y)*(pos.y-y);
+					Vector2 coords = ConvertMapToWorld(i, j, nodeID);
+					float distance = (pos.x-coords.x)*(pos.x-coords.x)+(pos.y-coords.y)*(pos.y-coords.y);
 					if(distance < min || min < 0)
 					{
 						min = distance;
-						coords = new Vector2(x, y);
+						closest = new Vector2Int(i, j);
 					}
 				}
       		}
     	}
 		
-		//SHOULD PROBABLY DEBUG.DRAWLINE THIS TO CHECK
-    	return coords;
+    	return closest;
+	}
+
+	public static List<Vector2> GetNeighbors(int row, int col, int nodeID)
+	{
+		List<Vector2> neighbors = new List<Vector2>();
+		int[,] map = World.nodes[nodeID].GetComponent<WorldNode>().map;
+		//top neighbor
+		if(row > 0)
+			if(map[row-1, col] == MapGenerator.FLOOR)
+				neighbors.Add(World.ConvertMapToWorld(row, col, nodeID));
+		//bottom neighbor
+		if(row < MapGenerator.ROWS)
+			if(map[row+1, col] == MapGenerator.FLOOR)
+				neighbors.Add(World.ConvertMapToWorld(row, col, nodeID));
+		//left neighbor
+		if(col > 0)
+			if(map[row, col-1] == MapGenerator.FLOOR)
+				neighbors.Add(World.ConvertMapToWorld(row, col, nodeID));
+		//right neighbor
+		if(col < MapGenerator.COLS)
+			if(map[row, col+1] == MapGenerator.FLOOR)
+				neighbors.Add(World.ConvertMapToWorld(row, col, nodeID));
+		return neighbors;
+	}
+
+	//converts map row,col pair to world coords
+	public static Vector2 ConvertMapToWorld(int row, int col, int nodeID)
+	{
+    	float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
+    	float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
+		float x = NODE_SPACING*nodeID-mapWidth/2+col*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
+		float y = mapHeight/2-row*MeshGenerator.SQUARE_SIZE-MeshGenerator.SQUARE_SIZE/2;
+		return new Vector2(x, y);
 	}
 
 	private void reserveMapPoint(GameObject node, int row, int col)

@@ -72,6 +72,12 @@ public class HeroClass : CharacterClass
 		}
 	}
 
+	protected List<Vector2> astarPath()
+	{
+		List<Vector2> path = new List<Vector2>();
+		return path;
+	}
+
 	// private void follow()
 	// {
 	// 	if(nodeID != player.nodeID)
