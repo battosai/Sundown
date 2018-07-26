@@ -238,13 +238,13 @@ public class World : MonoBehaviour
 		}
 	}
 	
-	//returns closest row,col pair from pos
-  	public Vector2Int NearestMapCoords(Vector2 pos, int nodeID)
+	//returns world coords of closest map row,col pair from pos
+  	public Vector2 NearestMapCoords(Vector2 pos, int nodeID)
 	{
 		int[,] map = nodes[nodeID].GetComponent<WorldNode>().map;
     	float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
     	float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
-    	Vector2Int coords = new Vector2Int(-1, -1);
+    	Vector2 coords = new Vector2(-1f, -1f);
     	float min = -1;
     	for(int i = 0; i < MapGenerator.ROWS; i++)
     	{
@@ -258,7 +258,7 @@ public class World : MonoBehaviour
 					if(distance < min || min < 0)
 					{
 						min = distance;
-						coords = new Vector2Int(i, j);
+						coords = new Vector2(x, y);
 					}
 				}
       		}
