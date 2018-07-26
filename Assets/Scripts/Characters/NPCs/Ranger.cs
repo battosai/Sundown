@@ -31,9 +31,16 @@ public class Ranger : HeroClass, IHitboxResponder
 
     public void Update()
     {
+    	float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
+    	float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
         if(isPresent)
         {
-            world.NearestMapCoords(trans.position, nodeID);
+            Debug.Log("Ranger is in node "+nodeID);
+            Vector2Int rowcol = world.NearestMapCoords(trans.position, nodeID);
+            Debug.Log("row: "+rowcol.x+", col: "+rowcol.y);
+            float x = World.NODE_SPACING*nodeID-mapWidth/2+rowcol.y*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
+            float y = mapHeight/2-rowcol.x*MeshGenerator.SQUARE_SIZE-MeshGenerator.SQUARE_SIZE/2;
+            Debug.DrawLine(new Vector3(x-2f, y,0f), new Vector3(x+2f, y, 0f), Color.cyan, 1f);
             if(playerSpotted())
             {
                 Debug.Log("YOU'VE BEEN SPOTTED!");
