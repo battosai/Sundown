@@ -57,4 +57,23 @@ public class CharacterClass : MonoBehaviour
 		trans.position = new Vector3(trans.position.x, trans.position.y, floorHeight);
 		floorPosition = new Vector2(trans.position.x, floorHeight);
 	}
+
+	protected class pathNode
+	{
+		public float estimate;
+		public int row, col;
+		public Vector2 pos;
+		public pathNode parent;
+		public pathNode(int row, int col, int nodeID, pathNode parent)
+		{
+			this.row = row;
+			this.col = col;
+			this.pos = World.ConvertMapToWorld(row, col, nodeID);
+			this.parent = parent;
+		}
+		public void calculate(Vector2 destination)
+		{ 
+			this.estimate = Mathf.Pow(this.pos.x-destination.x, 2)+Mathf.Pow(this.pos.y-destination.y, 2);
+		}
+	}
 }

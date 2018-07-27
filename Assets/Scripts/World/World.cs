@@ -236,12 +236,12 @@ public class World : MonoBehaviour
 	}
 	
 	//returns world coords of closest map row,col pair from pos
-  	public Vector2Int NearestMapPair(Vector2 pos, int nodeID)
+  	public static int[] NearestMapPair(Vector2 pos, int nodeID)
 	{
 		int[,] map = nodes[nodeID].GetComponent<WorldNode>().map;
     	float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
     	float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
-    	Vector2Int closest = new Vector2Int(-1, -1);
+    	int[] closest = new int[2];
     	float min = -1;
     	for(int i = 0; i < MapGenerator.ROWS; i++)
     	{
@@ -254,36 +254,14 @@ public class World : MonoBehaviour
 					if(distance < min || min < 0)
 					{
 						min = distance;
-						closest = new Vector2Int(i, j);
+						closest[0] = i;
+						closest[1] = j;
 					}
 				}
       		}
     	}
 		
     	return closest;
-	}
-
-	public static List<Vector2> GetNeighbors(int row, int col, int nodeID)
-	{
-		List<Vector2> neighbors = new List<Vector2>();
-		int[,] map = World.nodes[nodeID].GetComponent<WorldNode>().map;
-		//top neighbor
-		if(row > 0)
-			if(map[row-1, col] == MapGenerator.FLOOR)
-				neighbors.Add(World.ConvertMapToWorld(row, col, nodeID));
-		//bottom neighbor
-		if(row < MapGenerator.ROWS)
-			if(map[row+1, col] == MapGenerator.FLOOR)
-				neighbors.Add(World.ConvertMapToWorld(row, col, nodeID));
-		//left neighbor
-		if(col > 0)
-			if(map[row, col-1] == MapGenerator.FLOOR)
-				neighbors.Add(World.ConvertMapToWorld(row, col, nodeID));
-		//right neighbor
-		if(col < MapGenerator.COLS)
-			if(map[row, col+1] == MapGenerator.FLOOR)
-				neighbors.Add(World.ConvertMapToWorld(row, col, nodeID));
-		return neighbors;
 	}
 
 	//converts map row,col pair to world coords
