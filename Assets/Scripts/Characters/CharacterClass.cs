@@ -58,6 +58,65 @@ public class CharacterClass : MonoBehaviour
 		floorPosition = new Vector2(trans.position.x, floorHeight);
 	}
 
+	protected List<Vector2> astarPath(Vector2 destination)
+	{
+		List<Vector2> path = new List<Vector2>();
+		// List<pathNode> visited = new List<pathNode>();
+		Dictionary<Vector2Int, pathNode> visited = new Dictionary<Vector2Int, pathNode>();
+		Stack stack = new Stack(); 
+		int[] mapStart = World.NearestMapPair(trans.position, nodeID);
+		pathNode root = new pathNode(mapStart[0], mapStart[1], nodeID, null);
+		path.Add(root.pos);
+		stack.Push(root);
+		while(stack.Count > 0)
+		{
+			pathNode currNode = (pathNode)stack.Pop();
+			if(currNode.pos == destination)
+			{
+				break;
+			}
+			else
+			{
+				visited[new Vector2Int(currNode.row, currNode.col)] = currNode;
+				List<pathNode> neighbors = getNeighbors(currNode);
+				foreach(pathNode neighbor in neighbors)
+				{
+					//PROBLEM: these are not unique pathNodes for an individual entry of a map pair
+					//every call to getNeighbors creates a new pathNode object and won't be contained in visited technically
+					//can't use Vector2Int because we need to update the heuristic estimate if it's already been visited
+					//try using dictionary for visited (vector2int, pathNode)
+				}
+			}
+		}
+		return path;
+	}
+
+	//return list of neighbors as pathnodes
+	protected List<pathNode> getNeighbors(pathNode origin)
+	{
+		int row = origin.row;
+		int col = origin.col;
+		List<pathNode> neighbors = new List<pathNode>();
+		int[,] map = World.nodes[nodeID].GetComponent<WorldNode>().map;
+		//top neighbor
+		if(row > 0)
+			if(map[row-1, col] == MapGenerator.FLOOR)
+				neighbors.Add(new pathNode(row, col, nodeID, origin));
+		//bottom neighbor
+		if(row < MapGenerator.ROWS)
+			if(map[row+1, col] == MapGenerator.FLOOR)
+				neighbors.Add(new pathNode(row, col, nodeID, origin));
+		//left neighbor
+		if(col > 0)
+			if(map[row, col-1] == MapGenerator.FLOOR)
+				neighbors.Add(new pathNode(row, col, nodeID, origin));
+		//right neighbor
+		if(col < MapGenerator.COLS)
+			if(map[row, col+1] == MapGenerator.FLOOR)
+				neighbors.Add(new pathNode(row, col, nodeID, origin));
+		return neighbors;
+	}
+
 	protected class pathNode
 	{
 		public float estimate;

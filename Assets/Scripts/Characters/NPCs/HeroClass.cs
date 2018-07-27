@@ -72,50 +72,6 @@ public class HeroClass : CharacterClass
 		}
 	}
 
-	protected List<Vector2> astarPath(Vector2 destination)
-	{
-		List<Vector2> path = new List<Vector2>();
-		List<pathNode> visited = new List<pathNode>();
-		Stack stack = new Stack(); 
-		int[] mapStart = World.NearestMapPair(trans.position, nodeID);
-		pathNode root = new pathNode(mapStart[0], mapStart[1], nodeID, null);
-		path.Add(root.pos);
-		stack.Push(root);
-		while(stack.Count > 0)
-		{
-			pathNode currNode = (pathNode)stack.Pop();
-			visited.Add(currNode);
-			List<pathNode> neighbors = getNeighbors(currNode);
-		}
-		return path;
-	}
-
-	//return list of neighbors as pathnodes
-	protected List<pathNode> getNeighbors(pathNode origin)
-	{
-		int row = origin.row;
-		int col = origin.col;
-		List<pathNode> neighbors = new List<pathNode>();
-		int[,] map = World.nodes[nodeID].GetComponent<WorldNode>().map;
-		//top neighbor
-		if(row > 0)
-			if(map[row-1, col] == MapGenerator.FLOOR)
-				neighbors.Add(new pathNode(row, col, nodeID, origin));
-		//bottom neighbor
-		if(row < MapGenerator.ROWS)
-			if(map[row+1, col] == MapGenerator.FLOOR)
-				neighbors.Add(new pathNode(row, col, nodeID, origin));
-		//left neighbor
-		if(col > 0)
-			if(map[row, col-1] == MapGenerator.FLOOR)
-				neighbors.Add(new pathNode(row, col, nodeID, origin));
-		//right neighbor
-		if(col < MapGenerator.COLS)
-			if(map[row, col+1] == MapGenerator.FLOOR)
-				neighbors.Add(new pathNode(row, col, nodeID, origin));
-		return neighbors;
-	}
-
 	// private void follow()
 	// {
 	// 	if(nodeID != player.nodeID)
