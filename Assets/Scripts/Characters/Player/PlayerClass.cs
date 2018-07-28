@@ -13,7 +13,7 @@ public class PlayerClass : CharacterClass
 	public int food {get; private set;}
 	public int hunger {get; private set;}
 	public int gold {get; private set;}
-	public PlayerInput inputs {get; private set;}
+	public PlayerInput input {get; private set;}
 	public PlayerActions actions {get; private set;}
 	public Collider2D pushBox {get; private set;}
 	private readonly int succumbedToHungerPenalty = 10;
@@ -24,7 +24,7 @@ public class PlayerClass : CharacterClass
 	public override void Awake()
 	{
 		base.Awake();
-		inputs = GetComponent<PlayerInput>();
+		input = GetComponent<PlayerInput>();
 		actions = GetComponent<PlayerActions>();
 		pushBox = GetComponent<Collider2D>();
 		anim = GetComponent<Animator>();

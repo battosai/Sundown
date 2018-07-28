@@ -35,12 +35,20 @@ public class Ranger : HeroClass, IHitboxResponder
     	float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
         if(isPresent)
         {
-            int[] rowcol = World.NearestMapPair(trans.position, nodeID);
-            Vector2 coords = World.ConvertMapToWorld(rowcol[0], rowcol[1], nodeID);
-            Debug.DrawLine(new Vector3(coords.x-2f, coords.y,0f), new Vector3(coords.x+2f, coords.y, 0f), Color.cyan, 1f);
+            //test
+            // int[] rowcol = World.NearestMapPair(trans.position, nodeID);
+            // Vector2 coords = World.ConvertMapToWorld(rowcol[0], rowcol[1], nodeID);
+            // Debug.DrawLine(new Vector3(coords.x-2f, coords.y,0f), new Vector3(coords.x+2f, coords.y, 0f), Color.cyan, 1f);
+            if(PlayerInput.Space)
+            {
+                int[] playerMapPair = World.NearestMapPair(player.trans.position, nodeID);
+                Vector2 destination = World.ConvertMapToWorld(playerMapPair[0], playerMapPair[1], nodeID);
+                astarPath(destination);
+            }
+            //end test
             if(playerSpotted())
             {
-                Debug.Log("YOU'VE BEEN SPOTTED!");
+                // Debug.Log("YOU'VE BEEN SPOTTED!");
             }
             switch(state)
             {

@@ -18,6 +18,7 @@ public class CharacterClass : MonoBehaviour
 	public Transform trans {get; private set;}
 	public Rigidbody2D rb {get; private set;}
 	public SpriteRenderer rend {get; private set;}
+	protected pathNode[,] nodeMap;
 	public void SetType(CharacterType type){this.type = type;}
 	public void SetNodeID(int id){nodeID = id;}
 	public void SetIsLeft(bool isLeft){this.isLeft = isLeft;}
@@ -61,38 +62,67 @@ public class CharacterClass : MonoBehaviour
 	protected List<Vector2> astarPath(Vector2 destination)
 	{
 		List<Vector2> path = new List<Vector2>();
-		// List<pathNode> visited = new List<pathNode>();
-		Dictionary<Vector2Int, pathNode> visited = new Dictionary<Vector2Int, pathNode>();
-		Stack stack = new Stack(); 
+		List<pathNode> visited = new List<pathNode>();
+		Stack<pathNode> stack = new Stack<pathNode>(); 
 		int[] mapStart = World.NearestMapPair(trans.position, nodeID);
-		pathNode root = new pathNode(mapStart[0], mapStart[1], nodeID, null);
-		path.Add(root.pos);
+		pathNode root = nodeMap[mapStart[0], mapStart[1]];
+		root.cost = 0f;
 		stack.Push(root);
 		while(stack.Count > 0)
 		{
-			pathNode currNode = (pathNode)stack.Pop();
+			pathNode currNode = stack.Pop();
 			if(currNode.pos == destination)
 			{
-				break;
+				Debug.Log("Path discovered!");
+				while(currNode != root)
+				{
+					path.Add(currNode.pos);
+					Debug.DrawLine(new Vector3(currNode.pos.x-5f, currNode.pos.y, 0f), new Vector3(currNode.pos.x+5f, currNode.pos.y, 0f), Color.cyan, 1f);
+					currNode = currNode.parent;
+				}
+				path.Add(root.pos);
+				path.Reverse();
+				return path;
 			}
 			else
 			{
-				visited[new Vector2Int(currNode.row, currNode.col)] = currNode;
-				List<pathNode> neighbors = getNeighbors(currNode);
+				List<pathNode> neighbors = getNeighbors(currNode, nodeMap);
 				foreach(pathNode neighbor in neighbors)
 				{
-					//PROBLEM: these are not unique pathNodes for an individual entry of a map pair
-					//every call to getNeighbors creates a new pathNode object and won't be contained in visited technically
-					//can't use Vector2Int because we need to update the heuristic estimate if it's already been visited
-					//try using dictionary for visited (vector2int, pathNode)
+					if(visited.Contains(neighbor) || stack.Contains(neighbor))
+					{
+						if(currNode.cost+1 < neighbor.cost)
+							neighbor.calculate(currNode);
+					}
+					else
+					{
+						visited.Add(neighbor);
+						neighbor.calculate(currNode);
+						stack.Push(neighbor);
+					}
 				}
+				pathNode[] stackArray = stack.ToArray();
+				for(int c = 0; c < stack.Count-1; c++)
+				{
+					for(int i = 1; i < stack.Count; i++)
+					{
+						if(stackArray[i-1].total < stackArray[i].total)
+						{
+							pathNode swapper = stackArray[i-1];
+							stackArray[i-1] = stackArray[i];
+							stackArray[i] = swapper;
+						}
+					}
+				}
+				stack = new Stack<pathNode>(stackArray);
 			}
 		}
-		return path;
+		Debug.Log("[Warning] Could not find path to player");
+		return null;
 	}
 
 	//return list of neighbors as pathnodes
-	protected List<pathNode> getNeighbors(pathNode origin)
+	protected List<pathNode> getNeighbors(pathNode origin, pathNode[,] nodeMap)
 	{
 		int row = origin.row;
 		int col = origin.col;
@@ -101,25 +131,25 @@ public class CharacterClass : MonoBehaviour
 		//top neighbor
 		if(row > 0)
 			if(map[row-1, col] == MapGenerator.FLOOR)
-				neighbors.Add(new pathNode(row, col, nodeID, origin));
+				neighbors.Add(nodeMap[row-1, col]);
 		//bottom neighbor
 		if(row < MapGenerator.ROWS)
 			if(map[row+1, col] == MapGenerator.FLOOR)
-				neighbors.Add(new pathNode(row, col, nodeID, origin));
+				neighbors.Add(nodeMap[row+1, col]);
 		//left neighbor
 		if(col > 0)
 			if(map[row, col-1] == MapGenerator.FLOOR)
-				neighbors.Add(new pathNode(row, col, nodeID, origin));
+				neighbors.Add(nodeMap[row, col-1]);
 		//right neighbor
 		if(col < MapGenerator.COLS)
 			if(map[row, col+1] == MapGenerator.FLOOR)
-				neighbors.Add(new pathNode(row, col, nodeID, origin));
+				neighbors.Add(nodeMap[row, col+1]);
 		return neighbors;
 	}
 
 	protected class pathNode
 	{
-		public float estimate;
+		public float estimate, cost, total;
 		public int row, col;
 		public Vector2 pos;
 		public pathNode parent;
@@ -130,9 +160,29 @@ public class CharacterClass : MonoBehaviour
 			this.pos = World.ConvertMapToWorld(row, col, nodeID);
 			this.parent = parent;
 		}
-		public void calculate(Vector2 destination)
-		{ 
+		public void guesstimate(Vector2 destination)
+		{
 			this.estimate = Mathf.Pow(this.pos.x-destination.x, 2)+Mathf.Pow(this.pos.y-destination.y, 2);
+		}
+		public void calculate(pathNode parent)
+		{
+			this.cost = parent.cost+1;
+			this.total = this.cost+this.estimate;
+			this.parent = parent;
+		}
+		public static pathNode[,] makeNodeMap(Vector2 destination, int[,] map, int nodeID)
+		{
+			pathNode[,] nodeMap = new pathNode[MapGenerator.ROWS, MapGenerator.COLS];
+			for(int i = 0; i < MapGenerator.ROWS; i++)
+			{
+				for(int j = 0; j < MapGenerator.COLS; j++)
+				{
+					pathNode node = new pathNode(i, j, nodeID, null);
+					node.guesstimate(destination);
+					nodeMap[i, j] = node;
+				}
+			}
+			return nodeMap;
 		}
 	}
 }

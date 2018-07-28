@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//ROLE: handle player inputs for all platforms
+//ROLE: handle player input for all platforms
 
 public class PlayerInput : MonoBehaviour
 {
   public static bool isLeftClick;
   public static bool isLeftHold;
   public static bool isRightClick;
-  public static bool E, W, A, S, D;
+  public static bool E, W, A, S, D, Space;
 
 	private readonly float DEFAULT_MOUSE_Z = -9f;
   private readonly float CLICK_TOLERANCE = 0.2f;
@@ -111,6 +111,7 @@ public class PlayerInput : MonoBehaviour
     A = Input.GetKey(KeyCode.A);
     S = Input.GetKey(KeyCode.S);
     D = Input.GetKey(KeyCode.D);
+    Space = Input.GetKeyDown(KeyCode.Space);
     if(W && S)
     {
       W = false;
