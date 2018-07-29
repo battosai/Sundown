@@ -59,7 +59,7 @@ public class World : MonoBehaviour
 						float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
 						float x = node.transform.position.x-mapWidth/2+j*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
 						float y = node.transform.position.y+mapHeight/2-i*MeshGenerator.SQUARE_SIZE-MeshGenerator.SQUARE_SIZE/2;
-						Debug.DrawLine(new Vector2(x-0.5f, y), new Vector2(x+0.5f, y), Color.cyan, 100f);
+						Debug.DrawLine(new Vector2(x-0.5f, y), new Vector2(x+0.5f, y), Color.red, 1f);
 					}
 				}
 			}
@@ -74,8 +74,8 @@ public class World : MonoBehaviour
 		resetWorldNodes();
 		generateMapMeshCollider();
 		placeSpawnAndExit();
-		generateBuildings();
-		generateWildlife();
+		// generateBuildings();
+		// generateWildlife();
 		foreach(GameObject node in nodes)
 			node.GetComponent<WorldNode>().ParentReset();
 	}
@@ -83,31 +83,34 @@ public class World : MonoBehaviour
 	//place spawn and exits in each node
 	private void placeSpawnAndExit()
 	{
-		foreach(GameObject node in nodes)
+		for(int nodeID = 0; nodeID < WORLD_SIZE; nodeID++)
 		{
+			GameObject node = nodes[nodeID];
 			GameObject spawn = node.transform.Find("PlayerSpawn").gameObject;
 			GameObject exit = node.transform.Find("PlayerExit").gameObject;
-			spawn.transform.position = GetValidPoint(node);
-			exit.transform.position = GetValidPoint(node);
+			spawn.transform.position = GetValidPoint(nodeID);
+			exit.transform.position = GetValidPoint(nodeID);
 		}
 	}
 
 	//populates each worldnode with some wildlife
 	private void generateWildlife()
 	{
-		foreach(GameObject node in nodes)
+		for(int nodeID = 0; nodeID < WORLD_SIZE; nodeID++)
 		{
-			WorldNode wnode = node.GetComponent<WorldNode>();
+			GameObject node = nodes[nodeID];
+			WorldNode wnode = wnodes[nodeID];
 			//get list of valid wildlife spawn points
-			List<Vector2> bigPoints = getPoints(node, Random.Range(0, 4));
-			List<Vector2> smallPoints = getPoints(node, Random.Range(0, 10));
-			useAnimalPool(node, wnode.bigAnimalPool, bigPoints, BIG_ANIMAL);
-			useAnimalPool(node, wnode.smallAnimalPool, smallPoints, SMALL_ANIMAL);
+			List<Vector2> bigPoints = getPoints(nodeID, Random.Range(0, 4));
+			List<Vector2> smallPoints = getPoints(nodeID, Random.Range(0, 10));
+			useAnimalPool(nodeID, wnode.bigAnimalPool, bigPoints, BIG_ANIMAL);
+			useAnimalPool(nodeID, wnode.smallAnimalPool, smallPoints, SMALL_ANIMAL);
 		}
 	}
-	private void useAnimalPool(GameObject node, List<GameObject> pool, List<Vector2> points, string size)
+	private void useAnimalPool(int nodeID, List<GameObject> pool, List<Vector2> points, string size)
 	{
-		WorldNode wnode = node.GetComponent<WorldNode>();
+		GameObject node = nodes[nodeID];
+		WorldNode wnode = wnodes[nodeID];
 		for(int i = 0; i < pool.Count; i++)
 		{
 			if(points.Count == 0)
@@ -131,7 +134,7 @@ public class World : MonoBehaviour
 			GameObject animal = Instantiate(animals[Random.Range(0, animals.Count)], node.transform.Find("Wildlife").Find(size));
 			Wildlife wildlife = animal.GetComponent<Wildlife>();
 			wildlife.Init();
-			wildlife.SetNodeID(nodes.IndexOf(node));
+			wildlife.SetNodeID(nodeID);
 			animal.transform.position = wildlife.SetFloorPosition(point);
 			wnode.AddPoolObject(animal, pool);
 		}
@@ -143,10 +146,11 @@ public class World : MonoBehaviour
 	{
 		activeBuilding.GetComponent<Interior>().Start();//called to initialize interior's mesh pool
 		activeBuilding.SetActive(false);
-		foreach(GameObject node in nodes)
+		for(int nodeID = 0; nodeID < WORLD_SIZE; nodeID++)
 		{
-			WorldNode wnode = node.GetComponent<WorldNode>();
-			List<Vector2> points = getPoints(node, Random.Range(0, 5)); 
+			GameObject node = nodes[nodeID];
+			WorldNode wnode = wnodes[nodeID];
+			List<Vector2> points = getPoints(nodeID, Random.Range(0, 5)); 
 		
 			//use building object pool or spawn new ones
 			for(int i = 0; i < wnode.buildingPool.Count; i++)
@@ -180,9 +184,10 @@ public class World : MonoBehaviour
 	//rolls a new map, mesh, and pool of colliders for walls
 	private void generateMapMeshCollider()
 	{
-		foreach(GameObject node in nodes)
+		for(int nodeID = 0; nodeID < WORLD_SIZE; nodeID++)
 		{
-			WorldNode wnode = node.GetComponent<WorldNode>();
+			GameObject node = nodes[nodeID];
+			WorldNode wnode = wnodes[nodeID];
 			int[,] map = mapGen.GenerateMap();
 			wnode.SetMap(map);
 			Mesh mesh = meshGen.GenerateMesh(map);
@@ -210,32 +215,32 @@ public class World : MonoBehaviour
 		startNode.GetComponent<WorldNode>().SetNodeID(nodes.Count);
 		nodes.Add(startNode);
 		wnodes.Add(startNode.GetComponent<WorldNode>());
-		for(int i = 1; i < WORLD_SIZE; i++)
+		for(int nodeID = 1; nodeID < WORLD_SIZE; nodeID++)
 		{
 			GameObject node = Instantiate(startNode, trans);
-			node.name = "Node" + i;
+			node.name = "Node" + nodeID;
 			nodes.Add(node);
-			node.GetComponent<Transform>().position = new Vector2(i*NODE_SPACING, 0f);
+			node.GetComponent<Transform>().position = new Vector2(nodeID*NODE_SPACING, 0f);
 			WorldNode wnode = node.GetComponent<WorldNode>();
-			wnode.SetNodeID(i);
+			wnode.SetNodeID(nodeID);
 			wnodes.Add(wnode);
 		}
 	}
 
 	//returns a point in the node that is still empty floor
-	public Vector2 GetValidPoint(GameObject node)
+	public Vector2 GetValidPoint(int nodeID)
 	{
-		WorldNode wnode = node.GetComponent<WorldNode>();
+		int[,] map = wnodes[nodeID].map;	
 		while(true)
 		{
 			float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
 			float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
 			int row = Random.Range(1, MapGenerator.COLS-2);
 			int col = Random.Range(1, MapGenerator.ROWS-2);
-			if(wnode.map[row, col] == MapGenerator.FLOOR)
+			if(map[row, col] == MapGenerator.FLOOR)
 			{
-				reserveMapPoint(node, row, col);
-				return ConvertMapToWorld(row, col, wnode.nodeID);
+				reserveMapPoint(nodeID, row, col);
+				return ConvertMapToWorld(row, col, nodeID);
 			}
 		}
 	}
@@ -243,7 +248,7 @@ public class World : MonoBehaviour
 	//returns world coords of closest map row,col pair from pos
   	public static int[] NearestMapPair(Vector2 pos, int nodeID)
 	{
-		int[,] map = nodes[nodeID].GetComponent<WorldNode>().map;
+		int[,] map = wnodes[nodeID].map;
     	float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
     	float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
     	int[] closest = new int[2];
@@ -279,19 +284,19 @@ public class World : MonoBehaviour
 		return new Vector2(x, y);
 	}
 
-	private void reserveMapPoint(GameObject node, int row, int col)
+	private void reserveMapPoint(int nodeID, int row, int col)
 	{
-		WorldNode wnode = node.GetComponent<WorldNode>();
-		wnode.map[row, col] = RESERVED;
+		int[,] map = wnodes[nodeID].map;
+		map[row, col] = RESERVED;
 	}	
 	
 	//return list of valid points
-	private List<Vector2> getPoints(GameObject node, int count)
+	private List<Vector2> getPoints(int nodeID, int count)
 	{
 		List<Vector2> points = new List<Vector2>();
 		for(int i = 0; i < count; i++)
 		{
-			Vector2 point = GetValidPoint(node);
+			Vector2 point = GetValidPoint(nodeID);
 			points.Add(point);	
 		}
 		return points;

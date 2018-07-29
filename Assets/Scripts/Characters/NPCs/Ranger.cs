@@ -36,6 +36,7 @@ public class Ranger : HeroClass, IHitboxResponder
         if(isPresent)
         {
             //test
+            // world.DisplayFloor();
             // int[] rowcol = World.NearestMapPair(trans.position, nodeID);
             // Vector2 coords = World.ConvertMapToWorld(rowcol[0], rowcol[1], nodeID);
             // Debug.DrawLine(new Vector3(coords.x-2f, coords.y,0f), new Vector3(coords.x+2f, coords.y, 0f), Color.cyan, 1f);
@@ -50,7 +51,7 @@ public class Ranger : HeroClass, IHitboxResponder
                 {
                     float x = path[i].x;
                     float y = path[i].y;
-                    Debug.DrawLine(new Vector3(x+markerSize/2, y, 0f), new Vector3(x-markerSize/2, y, 0f), Color.cyan, duration);
+                    Debug.DrawLine(new Vector3(x+markerSize/2f, y, 0f), new Vector3(x-markerSize/2f, y, 0f), Color.cyan, duration);
                 }
             }
             //end test

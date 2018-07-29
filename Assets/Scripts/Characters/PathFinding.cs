@@ -152,7 +152,7 @@ public class PathFinding
             if(map[row+1, col-1] == MapGenerator.FLOOR)
                 neighbors.Add(nodeMap[row+1, col-1]);
         //bottom right neighbor
-        if(row < MapGenerator.ROWS && col > MapGenerator.COLS)
+        if(row < MapGenerator.ROWS && col < MapGenerator.COLS)
             if(map[row+1, col+1] == MapGenerator.FLOOR)
                 neighbors.Add(nodeMap[row+1, col+1]);
 		return neighbors;
