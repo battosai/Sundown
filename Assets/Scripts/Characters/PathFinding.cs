@@ -89,7 +89,7 @@ public class PathFinding
 				{
 					if(visited.Contains(neighbor) || stack.Contains(neighbor))
 					{
-						if(currNode.cost+1 < neighbor.cost)
+						if(currNode.cost+Vector2.Distance(currNode.pos, neighbor.pos) < neighbor.cost)
 							neighbor.Calculate(currNode);
 					}
 					else
@@ -173,11 +173,12 @@ public class PathFinding
 		}
 		public void Guesstimate(Vector2 destination)
 		{
-			this.estimate = Mathf.Pow(this.pos.x-destination.x, 2)+Mathf.Pow(this.pos.y-destination.y, 2);
+			//this heuristic has to be admissible i.e. cannot overestimate the real cost
+			this.estimate = Vector2.Distance(this.pos, destination);
 		}
 		public void Calculate(Node parent)
 		{
-			this.cost = parent.cost+1;
+			this.cost = parent.cost+Vector2.Distance(this.pos, parent.pos);
 			this.total = this.cost+this.estimate;
 			this.parent = parent;
 		}
@@ -204,7 +205,7 @@ public class PathFinding
         {
             for(int i = 1; i < unsorted.Length; i++)
             {
-                if(unsorted[i-1].total > unsorted[i].total)
+                if(unsorted[i-1].total < unsorted[i].total)
                 {
                     Node swapper = unsorted[i-1];
                     unsorted[i-1] = unsorted[i];

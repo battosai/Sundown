@@ -41,11 +41,10 @@ public class Ranger : HeroClass, IHitboxResponder
             // Debug.DrawLine(new Vector3(coords.x-2f, coords.y,0f), new Vector3(coords.x+2f, coords.y, 0f), Color.cyan, 1f);
             if(PlayerInput.Space)
             {
-                int[] playerMapPair = World.NearestMapPair(player.trans.position, nodeID);
+                int[] playerMapPair = World.NearestMapPair(player.floorPosition, nodeID);
                 Vector2 destination = World.ConvertMapToWorld(playerMapPair[0], playerMapPair[1], nodeID);
-                List<Vector2> path = PathFinding.AStar(trans.position, destination, nodeMap, nodeID);
-                Debug.Log("Path is "+path.Count+" long");
-                float markerSize = 10f;
+                List<Vector2> path = PathFinding.AStar(floorPosition, destination, nodeMap, nodeID);
+                float markerSize = 2f;
                 float duration = 1f;
                 for(int i = 0; i < path.Count; i++)
                 {
