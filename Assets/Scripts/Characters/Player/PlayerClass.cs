@@ -50,7 +50,7 @@ public class PlayerClass : CharacterClass
 		base.Reset();
 		SetNodeID(0);
 		World.nodes[nodeID].SetActive(true);
-		trans.position = SetFloorPosition(World.nodes[nodeID].GetComponent<WorldNode>().playerSpawn.transform.position);
+		trans.position = SetFloorPosition(World.wnodes[nodeID].playerSpawn.transform.position);
 		rend.sprite = human;
 		isHuman = true;
 		strength = 5;

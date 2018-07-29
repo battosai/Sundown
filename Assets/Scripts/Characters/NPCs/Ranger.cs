@@ -43,7 +43,16 @@ public class Ranger : HeroClass, IHitboxResponder
             {
                 int[] playerMapPair = World.NearestMapPair(player.trans.position, nodeID);
                 Vector2 destination = World.ConvertMapToWorld(playerMapPair[0], playerMapPair[1], nodeID);
-                astarPath(destination);
+                List<Vector2> path = PathFinding.AStar(trans.position, destination, nodeMap, nodeID);
+                Debug.Log("Path is "+path.Count+" long");
+                float markerSize = 10f;
+                float duration = 1f;
+                for(int i = 0; i < path.Count; i++)
+                {
+                    float x = path[i].x;
+                    float y = path[i].y;
+                    Debug.DrawLine(new Vector3(x+markerSize/2, y, 0f), new Vector3(x-markerSize/2, y, 0f), Color.cyan, duration);
+                }
             }
             //end test
             if(playerSpotted())
@@ -70,7 +79,7 @@ public class Ranger : HeroClass, IHitboxResponder
     public override void Track(int nodeID)
     {
         Debug.Log("Ranger Mastery Track!"); 
-        WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();
+        WorldNode wnode = World.wnodes[nodeID];
         SetLead(lead+wnode.clues*tracking*MASTERY);
         presentInNode(false);
         if(lead >= PLAYER_FOUND)

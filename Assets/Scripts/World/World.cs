@@ -15,6 +15,7 @@ public class World : MonoBehaviour
 	public static readonly int WORLD_SIZE = GameState.DAYS_TO_WIN;
 	public static readonly float NODE_SPACING = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
 	public static List<GameObject> nodes {get; private set;}
+	public static List<WorldNode> wnodes {get; private set;}
 	public static GameObject activeBuilding {get; private set;}
 	private readonly string SMALL_ANIMAL = "Small";
 	private readonly string BIG_ANIMAL = "Big";
@@ -33,6 +34,7 @@ public class World : MonoBehaviour
 		meshGen = GetComponent<MeshGenerator>();
 		collGen = GetComponent<ColliderGenerator>();
 		nodes = new List<GameObject>();
+		wnodes = new List<WorldNode>();
 	}
 
 	public void Start()
@@ -207,13 +209,16 @@ public class World : MonoBehaviour
 		nodes.Clear();
 		startNode.GetComponent<WorldNode>().SetNodeID(nodes.Count);
 		nodes.Add(startNode);
+		wnodes.Add(startNode.GetComponent<WorldNode>());
 		for(int i = 1; i < WORLD_SIZE; i++)
 		{
 			GameObject node = Instantiate(startNode, trans);
 			node.name = "Node" + i;
-			node.GetComponent<WorldNode>().SetNodeID(i);
 			nodes.Add(node);
 			node.GetComponent<Transform>().position = new Vector2(i*NODE_SPACING, 0f);
+			WorldNode wnode = node.GetComponent<WorldNode>();
+			wnode.SetNodeID(i);
+			wnodes.Add(wnode);
 		}
 	}
 

@@ -30,7 +30,7 @@ public class HeroClass : CharacterClass
         }
         else
         {
-            WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();
+            WorldNode wnode = World.wnodes[nodeID];
             SetLead(lead+wnode.clues*tracking);
         }
 	}
@@ -67,7 +67,7 @@ public class HeroClass : CharacterClass
 				Debug.Log("[Error] Invalid NodeID when making Hero present in node");
 				return;
 			}
-			nodeMap = pathNode.makeNodeMap(player.trans.position, World.nodes[nodeID].GetComponent<WorldNode>().map, nodeID);
+			nodeMap = PathFinding.Node.MakeNodeMap(player.trans.position, World.wnodes[nodeID].map, nodeID);
 			Vector2 spawn = world.GetValidPoint(World.nodes[nodeID]);
 			trans.position = spawn;
 		}
