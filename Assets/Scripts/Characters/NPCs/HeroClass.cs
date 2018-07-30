@@ -68,7 +68,7 @@ public class HeroClass : CharacterClass
 				return;
 			}
 			nodeMap = PathFinding.Node.MakeNodeMap(player.trans.position, World.wnodes[nodeID].map, nodeID);
-			Vector2 spawn = world.GetValidPoint(nodeID);
+			Vector2 spawn = world.GetValidPoints(nodeID, 1)[0];
 			trans.position = spawn;
 		}
 	}

@@ -59,6 +59,7 @@ public class PathFinding
     
     public static List<Vector2> AStar(Vector2 start, Vector2 destination, Node[,] nodeMap, int nodeID)
 	{
+		float time = Time.realtimeSinceStartup;
 		List<Vector2> path = new List<Vector2>();
 		List<Node> visited = new List<Node>();
 		Stack<Node> stack = new Stack<Node>(); 
@@ -71,7 +72,6 @@ public class PathFinding
 			Node currNode = stack.Pop();
 			if(currNode.pos == destination)
 			{
-				Debug.Log("Path discovered!");
 				while(currNode != root)
 				{
 					path.Add(currNode.pos);
@@ -80,6 +80,9 @@ public class PathFinding
 				}
 				path.Add(root.pos);
 				path.Reverse();
+				Debug.Log("Path discovered!");
+				Debug.Log("[Info] Visited "+visited.Count+" nodes");
+				Debug.Log("[Info] Finished in "+(Time.realtimeSinceStartup-time)+"s");
 				return path;
 			}
 			else
