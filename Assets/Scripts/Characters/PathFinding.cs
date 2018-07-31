@@ -26,24 +26,12 @@ public class PathFinding
         {BOTTOMLEFT, new int[]{1, -1}}
     };
 
-	//won't display unless script is attached to object :c
-    //tool for displaying the path
-    // public static void DrawPath(List<Vector2> path)
-    // {
-    //     float markerSize = 2f;
-    //     float duration = 1f;
-    //     for(int i = 0; i < path.Count; i++)
-    //     {
-    //         float x = path[i].x;
-    //         float y = path[i].y;
-    //         Debug.DrawLine(new Vector3(x+markerSize/2, y, 0f), new Vector3(x-markerSize/2, y, 0f), Color.cyan, duration);
-    //     }
-    // }
-
     public List<Vector2> JumpPoint(Vector2 start, Vector2 destination, Node[,] nodeMap, int nodeID)
     {
         List<Vector2> path = new List<Vector2>();
+		List<Node> visited = new List<Node>();
         Stack<Node> stack = new Stack<Node>();
+		int[,] map = World.wnodes[nodeID].map;
         int[] mapStart = World.NearestMapPair(start, nodeID);
         Node root = nodeMap[mapStart[0], mapStart[1]];
         root.cost = 0f;
@@ -51,7 +39,11 @@ public class PathFinding
         while(stack.Count > 0)
         {
             Node currNode = stack.Pop();
-            //unfinished
+			bool isJumping = true;
+			while(isJumping)
+			{
+				//search for next jump point
+			}
         }
         Debug.Log("[Warning] Unable to find path to destination");
         return null;
@@ -192,9 +184,12 @@ public class PathFinding
 			{
 				for(int j = 0; j < MapGenerator.COLS; j++)
 				{
-					Node node = new Node(i, j, nodeID, null);
-					node.Guesstimate(destination);
-					nodeMap[i, j] = node;
+					if(map[i, j] == MapGenerator.FLOOR)
+					{
+						Node node = new Node(i, j, nodeID, null);
+						node.Guesstimate(destination);
+						nodeMap[i, j] = node;
+					}
 				}
 			}
 			return nodeMap;
