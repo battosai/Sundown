@@ -13,6 +13,7 @@ public class PathFinding
     public static readonly int LEFT = 8;
     public static readonly int TOPLEFT = 10;
     public static readonly int BOTTOMLEFT = 12;
+	private readonly
     private static Dictionary<int, int[]> splitDirections = new Dictionary<int, int[]>() 
     {
         //directions are based on row,col orientation
@@ -26,25 +27,36 @@ public class PathFinding
         {BOTTOMLEFT, new int[]{1, -1}}
     };
 
-    public List<Vector2> JumpPoint(Vector2 start, Vector2 destination, Node[,] nodeMap, int nodeID)
+	//finds next jump point recursively
+    private Node jump(Node startNode, Vector2 endNode, int dx, int dy, Node[,] nodeMap, int nodeID)
     {
-        List<Vector2> path = new List<Vector2>();
-		List<Node> visited = new List<Node>();
-        Stack<Node> stack = new Stack<Node>();
-		int[,] map = World.wnodes[nodeID].map;
-        int[] mapStart = World.NearestMapPair(start, nodeID);
-        Node root = nodeMap[mapStart[0], mapStart[1]];
-        root.cost = 0f;
-        stack.Push(root);
-        while(stack.Count > 0)
-        {
-            Node currNode = stack.Pop();
-			bool isJumping = true;
-			while(isJumping)
+		//next node in parental direction
+		Node nextNode = nodeMap[startNode.row+dy, startNode.col+dx];
+		if(nextNode == null)	
+			break;
+		if(nextNode.pos == endNode.pos)
+			return nextNode;	
+		//diagonals
+		if(dx != 0 && dy != 0)
+		{
+			//check for forced neighbors only
+			List<Node> neighbors = GetNeighbors(nextNode);
+			if(neighbors.Count < 8)
 			{
-				//search for next jump point
+				if(nodeMap[startNode.row, startNode.col+dx] == null)
+					if(nodeMap[startNode.row, startNode.col+dx+dx] != null)
+						return nextNode;						
+				if(nodeMap[startNode.row+dy, startNode.col] == null)
+					if(nodeMap[startNode.row+dy+dy, startNode.col] != null)
+						return nextNode;
 			}
-        }
+			if(jump(nextNode, endNode, dx, 0, nodeMap, nodeID) != null || jump(nextNode, endNode, 0, dy, nodeMap, nodeID) != null)
+				return nextNode;
+		}
+		else
+		{
+
+		}
         Debug.Log("[Warning] Unable to find path to destination");
         return null;
     }
@@ -57,7 +69,7 @@ public class PathFinding
 		Stack<Node> stack = new Stack<Node>(); 
 		int[] mapStart = World.NearestMapPair(start, nodeID);
 		Node root = nodeMap[mapStart[0], mapStart[1]];
-		root.cost = 0f;
+		root.Calculate(null);
 		stack.Push(root);
 		while(stack.Count > 0)
 		{
@@ -173,7 +185,10 @@ public class PathFinding
 		}
 		public void Calculate(Node parent)
 		{
-			this.cost = parent.cost+Vector2.Distance(this.pos, parent.pos);
+			if(parent != null)
+				this.cost = parent.cost+Vector2.Distance(this.pos, parent.pos);
+			else
+				this.cost = 0f;
 			this.total = this.cost+this.estimate;
 			this.parent = parent;
 		}
