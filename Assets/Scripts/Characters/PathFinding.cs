@@ -13,7 +13,6 @@ public class PathFinding
     public static readonly int LEFT = 8;
     public static readonly int TOPLEFT = 10;
     public static readonly int BOTTOMLEFT = 12;
-	private readonly
     private static Dictionary<int, int[]> splitDirections = new Dictionary<int, int[]>() 
     {
         //directions are based on row,col orientation
@@ -28,19 +27,19 @@ public class PathFinding
     };
 
 	//finds next jump point recursively
-    private Node jump(Node startNode, Vector2 endNode, int dx, int dy, Node[,] nodeMap, int nodeID)
+    public static Node Jump(Node startNode, Node endNode, int dx, int dy, Node[,] nodeMap, int nodeID)
     {
 		//next node in parental direction
 		Node nextNode = nodeMap[startNode.row+dy, startNode.col+dx];
 		if(nextNode == null)	
-			break;
+			return null;
 		if(nextNode.pos == endNode.pos)
 			return nextNode;	
 		//diagonals
 		if(dx != 0 && dy != 0)
 		{
 			//check for forced neighbors only
-			List<Node> neighbors = GetNeighbors(nextNode);
+			List<Node> neighbors = GetNeighbors(nextNode, nodeMap, nodeID);
 			if(neighbors.Count < 8)
 			{
 				if(nodeMap[startNode.row, startNode.col+dx] == null)
@@ -50,15 +49,31 @@ public class PathFinding
 					if(nodeMap[startNode.row+dy+dy, startNode.col] != null)
 						return nextNode;
 			}
-			if(jump(nextNode, endNode, dx, 0, nodeMap, nodeID) != null || jump(nextNode, endNode, 0, dy, nodeMap, nodeID) != null)
+			if(Jump(nextNode, endNode, dx, 0, nodeMap, nodeID) != null || Jump(nextNode, endNode, 0, dy, nodeMap, nodeID) != null)
 				return nextNode;
 		}
 		else
 		{
-
+			if(dx != 0)
+			{
+				if(nodeMap[startNode.row+1, startNode.col+dx] == null)
+					if(nodeMap[startNode.row+1, startNode.col+dx+dx] != null)
+						return nextNode;
+				if(nodeMap[startNode.row-1, startNode.col+dx] == null)
+					if(nodeMap[startNode.row-1, startNode.col+dx+dx] != null)
+						return nextNode;
+			}
+			else if(dy != 0)
+			{
+				if(nodeMap[startNode.row+dy, startNode.col+1] == null)
+					if(nodeMap[startNode.row+dy+dy, startNode.col+1] != null)
+						return nextNode;
+				if(nodeMap[startNode.row+dy, startNode.col-1] == null)
+					if(nodeMap[startNode.row+dy+dy, startNode.col-1] != null)
+						return nextNode;
+			}
 		}
-        Debug.Log("[Warning] Unable to find path to destination");
-        return null;
+        return Jump(nextNode, endNode, dx, dy, nodeMap, nodeID);
     }
     
     public static List<Vector2> AStar(Vector2 start, Vector2 destination, Node[,] nodeMap, int nodeID)
