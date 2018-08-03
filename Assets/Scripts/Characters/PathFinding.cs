@@ -26,8 +26,61 @@ public class PathFinding
         {BOTTOMLEFT, new int[]{1, -1}}
     };
 
-	//finds next jump point recursively
-    public static Node Jump(Node startNode, Node endNode, int dx, int dy, Node[,] nodeMap, int nodeID)
+    public static List<Vector2> AStarJump(Vector2 start, Vector2 destination, Node[,] nodeMap, int nodeID)
+	{
+		float time = Time.realtimeSinceStartup;
+		List<Vector2> path = new List<Vector2>();
+		List<Node> visited = new List<Node>();
+		Stack<Node> stack = new Stack<Node>(); 
+		int[] mapStart = World.NearestMapPair(start, nodeID);
+		int[] mapEnd = World.NearestMapPair(destination, nodeID);
+		Node root = nodeMap[mapStart[0], mapStart[1]];
+		Node endNode = nodeMap[mapEnd[0], mapEnd[1]];
+		stack.Push(root);
+		while(stack.Count > 0)
+		{
+			Node currNode = stack.Pop();
+			currNode.Calculate(currNode.parent, destination);
+			if(currNode.pos == endNode.pos)
+			{
+				while(currNode != root)
+				{
+					path.Add(currNode.pos);
+					currNode = currNode.parent;
+				}
+				path.Add(root.pos);
+				path.Reverse();
+				Debug.Log("Path discovered!");
+				Debug.Log("[Info] Visited "+visited.Count+" nodes");
+				Debug.Log("[Info] Finished in "+(Time.realtimeSinceStartup-time)+"s");
+				return path;
+			}
+			else
+			{
+				List<Node> neighbors = getSuccessors(currNode, endNode, nodeMap);
+				foreach(Node neighbor in neighbors)
+				{
+					if(visited.Contains(neighbor) || stack.Contains(neighbor))
+					{
+						if(currNode.cost+Vector2.Distance(currNode.pos, neighbor.pos) < neighbor.cost)
+							neighbor.Calculate(currNode, destination);
+					}
+					else
+					{
+						visited.Add(neighbor);
+						neighbor.Calculate(currNode, destination);
+						stack.Push(neighbor);
+					}
+				}
+                stack = new Stack<Node>(bubbleSort(stack.ToArray()));
+			}
+		}
+		Debug.Log("[Warning] Could not find path to destination");
+		return null;
+	}
+
+	//finds jump point recursively
+    private static Node jump(Node startNode, Node endNode, int dx, int dy, Node[,] nodeMap)
     {
 		//next node in parental direction
 		Node nextNode = nodeMap[startNode.row+dy, startNode.col+dx];
@@ -38,18 +91,14 @@ public class PathFinding
 		//diagonals
 		if(dx != 0 && dy != 0)
 		{
-			//check for forced neighbors only
-			List<Node> neighbors = GetNeighbors(nextNode, nodeMap, nodeID);
-			if(neighbors.Count < 8)
-			{
-				if(nodeMap[startNode.row, startNode.col+dx] == null)
-					if(nodeMap[startNode.row, startNode.col+dx+dx] != null)
-						return nextNode;						
-				if(nodeMap[startNode.row+dy, startNode.col] == null)
-					if(nodeMap[startNode.row+dy+dy, startNode.col] != null)
-						return nextNode;
-			}
-			if(Jump(nextNode, endNode, dx, 0, nodeMap, nodeID) != null || Jump(nextNode, endNode, 0, dy, nodeMap, nodeID) != null)
+			//check for forced neighbors onlyd
+			if(nodeMap[startNode.row, startNode.col+dx] == null)
+				if(nodeMap[startNode.row, startNode.col+dx+dx] != null)
+					return nextNode;						
+			if(nodeMap[startNode.row+dy, startNode.col] == null)
+				if(nodeMap[startNode.row+dy+dy, startNode.col] != null)
+					return nextNode;
+			if(jump(nextNode, endNode, dx, 0, nodeMap) != null || jump(nextNode, endNode, 0, dy, nodeMap) != null)
 				return nextNode;
 		}
 		else
@@ -73,59 +122,23 @@ public class PathFinding
 						return nextNode;
 			}
 		}
-        return Jump(nextNode, endNode, dx, dy, nodeMap, nodeID);
+        return jump(nextNode, endNode, dx, dy, nodeMap);
     }
-    
-    public static List<Vector2> AStar(Vector2 start, Vector2 destination, Node[,] nodeMap, int nodeID)
+
+	//gets the list of pruned neighbors
+	private static List<Node> getSuccessors(Node startNode, Node endNode, Node[,] nodeMap)
 	{
-		float time = Time.realtimeSinceStartup;
-		List<Vector2> path = new List<Vector2>();
-		List<Node> visited = new List<Node>();
-		Stack<Node> stack = new Stack<Node>(); 
-		int[] mapStart = World.NearestMapPair(start, nodeID);
-		Node root = nodeMap[mapStart[0], mapStart[1]];
-		root.Calculate(null);
-		stack.Push(root);
-		while(stack.Count > 0)
+		List<Node> successors = new List<Node>();
+		List<Node> neighbors = GetNeighbors(startNode, nodeMap);
+		foreach(Node neighbor in neighbors)
 		{
-			Node currNode = stack.Pop();
-			if(currNode.pos == destination)
-			{
-				while(currNode != root)
-				{
-					path.Add(currNode.pos);
-					Debug.DrawLine(new Vector3(currNode.pos.x-5f, currNode.pos.y, 0f), new Vector3(currNode.pos.x+5f, currNode.pos.y, 0f), Color.cyan, 1f);
-					currNode = currNode.parent;
-				}
-				path.Add(root.pos);
-				path.Reverse();
-				Debug.Log("Path discovered!");
-				Debug.Log("[Info] Visited "+visited.Count+" nodes");
-				Debug.Log("[Info] Finished in "+(Time.realtimeSinceStartup-time)+"s");
-				return path;
-			}
-			else
-			{
-				List<Node> neighbors = GetNeighbors(currNode, nodeMap, nodeID);
-				foreach(Node neighbor in neighbors)
-				{
-					if(visited.Contains(neighbor) || stack.Contains(neighbor))
-					{
-						if(currNode.cost+Vector2.Distance(currNode.pos, neighbor.pos) < neighbor.cost)
-							neighbor.Calculate(currNode);
-					}
-					else
-					{
-						visited.Add(neighbor);
-						neighbor.Calculate(currNode);
-						stack.Push(neighbor);
-					}
-				}
-                stack = new Stack<Node>(bubbleSort(stack.ToArray()));
-			}
+			int dx = Mathf.Clamp(neighbor.col-startNode.col, -1, 1);
+			int dy = -Mathf.Clamp(neighbor.row-startNode.row, -1, 1);
+			Node jumpNode = jump(startNode, endNode, dx, dy, nodeMap);
+			if(jumpNode != null)
+				successors.Add(jumpNode);
 		}
-		Debug.Log("[Warning] Could not find path to destination");
-		return null;
+		return successors;
 	}
 
     //checks specific neighbor
@@ -139,43 +152,42 @@ public class PathFinding
     }
 
 	//return list of neighbors as pathnodes
-	public static List<Node> GetNeighbors(Node origin, Node[,] nodeMap, int nodeID)
+	public static List<Node> GetNeighbors(Node origin, Node[,] nodeMap)
 	{
 		int row = origin.row;
 		int col = origin.col;
 		List<Node> neighbors = new List<Node>();
-		int[,] map = World.wnodes[nodeID].map;
 		//top neighbor
 		if(row > 0)
-			if(map[row-1, col] == MapGenerator.FLOOR)
+			if(nodeMap[row-1, col] != null)
 				neighbors.Add(nodeMap[row-1, col]);
 		//bottom neighbor
 		if(row < MapGenerator.ROWS)
-			if(map[row+1, col] == MapGenerator.FLOOR)
+			if(nodeMap[row+1, col] != null)
 				neighbors.Add(nodeMap[row+1, col]);
 		//left neighbor
 		if(col > 0)
-			if(map[row, col-1] == MapGenerator.FLOOR)
+			if(nodeMap[row, col-1] != null)
 				neighbors.Add(nodeMap[row, col-1]);
 		//right neighbor
 		if(col < MapGenerator.COLS)
-			if(map[row, col+1] == MapGenerator.FLOOR)
+			if(nodeMap[row, col+1] != null)
 				neighbors.Add(nodeMap[row, col+1]);
         //top left neighbor
         if(row > 0 && col > 0)
-            if(map[row-1, col-1] == MapGenerator.FLOOR)
+            if(nodeMap[row-1, col-1] != null)
                 neighbors.Add(nodeMap[row-1, col-1]);
         //top right neighbor
         if(row > 0 && col < MapGenerator.COLS)
-            if(map[row-1, col+1] == MapGenerator.FLOOR)
+            if(nodeMap[row-1, col+1] != null)
                 neighbors.Add(nodeMap[row-1, col+1]);
         //bottom left neighbor
         if(row < MapGenerator.ROWS && col > 0)
-            if(map[row+1, col-1] == MapGenerator.FLOOR)
+            if(nodeMap[row+1, col-1] != null)
                 neighbors.Add(nodeMap[row+1, col-1]);
         //bottom right neighbor
         if(row < MapGenerator.ROWS && col < MapGenerator.COLS)
-            if(map[row+1, col+1] == MapGenerator.FLOOR)
+            if(nodeMap[row+1, col+1] != null)
                 neighbors.Add(nodeMap[row+1, col+1]);
 		return neighbors;
 	}
@@ -198,12 +210,13 @@ public class PathFinding
 			//this heuristic has to be admissible i.e. cannot overestimate the real cost
 			this.estimate = Vector2.Distance(this.pos, destination);
 		}
-		public void Calculate(Node parent)
+		public void Calculate(Node parent, Vector2 destination)
 		{
 			if(parent != null)
 				this.cost = parent.cost+Vector2.Distance(this.pos, parent.pos);
 			else
 				this.cost = 0f;
+			this.estimate = Vector2.Distance(this.pos, destination);
 			this.total = this.cost+this.estimate;
 			this.parent = parent;
 		}
@@ -217,7 +230,7 @@ public class PathFinding
 					if(map[i, j] == MapGenerator.FLOOR)
 					{
 						Node node = new Node(i, j, nodeID, null);
-						node.Guesstimate(destination);
+						// node.Guesstimate(destination);
 						nodeMap[i, j] = node;
 					}
 				}

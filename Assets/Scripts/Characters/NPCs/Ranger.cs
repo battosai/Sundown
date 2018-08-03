@@ -42,33 +42,13 @@ public class Ranger : HeroClass, IHitboxResponder
             // Debug.DrawLine(new Vector3(coords.x-2f, coords.y,0f), new Vector3(coords.x+2f, coords.y, 0f), Color.cyan, 1f);
             if(PlayerInput.Space)
             {
-                int[] playerMapPair = World.NearestMapPair(player.floorPosition, nodeID);
-                //----------------------------------------------------------------------------------------------------------
-                int[] rangerMapPair = World.NearestMapPair(floorPosition, nodeID);
-                int dx = 0;
-                int dy = 0;
-                if(playerMapPair[1] != rangerMapPair[1])
-                    dx = playerMapPair[1] > rangerMapPair[1] ? 1 : -1;
-                if(playerMapPair[0] != rangerMapPair[0])
-                    dy = playerMapPair[0] > rangerMapPair[0] ? 1 : -1;
-                PathFinding.Node nextNode = PathFinding.Jump(nodeMap[rangerMapPair[0], rangerMapPair[1]], nodeMap[playerMapPair[0], playerMapPair[1]], dx, dy, nodeMap, nodeID);
-                if(nextNode == null)
-                    Debug.Log("WAT");
-                else
+                List<Vector2> path = PathFinding.AStarJump(floorPosition, player.floorPosition, nodeMap, nodeID);
+                float markerSize = 2f;
+                float duration = 1f;
+                for(int i = 1; i < path.Count; i++)
                 {
-                    Vector2 nextPos = World.ConvertMapToWorld(nextNode.row, nextNode.col, nodeID);
-                    Debug.DrawLine(new Vector3(nextPos.x+2f, nextPos.y, 0f), new Vector3(nextPos.x-2f, nextPos.y, 0f), Color.cyan, 5f);
+                    Debug.DrawLine((Vector3)path[i-1], (Vector3)path[i], Color.cyan, duration);
                 }
-                //----------------------------------------------------------------------------------------------------------
-                // List<Vector2> path = PathFinding.AStar(floorPosition, destination, nodeMap, nodeID);
-                // float markerSize = 2f;
-                // float duration = 1f;
-                // for(int i = 0; i < path.Count; i++)
-                // {
-                //     float x = path[i].x;
-                //     float y = path[i].y;
-                //     Debug.DrawLine(new Vector3(x+markerSize/2f, y, 0f), new Vector3(x-markerSize/2f, y, 0f), Color.cyan, duration);
-                // }
             }
             //end test
             if(playerSpotted())
