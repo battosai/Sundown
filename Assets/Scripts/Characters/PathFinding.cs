@@ -79,6 +79,22 @@ public class PathFinding
 		return null;
 	}
 
+	//gets the list of pruned neighbors
+	private static List<Node> getSuccessors(Node startNode, Node endNode, Node[,] nodeMap)
+	{
+		List<Node> successors = new List<Node>();
+		List<Node> neighbors = GetNeighbors(startNode, nodeMap);
+		foreach(Node neighbor in neighbors)
+		{
+			int dx = Mathf.Clamp(neighbor.col-startNode.col, -1, 1);
+			int dy = -Mathf.Clamp(neighbor.row-startNode.row, -1, 1);
+			Node jumpNode = jump(startNode, endNode, dx, dy, nodeMap);
+			if(jumpNode != null)
+				successors.Add(jumpNode);
+		}
+		return successors;
+	}
+
 	//finds jump point recursively
     private static Node jump(Node startNode, Node endNode, int dx, int dy, Node[,] nodeMap)
     {
@@ -124,23 +140,7 @@ public class PathFinding
 		}
         return jump(nextNode, endNode, dx, dy, nodeMap);
     }
-
-	//gets the list of pruned neighbors
-	private static List<Node> getSuccessors(Node startNode, Node endNode, Node[,] nodeMap)
-	{
-		List<Node> successors = new List<Node>();
-		List<Node> neighbors = GetNeighbors(startNode, nodeMap);
-		foreach(Node neighbor in neighbors)
-		{
-			int dx = Mathf.Clamp(neighbor.col-startNode.col, -1, 1);
-			int dy = -Mathf.Clamp(neighbor.row-startNode.row, -1, 1);
-			Node jumpNode = jump(startNode, endNode, dx, dy, nodeMap);
-			if(jumpNode != null)
-				successors.Add(jumpNode);
-		}
-		return successors;
-	}
-
+	
     //checks specific neighbor
     public static bool CheckNeighbor(Node origin, Node[,] nodeMap, int nodeID, int direction)
     {

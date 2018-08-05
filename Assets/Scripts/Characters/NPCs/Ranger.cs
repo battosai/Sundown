@@ -6,7 +6,7 @@ public class Ranger : HeroClass, IHitboxResponder
 {
     private readonly int MASTERY = 2;
     private readonly float AGGRO_RANGE = 100f;
-    private enum State {MOVING, INSPECTING, IDLE, CHASING};
+    private enum State {IDLE, PATROL, INSPECT, CHASE, FOLLOW, ATTACK};
     private State state;
 	private Vector2 INTERACT_SIZE = new Vector2(50f, 50f);
     private List<GameObject> usedLeads;
@@ -50,18 +50,18 @@ public class Ranger : HeroClass, IHitboxResponder
                     Debug.DrawLine((Vector3)path[i-1], (Vector3)path[i], Color.cyan, duration);
                 }
             }
+            // if(playerSpotted())
+            // {
+            //     Debug.Log("YOU'VE BEEN SPOTTED!");
+            // }
             //end test
-            if(playerSpotted())
-            {
-                // Debug.Log("YOU'VE BEEN SPOTTED!");
-            }
             switch(state)
             {
                 case State.IDLE:
                     break;
-                case State.MOVING:
+                case State.PATROL:
                     break;
-                case State.INSPECTING:
+                case State.INSPECT:
                     interactCheck();
                     break;
                 default:
@@ -156,6 +156,6 @@ public class Ranger : HeroClass, IHitboxResponder
                }
             }
         }
-        state = State.MOVING;
+        state = State.PATROL;
     }
 }
