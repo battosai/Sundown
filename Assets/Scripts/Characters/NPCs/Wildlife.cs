@@ -27,12 +27,13 @@ public class Wildlife : CharacterClass
         SetType(CharacterType.WILDLIFE);
     }
 
-    public void Update()
+    public override void Update()
     {
         setFloorHeight();
         if(health <= 0)
             state = State.DEAD;
         if(!isDead)
+        {
             switch(state)
             {
                 case State.CALM:
@@ -56,6 +57,8 @@ public class Wildlife : CharacterClass
                 default:
                     break;
             }
+            base.Update();
+        }
     }
 
     private void idleWalk()
@@ -66,7 +69,6 @@ public class Wildlife : CharacterClass
             float horizontal = Random.Range(-speed, speed);
             float vertical = Random.Range(-speed, speed);
             rb.velocity = new Vector2(horizontal, vertical);
-            SetIsLeft(horizontal < 0);
         }
         else
             rb.velocity = Vector2.zero;

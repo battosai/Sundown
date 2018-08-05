@@ -37,7 +37,7 @@ public class PlayerClass : CharacterClass
 	}
 
 	// Update is called once per frame
-	void Update()
+	public override void Update()
 	{
 		setFloorHeight();
 		hungerHandler();

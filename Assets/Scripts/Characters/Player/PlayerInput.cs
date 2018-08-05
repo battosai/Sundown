@@ -38,7 +38,7 @@ public class PlayerInput : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update()
+	public void Update()
 	{
 		trackMouse();
     getMouseInput();
@@ -48,12 +48,17 @@ public class PlayerInput : MonoBehaviour
 
   private void useInput()
   {
-    if(mouseTrans.position.x > player.trans.position.x)
-      player.rend.flipX = true;
-    else if(mouseTrans.position.x < player.trans.position.x)
-      player.rend.flipX = false;
-    player.SetIsLeft(!player.rend.flipX);
     player.rb.velocity = calculateVelocity();
+    if(player.rb.velocity.x == 0f)
+    {
+      if(mouseTrans.position.x > player.trans.position.x)
+        player.SetIsLeft(false);
+      else if(mouseTrans.position.x < player.trans.position.x)
+        player.SetIsLeft(true);
+    }
+    else
+      player.SetIsLeft(player.rb.velocity.x < 0);
+    player.rend.flipX = !player.isLeft;
     if(isRightClick)
       player.actions.AttackCheck();
     if(E)

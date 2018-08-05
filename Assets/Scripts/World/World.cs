@@ -78,8 +78,8 @@ public class World : MonoBehaviour
 		{
 			generateMapMeshCollider(nodeID);
 			placeSpawnAndExit(nodeID);
-			// generateBuildings(nodeID);
-			// generateWildlife(nodeID);
+			generateBuildings(nodeID);
+			generateWildlife(nodeID);
 			wnodes[nodeID].ParentReset();
 		}
 	}

@@ -34,6 +34,17 @@ public class CharacterClass : MonoBehaviour
 		rend = GetComponent<SpriteRenderer>();
 	}
 
+	//default Update for characters
+	public virtual void Update()
+	{
+		Vector2 velocity = rb.velocity;
+		if(velocity.x > 0)
+			isLeft = false;
+		else if(velocity.x < 0)
+			isLeft = true;
+		rend.flipX = !isLeft;
+	}
+
 	public virtual void Reset()
 	{
 		speed = BASE_SPEED;
@@ -41,7 +52,7 @@ public class CharacterClass : MonoBehaviour
 
 	public virtual void UpdateAnimator()
 	{
-		Debug.Log(gameObject.name+" has no proper UpdateAnimator() method");
+		Debug.Log("[WARN] "+gameObject.name+" has no proper UpdateAnimator() method");
 	}
 	
 	//sets position so that floor position is at target

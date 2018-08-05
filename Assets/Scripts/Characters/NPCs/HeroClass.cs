@@ -6,6 +6,8 @@ public class HeroClass : CharacterClass
 {
 	public float lead {get; private set;}
 	protected readonly int PLAYER_FOUND = 15;
+    protected enum State {IDLE, PATROL, INSPECT, CHASE, FOLLOW, ATTACK};
+    protected State state;
 	protected float tracking;
 	protected float visionRange;
 	protected bool isPresent;

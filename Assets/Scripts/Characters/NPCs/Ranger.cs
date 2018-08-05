@@ -6,8 +6,6 @@ public class Ranger : HeroClass, IHitboxResponder
 {
     private readonly int MASTERY = 2;
     private readonly float AGGRO_RANGE = 100f;
-    private enum State {IDLE, PATROL, INSPECT, CHASE, FOLLOW, ATTACK};
-    private State state;
 	private Vector2 INTERACT_SIZE = new Vector2(50f, 50f);
     private List<GameObject> usedLeads;
     private float time;
@@ -29,13 +27,13 @@ public class Ranger : HeroClass, IHitboxResponder
     //    usedLeads = new List<GameObject>();
     }
 
-    public void Update()
+    public override void Update()
     {
-    	float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
-    	float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
         if(isPresent)
         {
             //test
+            float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
+    	    float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
             // world.DisplayFloor();
             // int[] rowcol = World.NearestMapPair(trans.position, nodeID);
             // Vector2 coords = World.ConvertMapToWorld(rowcol[0], rowcol[1], nodeID);
@@ -69,6 +67,7 @@ public class Ranger : HeroClass, IHitboxResponder
                     break;
             }
         }
+        base.Update();
         setFloorHeight();
     }
 
