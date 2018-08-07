@@ -32,22 +32,22 @@ public class Ranger : HeroClass, IHitboxResponder
         if(isPresent)
         {
             //test
-            float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
-    	    float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
+            // float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
+    	    // float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
             // world.DisplayFloor();
             // int[] rowcol = World.NearestMapPair(trans.position, nodeID);
             // Vector2 coords = World.ConvertMapToWorld(rowcol[0], rowcol[1], nodeID);
             // Debug.DrawLine(new Vector3(coords.x-2f, coords.y,0f), new Vector3(coords.x+2f, coords.y, 0f), Color.cyan, 1f);
-            if(PlayerInput.Space)
-            {
-                List<Vector2> path = PathFinding.AStarJump(floorPosition, player.floorPosition, nodeMap, nodeID);
-                float markerSize = 2f;
-                float duration = 1f;
-                for(int i = 1; i < path.Count; i++)
-                {
-                    Debug.DrawLine((Vector3)path[i-1], (Vector3)path[i], Color.cyan, duration);
-                }
-            }
+            // if(PlayerInput.Space)
+            // {
+            //     List<Vector2> path = PathFinding.AStarJump(floorPosition, player.floorPosition, nodeMap, nodeID);
+            //     float markerSize = 2f;
+            //     float duration = 1f;
+            //     for(int i = 1; i < path.Count; i++)
+            //     {
+            //         Debug.DrawLine((Vector3)path[i-1], (Vector3)path[i], Color.cyan, duration);
+            //     }
+            // }
             // if(playerSpotted())
             // {
             //     Debug.Log("YOU'VE BEEN SPOTTED!");

@@ -5,8 +5,7 @@ using UnityEngine;
 public class TownspersonClass : CharacterClass
 {
     protected bool isAlive;
-    protected bool isAlarmed;
-    protected enum State {IDLE, PATROL, INSPECT, DEFEND, ALARM, FLEE};
+    protected enum State {DEAD, IDLE, PATROL, INSPECT, DEFEND, ALARM, HIDE, FLEE};
     protected State state;
     
     protected void init()

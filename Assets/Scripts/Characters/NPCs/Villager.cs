@@ -4,10 +4,12 @@ using System.Collections.Generic;
 
 public class Villager : TownspersonClass
 {
+    private readonly int leashX = 10;
+    private readonly int leashY = 5;
+    private readonly float alarmTimer = 5f;
+    private bool isAlarmed;
     private Building building;
     private Vector2 leashPos;
-    private readonly int leashY = 5;
-    private readonly int leashX = 10;
 
     public void Start()
     {
@@ -20,6 +22,10 @@ public class Villager : TownspersonClass
         {
             switch(state)
             {
+                case State.DEAD:
+                    isAlive = false;
+                    rb.velocity = Vector2.zero;
+                    break;
                 case State.IDLE:
                     break;
                 case State.ALARM:
