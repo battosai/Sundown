@@ -8,7 +8,6 @@ public class Ranger : HeroClass, IHitboxResponder
     private readonly float AGGRO_RANGE = 100f;
 	private Vector2 INTERACT_SIZE = new Vector2(50f, 50f);
     private List<GameObject> usedLeads;
-    private float time;
     private GameObject target;
 
 	public override void Awake()
@@ -94,7 +93,6 @@ public class Ranger : HeroClass, IHitboxResponder
         tracking = 0.8f;
         visionRange = 100f;
         state = State.IDLE;
-        time = Time.time;
         usedLeads = new List<GameObject>();
     }
 

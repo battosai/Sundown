@@ -6,25 +6,22 @@ public class Wildlife : CharacterClass
 {
     public Sprite alive;
     public Sprite dead;
-    public bool isDead {get; private set;}
-    public int maxHealth {get; private set;}
-    public int nutrition {get; private set;}
     public int clue {get; private set;}
     public float blood {get; private set;}
-    protected enum State {CALM, ALERTED, DEAD};
+    protected enum State {IDLE, FLEE, DEAD};
     protected PlayerClass player;
     protected State state;
-    protected float time;
-    public void SetMaxHealth(int maxHealth){this.maxHealth=maxHealth;}
+    protected int nutrition;
     public void SetNutrition(int nutrition){this.nutrition=nutrition;}
     public void SetClue(int clue){this.clue = clue;}
     public void SetBlood(float blood){this.blood=blood;}
 
+    //called one time
     public void Init()
     {
-        base.Awake();
         player = GameObject.Find("Player").GetComponent<PlayerClass>();
         SetType(CharacterType.WILDLIFE);
+        base.Awake();
     }
 
     public override void Update()
@@ -36,7 +33,7 @@ public class Wildlife : CharacterClass
         {
             switch(state)
             {
-                case State.CALM:
+                case State.IDLE:
                     if(Time.time - time > 1f)
                     {
                         time = Time.time;
@@ -44,7 +41,7 @@ public class Wildlife : CharacterClass
                     }
                     break;
                 case State.DEAD:
-                    isDead = true;
+                    SetIsAlive(false);
                     rend.sprite = dead;
                     rb.velocity = Vector2.zero;
                     player.SetFood(player.food+nutrition);
@@ -76,11 +73,9 @@ public class Wildlife : CharacterClass
 
     public override void Reset()
     {
-        base.Reset();
         rend.sprite = alive;
-        isDead = false;
-        time = Time.time;
-        state = State.CALM;
+        state = State.IDLE;
         SetHealth(maxHealth);
+        base.Reset();
     }
 }

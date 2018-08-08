@@ -13,15 +13,20 @@ public class CharacterClass : MonoBehaviour
 	public float floorHeight {get; private set;}
 	public Vector2 floorPosition {get; private set;}
 	public bool isLeft {get; private set;}
+	public bool isDead {get; private set;}
 	public GameState gameState {get; private set;}
 	public World world {get; private set;}
 	public Transform trans {get; private set;}
 	public Rigidbody2D rb {get; private set;}
 	public SpriteRenderer rend {get; private set;}
 	protected PathFinding.Node[,] nodeMap;
+	protected int maxHealth;
+    protected float time;
 	public void SetType(CharacterType type){this.type = type;}
 	public void SetNodeID(int id){nodeID = id;}
 	public void SetIsLeft(bool isLeft){this.isLeft = isLeft;}
+	public void SetIsAlive(bool isAlive){this.isAlive = isAlive;}
+    public void SetMaxHealth(int maxHealth){this.maxHealth=maxHealth;}
 	public void SetHealth(int health){this.health = health;}
 	public void SetSpeed(int speed){this.speed = speed;}
 
@@ -48,6 +53,8 @@ public class CharacterClass : MonoBehaviour
 	public virtual void Reset()
 	{
 		speed = BASE_SPEED;
+		isAlive = true;
+		time = Time.time;
 	}
 
 	public virtual void UpdateAnimator()

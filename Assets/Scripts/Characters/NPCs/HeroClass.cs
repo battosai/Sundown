@@ -69,7 +69,7 @@ public class HeroClass : CharacterClass
 				Debug.Log("[Error] Invalid NodeID when making Hero present in node");
 				return;
 			}
-			nodeMap = PathFinding.Node.MakeNodeMap(player.trans.position, World.wnodes[nodeID].map, nodeID);
+			nodeMap = PathFinding.Node.MakeNodeMap(World.wnodes[nodeID].map, nodeID);
 			Vector2 spawn = world.GetValidPoints(nodeID, 1)[0];
 			trans.position = spawn;
 		}

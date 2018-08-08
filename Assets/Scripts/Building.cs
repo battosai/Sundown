@@ -6,6 +6,7 @@ using UnityEngine;
 public class Building : MonoBehaviour
 {
     public GameObject objects;
+    public GameObject entrance {get; private set;}
     public bool isEnterable {get; private set;}
     public bool isOccupied {get; private set;}
     public int nodeID {get; private set;}
@@ -20,6 +21,7 @@ public class Building : MonoBehaviour
     public void Init()
     {
         interior = World.activeBuilding.GetComponent<Interior>();
+        entrance = transform.Find("BuildingEntrance").gameObject;
         trans = GetComponent<Transform>();
         rend = GetComponent<SpriteRenderer>();
     }

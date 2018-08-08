@@ -49,6 +49,8 @@ public class PlayerClass : CharacterClass
 	{
 		base.Reset();
 		SetNodeID(0);
+		SetMaxHealth(20);
+		SetHealth(maxHealth);
 		World.nodes[nodeID].SetActive(true);
 		trans.position = SetFloorPosition(World.wnodes[nodeID].playerSpawn.transform.position);
 		rend.sprite = human;

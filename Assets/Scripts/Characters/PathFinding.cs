@@ -220,7 +220,7 @@ public class PathFinding
 			this.total = this.cost+this.estimate;
 			this.parent = parent;
 		}
-		public static Node[,] MakeNodeMap(Vector2 destination, int[,] map, int nodeID)
+		public static Node[,] MakeNodeMap(int[,] map, int nodeID)
 		{
 			Node[,] nodeMap = new Node[MapGenerator.ROWS, MapGenerator.COLS];
 			for(int i = 0; i < MapGenerator.ROWS; i++)
@@ -230,7 +230,6 @@ public class PathFinding
 					if(map[i, j] == MapGenerator.FLOOR)
 					{
 						Node node = new Node(i, j, nodeID, null);
-						// node.Guesstimate(destination);
 						nodeMap[i, j] = node;
 					}
 				}

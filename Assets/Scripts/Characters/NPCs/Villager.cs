@@ -6,14 +6,15 @@ public class Villager : TownspersonClass
 {
     private readonly int leashX = 10;
     private readonly int leashY = 5;
-    private readonly float alarmTimer = 5f;
+    private readonly float recoveryTime = 5f;
     private bool isAlarmed;
-    private Building building;
+    private Building home;
     private Vector2 leashPos;
 
-    public void Start()
+    public void Awake()
     {
-        init();
+        base.Init();
+        Reset();
     }
 
     public void Update()
@@ -23,12 +24,26 @@ public class Villager : TownspersonClass
             switch(state)
             {
                 case State.DEAD:
-                    isAlive = false;
+                    SetIsAlive(false);
                     rb.velocity = Vector2.zero;
                     break;
                 case State.IDLE:
+                    if(health < maxHealth)
+                    {
+                        state = State.ALARM;
+                        List<Vector2> path = PathFinding.AStarJump(trans.position, home.entrance.transform.position, nodeMap, nodeID);
+                        //do something with the path...coroutines? wouldn't need to make this an attribute then
+                        goto case State.ALARM;
+                    }
                     break;
                 case State.ALARM:
+                    break;
+                case State.HIDE:
+                    if(time-Time.time > recoveryTime)
+                    {
+                        state = State.IDLE;
+                        goto case State.IDLE;
+                    }
                     break;
                 default:
                     Debug.Log("[Error] Unrecognized State: "+state);
