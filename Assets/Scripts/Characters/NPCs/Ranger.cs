@@ -138,7 +138,7 @@ public class Ranger : HeroClass, IHitboxResponder
                         break;
                     case CharacterType.WILDLIFE:
                         Wildlife animal = obj.GetComponent<Wildlife>();
-                        if(animal.isDead)
+                        if(!animal.isAlive)
                             target = obj;
                         break;
                     case CharacterType.TOWNSPERSON:

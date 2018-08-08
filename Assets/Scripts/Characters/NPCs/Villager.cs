@@ -10,14 +10,15 @@ public class Villager : TownspersonClass
     private bool isAlarmed;
     private Building home;
     private Vector2 leashPos;
+    public void SetHome(Building home){this.home=home;}
 
-    public void Awake()
+    public override void Awake()
     {
         base.Init();
         Reset();
     }
 
-    public void Update()
+    public override void Update()
     {
         if(isAlive)
         {
@@ -54,7 +55,7 @@ public class Villager : TownspersonClass
         }
     }
 
-    public void Reset()
+    public override void Reset()
     {
         base.Reset();
         state = State.IDLE;

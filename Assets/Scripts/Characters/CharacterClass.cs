@@ -13,7 +13,7 @@ public class CharacterClass : MonoBehaviour
 	public float floorHeight {get; private set;}
 	public Vector2 floorPosition {get; private set;}
 	public bool isLeft {get; private set;}
-	public bool isDead {get; private set;}
+	public bool isAlive {get; private set;}
 	public GameState gameState {get; private set;}
 	public World world {get; private set;}
 	public Transform trans {get; private set;}

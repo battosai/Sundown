@@ -29,7 +29,7 @@ public class Wildlife : CharacterClass
         setFloorHeight();
         if(health <= 0)
             state = State.DEAD;
-        if(!isDead)
+        if(isAlive)
         {
             switch(state)
             {

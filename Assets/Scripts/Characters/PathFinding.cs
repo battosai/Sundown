@@ -148,7 +148,7 @@ public class PathFinding
         int col = origin.col;
         int[,] map = World.wnodes[nodeID].map;
         int[] directions = splitDirections[direction];
-        return map[row+directions[0], row+directions[1]] == MapGenerator.FLOOR;
+        return map[row+directions[0], col+directions[1]] == MapGenerator.FLOOR;
     }
 
 	//return list of neighbors as pathnodes

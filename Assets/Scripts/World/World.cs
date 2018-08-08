@@ -221,8 +221,6 @@ public class World : MonoBehaviour
   	public static int[] NearestMapPair(Vector2 pos, int nodeID)
 	{
 		int[,] map = wnodes[nodeID].map;
-    	float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
-    	float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
     	int[] closest = new int[2];
     	float min = -1;
     	for(int i = 0; i < MapGenerator.ROWS; i++)
@@ -259,8 +257,6 @@ public class World : MonoBehaviour
 	public List<Vector2> GetValidPoints(int nodeID, int count, bool isPermanent=false)
 	{
 		List<Vector2> points = new List<Vector2>();
-		float mapWidth = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
-		float mapHeight = MapGenerator.ROWS*MeshGenerator.SQUARE_SIZE;
 		for(int i = 0; i < count; i++)
 		{
 			int[,] map = wnodes[nodeID].map;	

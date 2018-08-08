@@ -8,7 +8,6 @@ public class TownspersonClass : CharacterClass
     protected State state;
     protected PlayerClass player;
     protected int nutrition;
-    protected bool isAlive;
     public void SetNutrition(int nutrition){this.nutrition=nutrition;}
     
     //called one time
