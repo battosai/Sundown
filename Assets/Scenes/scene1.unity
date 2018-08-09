@@ -989,6 +989,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingPrefabs:
   - {fileID: 1396995122327182, guid: 14f0501825f314dd486e36b145f4b0d4, type: 2}
+  villagerPrefabs:
+  - {fileID: 1807908770862368, guid: 0abe3faa7b112ba47aea8dd1e5d0f866, type: 2}
   bigAnimalPrefabs:
   - {fileID: 1885917050711660, guid: 3be11939e233fff4a84c1d659fad4c38, type: 2}
   smallAnimalPrefabs:

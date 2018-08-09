@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Building : MonoBehaviour
 {
+    public List<GameObject> villagers;
     public GameObject objects;
     public GameObject entrance {get; private set;}
     public bool isEnterable {get; private set;}
@@ -12,6 +13,7 @@ public class Building : MonoBehaviour
     public int nodeID {get; private set;}
     public float floorHeight {get; private set;}
     public Size size;// {get; private set;}
+    private World world;
     private Interior interior;
     private Transform trans;
     private SpriteRenderer rend;
@@ -20,6 +22,7 @@ public class Building : MonoBehaviour
 
     public void Init()
     {
+        world = GameObject.Find("World").GetComponent<World>();
         interior = World.activeBuilding.GetComponent<Interior>();
         entrance = transform.Find("BuildingEntrance").gameObject;
         trans = GetComponent<Transform>();
@@ -32,17 +35,48 @@ public class Building : MonoBehaviour
     }
 
     //called in World.cs when reusing a building pool object after setting its new position
-    public void  Reset()
+    public void Reset()
     {
         if(objects != null)
         {
             Destroy(objects);
         }
+        villagers = new List<GameObject>();
         size = randomSize();
         selectLayout(size);
         setFloorHeight();
         isEnterable = true; //temp
         isOccupied = false; //temp
+    }
+
+    //resuses/generates villagers that live in this building
+    public void Populate()
+    {
+        int count = UnityEngine.Random.Range(1, 5);
+        List<Vector2> points = world.GetValidPoints(nodeID, count);
+        for(int i = 0; i < villagers.Count; i++)
+        {
+            if(count == 0)
+            {
+                for(int j = i; j < villagers.Count; j++)
+                    villagers[j].SetActive(false);
+                break;
+            }
+            Vector2 point = points[i];
+            Villager villager = villagers[i].GetComponent<Villager>();
+            villager.trans.position = villager.SetFloorPosition(point);
+            villager.Reset();
+            villagers[i].SetActive(true);
+            points.Remove(point);
+        }     
+        for(int i = 0; i < points.Count; i++)
+        {
+            villagers = new List<GameObject>();
+            GameObject villager = Instantiate(world.villagerPrefabs[UnityEngine.Random.Range(0, world.villagerPrefabs.Count)], trans);
+            villager.transform.position = points[i];
+            villager.GetComponent<Villager>().Init();
+            villagers.Add(villager);
+        }
     }
 
     //load into active building

@@ -7,6 +7,7 @@ using UnityEngine;
 public class World : MonoBehaviour
 {
 	public List<GameObject> buildingPrefabs;
+	public List<GameObject> villagerPrefabs;
 	public List<GameObject> bigAnimalPrefabs;
 	public List<GameObject> smallAnimalPrefabs;
 	public Dictionary<string, List<GameObject>> beastiary;
@@ -145,7 +146,7 @@ public class World : MonoBehaviour
 	{
 		GameObject node = nodes[nodeID];
 		WorldNode wnode = wnodes[nodeID];
-		List<Vector2> points = GetValidPoints(nodeID, Random.Range(0, 5), true); 
+		List<Vector2> points = GetValidPoints(nodeID, Random.Range(1, 5), true); 
 		//use building object pool or spawn new ones
 		for(int i = 0; i < wnode.buildingPool.Count; i++)
 		{
@@ -160,6 +161,7 @@ public class World : MonoBehaviour
 			Building building = poolObject.GetComponent<Building>();
 			poolObject.transform.position = building.SetFloorPosition(point);
 			building.Reset();
+			building.Populate();
 			poolObject.SetActive(true);
 			points.Remove(point);
 		}
@@ -169,6 +171,7 @@ public class World : MonoBehaviour
 			GameObject obj = Instantiate(buildingPrefabs[0], node.transform.Find("Buildings"));
 			Building building = obj.GetComponent<Building>();
 			building.Init();
+			building.Populate();
 			obj.transform.position = building.SetFloorPosition(point);
 			wnode.AddPoolObject(obj, wnode.buildingPool);
 		}

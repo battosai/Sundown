@@ -14,7 +14,7 @@ public class Villager : TownspersonClass
 
     public override void Awake()
     {
-        base.Init();
+        // base.Init();
         Reset();
     }
 
@@ -57,8 +57,8 @@ public class Villager : TownspersonClass
 
     public override void Reset()
     {
-        base.Reset();
         state = State.IDLE;
+        base.Reset();
     }
 
     private void wanderInLeash()

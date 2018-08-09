@@ -6,7 +6,7 @@ public class BigAnimal : Wildlife
 {
     public override void Awake()
     {
-        base.Init();
+        // base.Init();
         Reset();
     }
     public override void Reset()
