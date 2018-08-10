@@ -161,7 +161,6 @@ public class World : MonoBehaviour
 			Building building = poolObject.GetComponent<Building>();
 			poolObject.transform.position = building.SetFloorPosition(point);
 			building.Reset();
-			building.Populate();
 			poolObject.SetActive(true);
 			points.Remove(point);
 		}
@@ -171,7 +170,6 @@ public class World : MonoBehaviour
 			GameObject obj = Instantiate(buildingPrefabs[0], node.transform.Find("Buildings"));
 			Building building = obj.GetComponent<Building>();
 			building.Init();
-			building.Populate();
 			obj.transform.position = building.SetFloorPosition(point);
 			wnode.AddPoolObject(obj, wnode.buildingPool);
 		}
