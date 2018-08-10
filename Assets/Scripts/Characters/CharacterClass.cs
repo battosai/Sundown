@@ -22,6 +22,7 @@ public class CharacterClass : MonoBehaviour
 	protected PathFinding.Node[,] nodeMap;
 	protected int maxHealth;
     protected float time;
+	protected Collider2D pushBox;
 	public void SetType(CharacterType type){this.type = type;}
 	public void SetNodeID(int id){nodeID = id;}
 	public void SetIsLeft(bool isLeft){this.isLeft = isLeft;}
@@ -37,6 +38,7 @@ public class CharacterClass : MonoBehaviour
 		trans = GetComponent<Transform>();
 		rb = GetComponent<Rigidbody2D>();
 		rend = GetComponent<SpriteRenderer>();
+		pushBox = GetComponent<Collider2D>();
 	}
 
 	//default Update for characters

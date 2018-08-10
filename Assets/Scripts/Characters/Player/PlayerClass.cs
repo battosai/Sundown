@@ -15,7 +15,6 @@ public class PlayerClass : CharacterClass
 	public int gold {get; private set;}
 	public PlayerInput input {get; private set;}
 	public PlayerActions actions {get; private set;}
-	public Collider2D pushBox {get; private set;}
 	private readonly int succumbedToHungerPenalty = 10;
 	private Animator anim;
 	public void SetFood(int food){this.food=food;}
@@ -26,7 +25,6 @@ public class PlayerClass : CharacterClass
 		base.Awake();
 		input = GetComponent<PlayerInput>();
 		actions = GetComponent<PlayerActions>();
-		pushBox = GetComponent<Collider2D>();
 		anim = GetComponent<Animator>();
 	}
 

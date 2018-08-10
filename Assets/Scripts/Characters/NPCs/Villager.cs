@@ -7,14 +7,12 @@ public class Villager : TownspersonClass
     private readonly int leashX = 10;
     private readonly int leashY = 5;
     private readonly float recoveryTime = 5f;
-    private bool isAlarmed;
     private Building home;
     private Vector2 leashPos;
     public void SetHome(Building home){this.home=home;}
 
     public override void Awake()
     {
-        // base.Init();
         Reset();
     }
 
@@ -33,18 +31,24 @@ public class Villager : TownspersonClass
                     {
                         state = State.ALARM;
                         List<Vector2> path = PathFinding.AStarJump(trans.position, home.entrance.transform.position, nodeMap, nodeID);
-                        //do something with the path...coroutines? wouldn't need to make this an attribute then
                         goto case State.ALARM;
                     }
                     break;
                 case State.ALARM:
+                    //travel on path and alert ppl on the way                
+                    if(trans.position == home.entrance.transform.position)
+                        state = State.HIDE;
+                    //coroutine started in hero class takePath()
                     break;
                 case State.HIDE:
                     if(time-Time.time > recoveryTime)
                     {
+                        SetHealth(maxHealth);
                         state = State.IDLE;
                         goto case State.IDLE;
                     }
+                    rend.enabled = false;
+                    pushBox.enabled = false;
                     break;
                 default:
                     Debug.Log("[Error] Unrecognized State: "+state);

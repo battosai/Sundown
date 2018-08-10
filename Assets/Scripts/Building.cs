@@ -67,7 +67,6 @@ public class Building : MonoBehaviour
             Villager villager = villagerPool[i].GetComponent<Villager>();
             villager.trans.position = villager.SetFloorPosition(point);
             villager.Reset();
-            //set villager home to building? it's private so...do it in villager reset?
             villagerPool[i].SetActive(true);
             points.Remove(point);
         }     

@@ -16,7 +16,6 @@ public class Ranger : HeroClass, IHitboxResponder
         gameState.SetHero(this);
 		player = GameObject.Find("Player").GetComponent<PlayerClass>();
         hitBox = GetComponent<Hitbox>();
-        pushBox = GetComponent<Collider2D>();
 	}
 
     public void Start()

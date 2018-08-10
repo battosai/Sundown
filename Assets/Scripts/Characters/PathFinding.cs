@@ -5,26 +5,26 @@ using UnityEngine;
 public class PathFinding
 {
     //bit order: left|bottom|top|right
-    public static readonly int RIGHT = 1;
-    public static readonly int TOP = 2;
-    public static readonly int TOPRIGHT = 3; 
-    public static readonly int BOTTOM = 4;
-    public static readonly int BOTTOMRIGHT = 5;
-    public static readonly int LEFT = 8;
-    public static readonly int TOPLEFT = 10;
-    public static readonly int BOTTOMLEFT = 12;
-    private static Dictionary<int, int[]> splitDirections = new Dictionary<int, int[]>() 
-    {
-        //directions are based on row,col orientation
-        {TOP, new int[]{-1, 0}},
-        {BOTTOM, new int[]{1, 0}},
-        {RIGHT, new int[]{0, 1}},
-        {LEFT, new int[]{0, -1}},
-        {TOPRIGHT, new int[]{-1, 1}},
-        {TOPLEFT, new int[]{-1, -1}},
-        {BOTTOMRIGHT, new int[]{1, 1}}, 
-        {BOTTOMLEFT, new int[]{1, -1}}
-    };
+    // public static readonly int RIGHT = 1;
+    // public static readonly int TOP = 2;
+    // public static readonly int TOPRIGHT = 3; 
+    // public static readonly int BOTTOM = 4;
+    // public static readonly int BOTTOMRIGHT = 5;
+    // public static readonly int LEFT = 8;
+    // public static readonly int TOPLEFT = 10;
+    // public static readonly int BOTTOMLEFT = 12;
+    // private static Dictionary<int, int[]> splitDirections = new Dictionary<int, int[]>() 
+    // {
+    //     //directions are based on row,col orientation
+    //     {TOP, new int[]{-1, 0}},
+    //     {BOTTOM, new int[]{1, 0}},
+    //     {RIGHT, new int[]{0, 1}},
+    //     {LEFT, new int[]{0, -1}},
+    //     {TOPRIGHT, new int[]{-1, 1}},
+    //     {TOPLEFT, new int[]{-1, -1}},
+    //     {BOTTOMRIGHT, new int[]{1, 1}}, 
+    //     {BOTTOMLEFT, new int[]{1, -1}}
+    // };
 
     public static List<Vector2> AStarJump(Vector2 start, Vector2 destination, Node[,] nodeMap, int nodeID)
 	{
@@ -140,16 +140,31 @@ public class PathFinding
 		}
         return jump(nextNode, endNode, dx, dy, nodeMap);
     }
+
+	public static Vector2 GetVelocity(Vector2 start, Vector2 destination, float speed)
+	{
+		if(speed <= 0)
+		{
+			Debug.Log("[Warn] Character has non-positive speed");
+			return Vector2.zero;
+		}
+		float dx = destination.x-start.x;
+		float dy = destination.y-start.y;
+		float dist = Mathf.Sqrt(Mathf.Pow(dx, 2)+Mathf.Pow(dy, 2));
+		float vx = (speed*dx)/dist;
+		float vy = (speed*dy)/dist;
+		return new Vector2(vx, vy);
+	}
 	
     //checks specific neighbor
-    public static bool CheckNeighbor(Node origin, Node[,] nodeMap, int nodeID, int direction)
-    {
-        int row = origin.row;
-        int col = origin.col;
-        int[,] map = World.wnodes[nodeID].map;
-        int[] directions = splitDirections[direction];
-        return map[row+directions[0], col+directions[1]] == MapGenerator.FLOOR;
-    }
+    // public static bool CheckNeighbor(Node origin, Node[,] nodeMap, int nodeID, int direction)
+    // {
+    //     int row = origin.row;
+    //     int col = origin.col;
+    //     int[,] map = World.wnodes[nodeID].map;
+    //     int[] directions = splitDirections[direction];
+    //     return map[row+directions[0], col+directions[1]] == MapGenerator.FLOOR;
+    // }
 
 	//return list of neighbors as pathnodes
 	public static List<Node> GetNeighbors(Node origin, Node[,] nodeMap)

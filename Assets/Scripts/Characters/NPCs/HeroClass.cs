@@ -13,7 +13,6 @@ public class HeroClass : CharacterClass
 	protected bool isPresent;
 	protected PlayerClass player;
 	protected Hitbox hitBox;
-	protected Collider2D pushBox;
 	public void SetLead(float lead){this.lead=lead;}
 
 	//common one time setups
@@ -35,6 +34,11 @@ public class HeroClass : CharacterClass
             WorldNode wnode = World.wnodes[nodeID];
             SetLead(lead+wnode.clues*tracking);
         }
+	}
+
+	protected IEnumerator takePath(List<Vector2> path)
+	{
+		yield return null;
 	}
 
 	//is the player in the ranger's line of sight
