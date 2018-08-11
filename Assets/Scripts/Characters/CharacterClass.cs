@@ -22,6 +22,7 @@ public class CharacterClass : MonoBehaviour
 	protected PathFinding.Node[,] nodeMap;
 	protected int maxHealth;
     protected float time;
+	protected Animator anim;
 	protected Collider2D pushBox;
 	public void SetType(CharacterType type){this.type = type;}
 	public void SetNodeID(int id){nodeID = id;}
@@ -39,6 +40,7 @@ public class CharacterClass : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>();
 		rend = GetComponent<SpriteRenderer>();
 		pushBox = GetComponent<Collider2D>();
+		anim = GetComponent<Animator>();
 	}
 
 	//default Update for characters
@@ -58,6 +60,19 @@ public class CharacterClass : MonoBehaviour
 		isAlive = true;
 		time = Time.time;
 	}
+
+  	protected void idleWalk()
+    {
+        int action = Random.Range(0, 5);
+        if(action == 0)
+        {
+            float horizontal = Random.Range(-speed, speed);
+            float vertical = Random.Range(-speed, speed);
+            rb.velocity = new Vector2(horizontal, vertical);
+        }
+        else
+            rb.velocity = Vector2.zero;
+    } 
 
 	protected IEnumerator takePath(Vector2 destination)
 	{

@@ -33,6 +33,11 @@ public class Villager : TownspersonClass
                         state = State.ALARM;
                         goto case State.ALARM;
                     }
+                    if(Time.time-time > 1f)
+                    {
+                        time = Time.time;
+                        idleWalk();
+                    }
                     break;
                 case State.ALARM:
                     //travel on path and alert ppl on the way                
@@ -68,8 +73,15 @@ public class Villager : TownspersonClass
                     break;
             }
             setFloorHeight();
+            UpdateAnimator();
             base.Update();
         }
+    }
+
+    public override void UpdateAnimator()
+    {
+        anim.SetBool("isAlarmed", isAlarmed);
+        anim.SetFloat("speed", Mathf.Abs(rb.velocity.x)+Mathf.Abs(rb.velocity.y));
     }
 
     public override void Reset()

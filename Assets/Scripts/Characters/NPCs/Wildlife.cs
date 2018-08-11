@@ -58,19 +58,6 @@ public class Wildlife : CharacterClass
         }
     }
 
-    private void idleWalk()
-    {
-        int action = Random.Range(0, 5);
-        if(action == 0)
-        {
-            float horizontal = Random.Range(-speed, speed);
-            float vertical = Random.Range(-speed, speed);
-            rb.velocity = new Vector2(horizontal, vertical);
-        }
-        else
-            rb.velocity = Vector2.zero;
-    } 
-
     public override void Reset()
     {
         rend.sprite = alive;

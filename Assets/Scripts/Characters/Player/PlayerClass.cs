@@ -16,7 +16,6 @@ public class PlayerClass : CharacterClass
 	public PlayerInput input {get; private set;}
 	public PlayerActions actions {get; private set;}
 	private readonly int succumbedToHungerPenalty = 10;
-	private Animator anim;
 	public void SetFood(int food){this.food=food;}
 	public void SetGold(int gold){this.gold=gold;}
 
@@ -25,7 +24,6 @@ public class PlayerClass : CharacterClass
 		base.Awake();
 		input = GetComponent<PlayerInput>();
 		actions = GetComponent<PlayerActions>();
-		anim = GetComponent<Animator>();
 	}
 
 	public void Start()
