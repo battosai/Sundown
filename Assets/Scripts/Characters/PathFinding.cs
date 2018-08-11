@@ -34,6 +34,7 @@ public class PathFinding
 		Stack<Node> stack = new Stack<Node>(); 
 		int[] mapStart = World.NearestMapPair(start, nodeID);
 		int[] mapEnd = World.NearestMapPair(destination, nodeID);
+		path.Add(destination);
 		Node root = nodeMap[mapStart[0], mapStart[1]];
 		Node endNode = nodeMap[mapEnd[0], mapEnd[1]];
 		stack.Push(root);

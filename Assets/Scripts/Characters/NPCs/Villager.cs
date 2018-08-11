@@ -36,9 +36,11 @@ public class Villager : TownspersonClass
                     break;
                 case State.ALARM:
                     //travel on path and alert ppl on the way                
-                    if(trans.position == home.entrance.transform.position)
+                    if(Vector2.Distance(floorPosition, home.entrance.transform.position) <= 1f)
                     {
                         isAlarmed = false;
+                        rb.velocity = Vector2.zero;
+                        time = Time.time;
                         state = State.HIDE;
                         goto case State.HIDE;
                     }
@@ -50,7 +52,7 @@ public class Villager : TownspersonClass
                     }
                     break;
                 case State.HIDE:
-                    if(time-Time.time > recoveryTime)
+                    if(Time.time-time > recoveryTime)
                     {
                         SetHealth(maxHealth);
                         rend.enabled = true;

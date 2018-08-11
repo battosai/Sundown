@@ -63,17 +63,20 @@ public class CharacterClass : MonoBehaviour
 	{
 		Debug.Log("Taking path!");
 		float tolerance = 1f;
-		List<Vector2> path = PathFinding.AStarJump(trans.position, destination, nodeMap, nodeID);
+		List<Vector2> path = PathFinding.AStarJump(floorPosition, destination, nodeMap, nodeID);
+		Debug.DrawLine(new Vector3(destination.x-1f, destination.y, 0f), new Vector3(destination.x+1f, destination.y, 0f), Color.cyan, 100f);
 		for(int i = 0; i < path.Count; i++)
 		{
 			while(true)
 			{
-				if(Vector2.Distance(trans.position, path[i]) <= tolerance)
+				if(Vector2.Distance(floorPosition, path[i]) <= tolerance)
 					break;
-				rb.velocity = PathFinding.GetVelocity(trans.position, path[i], speed);
+				Debug.DrawLine(new Vector3(path[i].x-1f, path[i].y, 0f), new Vector3(path[i].x+1f, path[i].y, 0f), Color.cyan, 1f);
+				rb.velocity = PathFinding.GetVelocity(floorPosition, path[i], speed);
 				yield return null;
 			}
 		}
+		Debug.Log("Reached end of path");
 	}
 
 	public virtual void UpdateAnimator()
