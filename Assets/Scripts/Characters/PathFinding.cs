@@ -150,7 +150,7 @@ public class PathFinding
 		}
 		float dx = destination.x-start.x;
 		float dy = destination.y-start.y;
-		float dist = Mathf.Sqrt(Mathf.Pow(dx, 2)+Mathf.Pow(dy, 2));
+		float dist = Vector2.Distance(start, destination);
 		float vx = (speed*dx)/dist;
 		float vy = (speed*dy)/dist;
 		return new Vector2(vx, vy);

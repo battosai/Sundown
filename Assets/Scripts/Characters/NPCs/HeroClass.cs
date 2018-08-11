@@ -36,11 +36,6 @@ public class HeroClass : CharacterClass
         }
 	}
 
-	protected IEnumerator takePath(List<Vector2> path)
-	{
-		yield return null;
-	}
-
 	//is the player in the ranger's line of sight
     protected bool playerSpotted()
     {

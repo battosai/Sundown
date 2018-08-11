@@ -59,6 +59,23 @@ public class CharacterClass : MonoBehaviour
 		time = Time.time;
 	}
 
+	protected IEnumerator takePath(Vector2 destination)
+	{
+		Debug.Log("Taking path!");
+		float tolerance = 1f;
+		List<Vector2> path = PathFinding.AStarJump(trans.position, destination, nodeMap, nodeID);
+		for(int i = 0; i < path.Count; i++)
+		{
+			while(true)
+			{
+				if(Vector2.Distance(trans.position, path[i]) <= tolerance)
+					break;
+				rb.velocity = PathFinding.GetVelocity(trans.position, path[i], speed);
+				yield return null;
+			}
+		}
+	}
+
 	public virtual void UpdateAnimator()
 	{
 		Debug.Log("[WARN] "+gameObject.name+" has no proper UpdateAnimator() method");

@@ -7,6 +7,7 @@ public class Villager : TownspersonClass
     private readonly int leashX = 10;
     private readonly int leashY = 5;
     private readonly float recoveryTime = 5f;
+    private bool isAlarmed;
     private Building home;
     private Vector2 leashPos;
     public void SetHome(Building home){this.home=home;}
@@ -30,20 +31,30 @@ public class Villager : TownspersonClass
                     if(health < maxHealth)
                     {
                         state = State.ALARM;
-                        List<Vector2> path = PathFinding.AStarJump(trans.position, home.entrance.transform.position, nodeMap, nodeID);
                         goto case State.ALARM;
                     }
                     break;
                 case State.ALARM:
                     //travel on path and alert ppl on the way                
                     if(trans.position == home.entrance.transform.position)
+                    {
+                        isAlarmed = false;
                         state = State.HIDE;
-                    //coroutine started in hero class takePath()
+                        goto case State.HIDE;
+                    }
+                    if(!isAlarmed)
+                    {
+                        Debug.Log("Running home!");
+                        StartCoroutine(takePath(home.entrance.transform.position));
+                        isAlarmed = true;
+                    }
                     break;
                 case State.HIDE:
                     if(time-Time.time > recoveryTime)
                     {
                         SetHealth(maxHealth);
+                        rend.enabled = true;
+                        pushBox.enabled = true;
                         state = State.IDLE;
                         goto case State.IDLE;
                     }
@@ -62,6 +73,7 @@ public class Villager : TownspersonClass
     public override void Reset()
     {
         state = State.IDLE;
+        isAlarmed = false;
         base.Reset();
     }
 
