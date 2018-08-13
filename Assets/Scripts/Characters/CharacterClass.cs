@@ -30,7 +30,7 @@ public class CharacterClass : MonoBehaviour
 	public void SetIsAlive(bool isAlive){this.isAlive = isAlive;}
     public void SetMaxHealth(int maxHealth){this.maxHealth=maxHealth;}
 	public void SetHealth(int health){this.health = health;}
-	public void SetSpeed(int speed){this.speed = speed;}
+	public void SetSpeed(float speed){this.speed = speed;}
 
 	public virtual void Awake()
 	{

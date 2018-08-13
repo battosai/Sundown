@@ -4,12 +4,9 @@ using System.Collections.Generic;
 
 public class Villager : TownspersonClass
 {
-    private readonly int leashX = 10;
-    private readonly int leashY = 5;
-    private readonly float recoveryTime = 5f;
+    private readonly float RECOVERY_TIME = 5f;
     private bool isAlarmed;
     private Building home;
-    private Vector2 leashPos;
     public void SetHome(Building home){this.home=home;}
 
     public override void Awake()
@@ -40,7 +37,6 @@ public class Villager : TownspersonClass
                     }
                     break;
                 case State.ALARM:
-                    //travel on path and alert ppl on the way                
                     if(Vector2.Distance(floorPosition, home.entrance.transform.position) <= 1f)
                     {
                         isAlarmed = false;
@@ -57,7 +53,7 @@ public class Villager : TownspersonClass
                     }
                     break;
                 case State.HIDE:
-                    if(Time.time-time > recoveryTime)
+                    if(Time.time-time > RECOVERY_TIME)
                     {
                         SetHealth(maxHealth);
                         rend.enabled = true;

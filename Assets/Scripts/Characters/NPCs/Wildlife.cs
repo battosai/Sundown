@@ -12,6 +12,8 @@ public class Wildlife : CharacterClass
     protected PlayerClass player;
     protected State state;
     protected int nutrition;
+    private readonly float FLEE_SPEED = 40f;
+    private readonly float FLEE_DISTANCE = 100f;
     public void SetNutrition(int nutrition){this.nutrition=nutrition;}
     public void SetClue(int clue){this.clue = clue;}
     public void SetBlood(float blood){this.blood=blood;}
@@ -34,11 +36,27 @@ public class Wildlife : CharacterClass
             switch(state)
             {
                 case State.IDLE:
+                    if(health < maxHealth)
+                    {
+                        SetMaxHealth(health);
+                        SetSpeed(FLEE_SPEED);
+                        state = State.FLEE;
+                        goto case State.FLEE;
+                    }
                     if(Time.time - time > 1f)
                     {
                         time = Time.time;
                         idleWalk();
                     }
+                    break;
+                case State.FLEE:
+                    if(Vector2.Distance(player.floorPosition, floorPosition) > FLEE_DISTANCE)
+                    {
+                        SetSpeed(BASE_SPEED);
+                        state = State.IDLE;
+                        goto case State.IDLE;
+                    }
+                    rb.velocity = new Vector2(-1f, -1f)*PathFinding.GetVelocity(floorPosition, player.floorPosition, speed);
                     break;
                 case State.DEAD:
                     SetIsAlive(false);
@@ -49,7 +67,6 @@ public class Wildlife : CharacterClass
                     WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();
                     wnode.SetClues(wnode.clues+clue);
                     Debug.Log("WorldNode now has "+wnode.clues+" clues");
-                    // this.gameObject.SetActive(false);
                     break;
                 default:
                     break;
