@@ -2,10 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Villager : TownspersonClass
+public class Villager : TownspersonClass, IHitboxResponder
 {
     private readonly float RECOVERY_TIME = 5f;
-    private bool isAlarmed;
     private Building home;
     public void SetHome(Building home){this.home=home;}
 
@@ -25,7 +24,7 @@ public class Villager : TownspersonClass
                     rb.velocity = Vector2.zero;
                     break;
                 case State.IDLE:
-                    if(health < maxHealth)
+                    if(isAlarmed)
                     {
                         state = State.ALARM;
                         goto case State.ALARM;
@@ -39,17 +38,17 @@ public class Villager : TownspersonClass
                 case State.ALARM:
                     if(Vector2.Distance(floorPosition, home.entrance.transform.position) <= 1f)
                     {
-                        isAlarmed = false;
                         rb.velocity = Vector2.zero;
                         time = Time.time;
                         state = State.HIDE;
+                        SetIsAlarmed(false);
                         goto case State.HIDE;
                     }
                     if(!isAlarmed)
                     {
                         Debug.Log("Running home!");
                         StartCoroutine(takePath(home.entrance.transform.position));
-                        isAlarmed = true;
+                        SetIsAlarmed(true);
                     }
                     break;
                 case State.HIDE:
@@ -74,6 +73,28 @@ public class Villager : TownspersonClass
         }
     }
 
+    public void Hit(Collider2D other, Action action)
+    {
+        switch(action)
+        {
+            case Action.ALARM:
+                alarm(other);
+                break;
+            default:
+                Debug.Log("[WARN]: Unknown Villager Action "+action);
+                break;
+        }
+    }
+
+    private void alarm(Collider2D other)
+    {
+        if(other.tag == "NPC")
+        {
+            CharacterClass npc = other.GetComponent<CharacterClass>();
+            npc.SetIsAlarmed(true);
+        }
+    }
+
     public override void UpdateAnimator()
     {
         anim.SetBool("isAlarmed", isAlarmed);
@@ -83,7 +104,8 @@ public class Villager : TownspersonClass
     public override void Reset()
     {
         state = State.IDLE;
-        isAlarmed = false;
+        hitbox.SetResponder(this);
+        SetIsAlarmed(false);
         base.Reset();
     }
 

@@ -7,6 +7,7 @@ public class TownspersonClass : CharacterClass
     protected enum State {DEAD, IDLE, PATROL, INSPECT, DEFEND, ALARM, HIDE, FLEE};
     protected State state;
     protected PlayerClass player;
+    protected Hitbox hitbox;
     protected int nutrition;
     public void SetNutrition(int nutrition){this.nutrition=nutrition;}
     
@@ -14,6 +15,7 @@ public class TownspersonClass : CharacterClass
     public void Init()
     {
         player = GameObject.Find("Player").GetComponent<PlayerClass>();
+        hitbox = GetComponent<Hitbox>(); 
         SetType(CharacterType.TOWNSPERSON);
         base.Awake();
     }

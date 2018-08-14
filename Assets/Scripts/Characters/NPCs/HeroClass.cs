@@ -99,4 +99,10 @@ public class HeroClass : CharacterClass
 	// 	velocity = new Vector2((direction.x*speed)/distance, (direction.y*speed)/distance);
 	// 	return velocity;
 	// }
+
+	public override void Reset()
+	{
+        state = State.IDLE;
+		base.Reset();
+	}
 }

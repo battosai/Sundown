@@ -36,9 +36,8 @@ public class Wildlife : CharacterClass
             switch(state)
             {
                 case State.IDLE:
-                    if(health < maxHealth)
+                    if(isAlarmed)
                     {
-                        SetMaxHealth(health);
                         SetSpeed(FLEE_SPEED);
                         state = State.FLEE;
                         goto case State.FLEE;
@@ -53,6 +52,7 @@ public class Wildlife : CharacterClass
                     if(Vector2.Distance(player.floorPosition, floorPosition) > FLEE_DISTANCE)
                     {
                         SetSpeed(BASE_SPEED);
+                        SetIsAlarmed(false);
                         state = State.IDLE;
                         goto case State.IDLE;
                     }

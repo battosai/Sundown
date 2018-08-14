@@ -86,13 +86,12 @@ public class Ranger : HeroClass, IHitboxResponder
 
     public override void Reset()
     {
-        base.Reset();
         SetLead(0f);
         presentInNode(true, 0);
         tracking = 0.8f;
         visionRange = 100f;
-        state = State.IDLE;
         usedLeads = new List<GameObject>();
+        base.Reset();
     }
 
     public void Hit(Collider2D other, Action action)

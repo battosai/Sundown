@@ -22,12 +22,14 @@ public class CharacterClass : MonoBehaviour
 	protected PathFinding.Node[,] nodeMap;
 	protected int maxHealth;
     protected float time;
+    protected bool isAlarmed;
 	protected Animator anim;
 	protected Collider2D pushBox;
 	public void SetType(CharacterType type){this.type = type;}
 	public void SetNodeID(int id){nodeID = id;}
 	public void SetIsLeft(bool isLeft){this.isLeft = isLeft;}
 	public void SetIsAlive(bool isAlive){this.isAlive = isAlive;}
+    public void SetIsAlarmed(bool isAlarmed){this.isAlarmed=isAlarmed;}
     public void SetMaxHealth(int maxHealth){this.maxHealth=maxHealth;}
 	public void SetHealth(int health){this.health = health;}
 	public void SetSpeed(float speed){this.speed = speed;}
@@ -57,7 +59,8 @@ public class CharacterClass : MonoBehaviour
 	public virtual void Reset()
 	{
 		speed = BASE_SPEED;
-		isAlive = true;
+		SetIsAlive(true);
+		SetIsAlarmed(false);
 		time = Time.time;
 	}
 

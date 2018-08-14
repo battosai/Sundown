@@ -74,13 +74,18 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 
 	private void attack(Collider2D other)
 	{
-		Hurtbox hurtbox = other.GetComponent<Hurtbox>();	
-		if(hurtbox != null)
+		if(other.tag == "NPC")
+		{
+			CharacterClass npc = other.GetComponent<CharacterClass>();
+			npc.SetIsAlarmed(true);
+			Hurtbox hurtbox = other.GetComponent<Hurtbox>();	
 			hurtbox.Hurt(player.strength);
+		}
 	}
 
 	private void interact(Collider2D other)
 	{
+		//use tag instead of check for null, get rid of getcomponent call, make tags for all these
 		switch(other.gameObject.name)
 		{
 			case "PlayerExit":
