@@ -5,12 +5,18 @@ using System.Collections.Generic;
 public class Villager : TownspersonClass, IHitboxResponder
 {
     private readonly float RECOVERY_TIME = 5f;
+	private Vector2[] ALARM = {new Vector2(0, 0), new Vector2(20, 16)};
     private Building home;
     public void SetHome(Building home){this.home=home;}
 
     public override void Awake()
     {
         Reset();
+    }
+
+    public void Start()
+    {
+        hitbox.SetResponder(this);
     }
 
     public override void Update()
@@ -27,6 +33,7 @@ public class Villager : TownspersonClass, IHitboxResponder
                     if(isAlarmed)
                     {
                         state = State.ALARM;
+                        StartCoroutine(takePath(home.entrance.transform.position));
                         goto case State.ALARM;
                     }
                     if(Time.time-time > 1f)
@@ -44,11 +51,10 @@ public class Villager : TownspersonClass, IHitboxResponder
                         SetIsAlarmed(false);
                         goto case State.HIDE;
                     }
-                    if(!isAlarmed)
+                    if(Time.time-time > 1f)
                     {
-                        Debug.Log("Running home!");
-                        StartCoroutine(takePath(home.entrance.transform.position));
-                        SetIsAlarmed(true);
+                        time = Time.time;
+                        alarmCheck();
                     }
                     break;
                 case State.HIDE:
@@ -86,6 +92,18 @@ public class Villager : TownspersonClass, IHitboxResponder
         }
     }
 
+   //triggers hitbox to check for travel colliders
+	private void alarmCheck()
+	{
+		hitbox.mask.useTriggers = false;
+		hitbox.SetAction(Action.ALARM);
+		hitbox.SetOffset(ALARM[0]);
+		hitbox.SetSize(ALARM[1]);
+		hitbox.StartCheckingCollision();
+		hitbox.CheckCollision();
+		hitbox.StopCheckingCollision();
+	}
+
     private void alarm(Collider2D other)
     {
         if(other.tag == "NPC")
@@ -104,7 +122,6 @@ public class Villager : TownspersonClass, IHitboxResponder
     public override void Reset()
     {
         state = State.IDLE;
-        hitbox.SetResponder(this);
         SetIsAlarmed(false);
         base.Reset();
     }

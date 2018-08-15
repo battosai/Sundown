@@ -6,23 +6,23 @@ public enum CharacterType {PLAYER, HERO, WILDLIFE, TOWNSPERSON};
 public class CharacterClass : MonoBehaviour
 {
 	public readonly float BASE_SPEED = 20f;
-	public CharacterType type {get; private set;}
 	public int nodeID {get; private set;}
 	public int health {get; private set;}
 	public float speed {get; private set;}
 	public float floorHeight {get; private set;}
-	public Vector2 floorPosition {get; private set;}
 	public bool isLeft {get; private set;}
 	public bool isAlive {get; private set;}
+	public Vector2 floorPosition {get; private set;}
+	public CharacterType type {get; private set;}
 	public GameState gameState {get; private set;}
 	public World world {get; private set;}
 	public Transform trans {get; private set;}
 	public Rigidbody2D rb {get; private set;}
 	public SpriteRenderer rend {get; private set;}
-	protected PathFinding.Node[,] nodeMap;
 	protected int maxHealth;
     protected float time;
     protected bool isAlarmed;
+	protected PathFinding.Node[,] nodeMap;
 	protected Animator anim;
 	protected Collider2D pushBox;
 	public void SetType(CharacterType type){this.type = type;}

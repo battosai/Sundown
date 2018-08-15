@@ -756,9 +756,9 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
-  closedColor: {r: 1, g: 1, b: 1, a: 0.5372549}
-  openColor: {r: 1, g: 0.49574798, b: 0, a: 0.53333336}
-  collidingColor: {r: 1, g: 0, b: 0, a: 0.5176471}
+  closedColor: {r: 1, g: 0, b: 0, a: 0.5372549}
+  openColor: {r: 0, g: 1, b: 0.15586257, a: 0.53333336}
+  collidingColor: {r: 1, g: 0, b: 0.9504018, a: 0.5176471}
 --- !u!114 &1149566508
 MonoBehaviour:
   m_ObjectHideFlags: 0

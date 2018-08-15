@@ -23,6 +23,7 @@ public class Hitbox : MonoBehaviour
   public void SetSize(Vector2 size){this.size = size;}
   public void SetOffset(Vector2 offset){this.offset = offset;}
   public void SetAction(Action action){this.action = action;}
+  public IHitboxResponder GetResponder(){return responder;}
 
   void Awake()
   {
@@ -30,7 +31,6 @@ public class Hitbox : MonoBehaviour
   }
   void Start()
   {
-    responder = null;
     state = ColliderState.CLOSED;
   }
 

@@ -12,7 +12,6 @@ public class Ranger : HeroClass, IHitboxResponder
 
 	public override void Awake()
 	{
-        gameState.SetHero(this);
 		player = GameObject.Find("Player").GetComponent<PlayerClass>();
         hitBox = GetComponent<Hitbox>();
 		base.Awake();
@@ -22,6 +21,7 @@ public class Ranger : HeroClass, IHitboxResponder
     {
         init();
         hitBox.SetResponder(this); 
+        gameState.SetHero(this);
     //    usedLeads = new List<GameObject>();
     }
 

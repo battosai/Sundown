@@ -11,13 +11,11 @@ public class GameState : MonoBehaviour
 	public static readonly int DAYS_TO_WIN = 5;
 	public static int day {get; private set;}
 	public static bool isDaytime {get; private set;}
-
 	private readonly float UNSET_TIME = -1f;
 	private World world;
 	private PlayerClass player;
 	private HeroClass hero;
 	private float startTime;
-
 	public void SetHero(HeroClass hero){this.hero = hero;}
 
 	public void Awake()
