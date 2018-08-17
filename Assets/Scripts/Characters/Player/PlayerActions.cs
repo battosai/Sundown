@@ -8,6 +8,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	//position should default to the right side, use isLeft to flip
 	private Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
 	private Vector2[] INTERACT = {new Vector2(0, -12), new Vector2(5, 2)};
+	private Vector2[] SHAPESHIFT = {Vector2.zero, new Vector2(20, 20)};
 	private PlayerClass player;
 	private PlayerInput input;
 	private Hitbox hitbox;
@@ -41,6 +42,9 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 				break;
 			case Action.ATTACK:
 				attack(other);
+				break;
+			case Action.SHAPESHIFT:
+				//when character transforms, perform a hit detection check to see who gets alarmed
 				break;
 			default:
 				Debug.Log("[Error] Unknown Player Action");
@@ -77,6 +81,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 		if(other.tag == "NPC")
 		{
 			CharacterClass npc = other.GetComponent<CharacterClass>();
+			npc.SetAlarmPoint(player.floorPosition);
 			npc.SetIsAlarmed(true);
 			Hurtbox hurtbox = other.GetComponent<Hurtbox>();	
 			hurtbox.Hurt(player.strength);

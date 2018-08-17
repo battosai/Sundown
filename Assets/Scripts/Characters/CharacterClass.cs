@@ -22,6 +22,7 @@ public class CharacterClass : MonoBehaviour
 	protected int maxHealth;
     protected float time;
     protected bool isAlarmed;
+    protected Vector2 alarmPoint;
 	protected PathFinding.Node[,] nodeMap;
 	protected Animator anim;
 	protected Collider2D pushBox;
@@ -33,6 +34,7 @@ public class CharacterClass : MonoBehaviour
     public void SetMaxHealth(int maxHealth){this.maxHealth=maxHealth;}
 	public void SetHealth(int health){this.health = health;}
 	public void SetSpeed(float speed){this.speed = speed;}
+	public void SetAlarmPoint(Vector2 alarmPoint){this.alarmPoint=alarmPoint;}
 
 	public virtual void Awake()
 	{

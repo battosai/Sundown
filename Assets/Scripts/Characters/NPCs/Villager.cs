@@ -33,7 +33,7 @@ public class Villager : TownspersonClass, IHitboxResponder
                     if(isAlarmed)
                     {
                         state = State.ALARM;
-                        StartCoroutine(takePath(home.entrance.transform.position));
+                        fleeHome();
                         goto case State.ALARM;
                     }
                     if(Time.time-time > 1f)
@@ -51,11 +51,10 @@ public class Villager : TownspersonClass, IHitboxResponder
                         SetIsAlarmed(false);
                         goto case State.HIDE;
                     }
-                    if(Time.time-time > 1f)
-                    {
-                        time = Time.time;
-                        alarmCheck();
-                    }
+                    // if(Time.time-time > 1f)
+                    // {
+                    alarmCheck();
+                    // }
                     break;
                 case State.HIDE:
                     if(Time.time-time > RECOVERY_TIME)
@@ -109,6 +108,7 @@ public class Villager : TownspersonClass, IHitboxResponder
         if(other.tag == "NPC")
         {
             CharacterClass npc = other.GetComponent<CharacterClass>();
+            npc.SetAlarmPoint(floorPosition);
             npc.SetIsAlarmed(true);
         }
     }
@@ -133,7 +133,7 @@ public class Villager : TownspersonClass, IHitboxResponder
 
     private void fleeHome()
     {
-        //enter building and board the door
+        StartCoroutine(takePath(home.entrance.transform.position));
     }
 
     private void callGuards()

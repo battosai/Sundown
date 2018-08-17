@@ -49,14 +49,14 @@ public class Wildlife : CharacterClass
                     }
                     break;
                 case State.FLEE:
-                    if(Vector2.Distance(player.floorPosition, floorPosition) > FLEE_DISTANCE)
+                    if(Vector2.Distance(alarmPoint, floorPosition) > FLEE_DISTANCE)
                     {
                         SetSpeed(BASE_SPEED);
                         SetIsAlarmed(false);
                         state = State.IDLE;
                         goto case State.IDLE;
                     }
-                    rb.velocity = new Vector2(-1f, -1f)*PathFinding.GetVelocity(floorPosition, player.floorPosition, speed);
+                    rb.velocity = new Vector2(-1f, -1f)*PathFinding.GetVelocity(floorPosition, alarmPoint, speed);
                     break;
                 case State.DEAD:
                     SetIsAlive(false);
