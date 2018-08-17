@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Villager : TownspersonClass, IHitboxResponder
 {
     private readonly float RECOVERY_TIME = 5f;
+    private readonly float ENTRANCE_RADIUS = 5f;
 	private Vector2[] ALARM = {new Vector2(0, 0), new Vector2(20, 16)};
     private Building home;
     public void SetHome(Building home){this.home=home;}
@@ -33,7 +34,7 @@ public class Villager : TownspersonClass, IHitboxResponder
                     if(isAlarmed)
                     {
                         state = State.ALARM;
-                        fleeHome();
+                        fleeToHome();
                         goto case State.ALARM;
                     }
                     if(Time.time-time > 1f)
@@ -43,12 +44,14 @@ public class Villager : TownspersonClass, IHitboxResponder
                     }
                     break;
                 case State.ALARM:
-                    if(Vector2.Distance(floorPosition, home.entrance.transform.position) <= 1f)
+                    if(Vector2.Distance(floorPosition, home.entrance.transform.position) <= ENTRANCE_RADIUS)
                     {
                         rb.velocity = Vector2.zero;
                         time = Time.time;
                         state = State.HIDE;
                         SetIsAlarmed(false);
+                        rend.enabled = false;
+                        pushBox.enabled = false;
                         goto case State.HIDE;
                     }
                     // if(Time.time-time > 1f)
@@ -65,14 +68,11 @@ public class Villager : TownspersonClass, IHitboxResponder
                         state = State.IDLE;
                         goto case State.IDLE;
                     }
-                    rend.enabled = false;
-                    pushBox.enabled = false;
                     break;
                 default:
                     Debug.Log("[Error] Unrecognized State: "+state);
                     break;
             }
-            setFloorHeight();
             UpdateAnimator();
             base.Update();
         }
@@ -113,6 +113,21 @@ public class Villager : TownspersonClass, IHitboxResponder
         }
     }
 
+    private void wanderInLeash()
+    {
+        //wander around assigned building entrance within leash
+    }
+
+    private void fleeToHome()
+    {
+        StartCoroutine(takePath(home.entrance.transform.position));
+    }
+
+    private void callGuards()
+    {
+        //alert nearby guards
+    }
+
     public override void UpdateAnimator()
     {
         anim.SetBool("isAlarmed", isAlarmed);
@@ -124,20 +139,5 @@ public class Villager : TownspersonClass, IHitboxResponder
         state = State.IDLE;
         SetIsAlarmed(false);
         base.Reset();
-    }
-
-    private void wanderInLeash()
-    {
-        //wander around assigned building entrance within leash
-    }
-
-    private void fleeHome()
-    {
-        StartCoroutine(takePath(home.entrance.transform.position));
-    }
-
-    private void callGuards()
-    {
-        //alert nearby guards
     }
 }

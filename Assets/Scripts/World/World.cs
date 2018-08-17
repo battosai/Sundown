@@ -146,7 +146,7 @@ public class World : MonoBehaviour
 	{
 		GameObject node = nodes[nodeID];
 		WorldNode wnode = wnodes[nodeID];
-		List<Vector2> points = GetValidPoints(nodeID, Random.Range(1, 5), true); 
+		List<Vector2> points = GetValidPoints(nodeID, Random.Range(3, 6), true); 
 		//use building object pool or spawn new ones
 		for(int i = 0; i < wnode.buildingPool.Count; i++)
 		{

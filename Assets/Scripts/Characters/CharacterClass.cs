@@ -56,6 +56,7 @@ public class CharacterClass : MonoBehaviour
 		else if(velocity.x < 0)
 			isLeft = true;
 		rend.flipX = !isLeft;
+		setFloorHeight();
 	}
 
 	public virtual void Reset()
