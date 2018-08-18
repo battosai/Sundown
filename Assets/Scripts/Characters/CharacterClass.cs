@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CharacterType {PLAYER, HERO, WILDLIFE, TOWNSPERSON};
 public class CharacterClass : MonoBehaviour
 {
+	public enum Type {PLAYER, HERO, WILDLIFE, TOWNSPERSON};
 	public readonly float BASE_SPEED = 20f;
 	public int nodeID {get; private set;}
 	public int health {get; private set;}
@@ -13,7 +13,7 @@ public class CharacterClass : MonoBehaviour
 	public bool isLeft {get; private set;}
 	public bool isAlive {get; private set;}
 	public Vector2 floorPosition {get; private set;}
-	public CharacterType type {get; private set;}
+	public Type type {get; private set;}
 	public GameState gameState {get; private set;}
 	public World world {get; private set;}
 	public Transform trans {get; private set;}
@@ -26,7 +26,7 @@ public class CharacterClass : MonoBehaviour
 	protected PathFinding.Node[,] nodeMap;
 	protected Animator anim;
 	protected Collider2D pushBox;
-	public void SetType(CharacterType type){this.type = type;}
+	public void SetType(Type type){this.type = type;}
 	public void SetNodeID(int id){nodeID = id;}
 	public void SetIsLeft(bool isLeft){this.isLeft = isLeft;}
 	public void SetIsAlive(bool isAlive){this.isAlive = isAlive;}

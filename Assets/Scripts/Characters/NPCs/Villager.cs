@@ -7,8 +7,6 @@ public class Villager : TownspersonClass, IHitboxResponder
     private readonly float RECOVERY_TIME = 5f;
     private readonly float ENTRANCE_RADIUS = 5f;
 	private Vector2[] ALARM = {new Vector2(0, 0), new Vector2(20, 16)};
-    private Building home;
-    public void SetHome(Building home){this.home=home;}
 
     public override void Awake()
     {
@@ -44,7 +42,7 @@ public class Villager : TownspersonClass, IHitboxResponder
                     }
                     break;
                 case State.ALARM:
-                    if(Vector2.Distance(floorPosition, home.entrance.transform.position) <= ENTRANCE_RADIUS)
+                    if(Vector2.Distance(floorPosition, building.entrance.transform.position) <= ENTRANCE_RADIUS)
                     {
                         rb.velocity = Vector2.zero;
                         time = Time.time;
@@ -120,7 +118,7 @@ public class Villager : TownspersonClass, IHitboxResponder
 
     private void fleeToHome()
     {
-        StartCoroutine(takePath(home.entrance.transform.position));
+        StartCoroutine(takePath(building.entrance.transform.position));
     }
 
     private void callGuards()
@@ -136,8 +134,6 @@ public class Villager : TownspersonClass, IHitboxResponder
 
     public override void Reset()
     {
-        state = State.IDLE;
-        SetIsAlarmed(false);
         base.Reset();
     }
 }

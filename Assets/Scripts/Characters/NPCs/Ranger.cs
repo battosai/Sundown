@@ -132,17 +132,17 @@ public class Ranger : HeroClass, IHitboxResponder
             {
                switch(character.type)
                {
-                    case CharacterType.PLAYER:
+                    case CharacterClass.Type.PLAYER:
                         break;
-                    case CharacterType.WILDLIFE:
+                    case CharacterClass.Type.WILDLIFE:
                         Wildlife animal = obj.GetComponent<Wildlife>();
                         if(!animal.isAlive)
                             target = obj;
                         break;
-                    case CharacterType.TOWNSPERSON:
+                    case CharacterClass.Type.TOWNSPERSON:
                         break;
                     default:
-                        Debug.Log("[Error] "+obj.name+" has no CharacterType");
+                        Debug.Log("[Error] "+obj.name+" has no CharacterClass Type");
                         break;
                } 
                if(target != null)

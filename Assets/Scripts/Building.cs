@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class Building : MonoBehaviour
 {
+    public enum Type {BARRACKS, HOME};
     public List<GameObject> villagerPool;
+    public List<GameObject> guardPool;
     public GameObject objects;
     public GameObject entrance {get; private set;}
+    public Type type {get; private set;}
     public bool isEnterable {get; private set;}
     public bool isOccupied {get; private set;}
     public int nodeID {get; private set;}
@@ -17,8 +20,8 @@ public class Building : MonoBehaviour
     private Interior interior;
     private Transform trans;
     private SpriteRenderer rend;
-
     public void SetNodeID(int nodeID){this.nodeID = nodeID;}
+    public void SetType(Type type){this.type=type;}
 
     public void Init()
     {
@@ -32,6 +35,7 @@ public class Building : MonoBehaviour
     public void Start()
     {
         villagerPool = new List<GameObject>();
+        guardPool = new List<GameObject>();
         Reset();
     }
 
@@ -50,34 +54,37 @@ public class Building : MonoBehaviour
         isOccupied = false; //temp
     }
 
-    //resuses/generates villagers that live in this building
+    //resuses/generates villagers/guards that live in this building
     public void Populate()
     {
-        int count = UnityEngine.Random.Range(1, 5);
+        int count = type == Type.HOME ? UnityEngine.Random.Range(1, 5) : UnityEngine.Random.Range(3, 6);
         List<Vector2> points = world.GetValidPoints(nodeID, count);
-        for(int i = 0; i < villagerPool.Count; i++)
+        List<GameObject> pool = type == Type.HOME ? villagerPool : guardPool;
+        for(int i = 0; i < pool.Count; i++)
         {
             if(points.Count == 0)
             {
-                for(int j = i; j < villagerPool.Count; j++)
-                    villagerPool[j].SetActive(false);
+                for(int j = i; j < pool.Count; j++)
+                    pool[j].SetActive(false);
                 break;
             }
             Vector2 point = points[0];
-            Villager villager = villagerPool[i].GetComponent<Villager>();
-            villager.trans.position = villager.SetFloorPosition(point);
-            villager.Reset();
-            villagerPool[i].SetActive(true);
+            TownspersonClass townie = pool[i].GetComponent<TownspersonClass>();
+            townie.trans.position = townie.SetFloorPosition(point);
+            townie.Reset();//does not do specific townie reset, just base reset
+            pool[i].SetActive(true);
             points.Remove(point);
         }     
         for(int i = 0; i < points.Count; i++)
         {
-            GameObject obj = Instantiate(world.villagerPrefabs[UnityEngine.Random.Range(0, world.villagerPrefabs.Count)], trans);
-            Villager villager = obj.GetComponent<Villager>();
-            villager.Init();
-            villager.SetHome(this);
-            villager.trans.position = villager.SetFloorPosition(points[i]);
-            villagerPool.Add(obj);
+            GameObject obj = type == Type.HOME ?
+                Instantiate(world.villagerPrefabs[UnityEngine.Random.Range(0, world.villagerPrefabs.Count)], trans) :
+                Instantiate(world.guardPrefabs[UnityEngine.Random.Range(0, world.guardPrefabs.Count)], trans);
+            TownspersonClass townie = obj.GetComponent<TownspersonClass>();
+            townie.Init();
+            townie.SetBuilding(this);
+            townie.trans.position = townie.SetFloorPosition(points[i]);
+            pool.Add(obj);
         }
     }
 

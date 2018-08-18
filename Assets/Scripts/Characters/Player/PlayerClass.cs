@@ -28,7 +28,7 @@ public class PlayerClass : CharacterClass
 
 	public void Start()
 	{
-		SetType(CharacterType.PLAYER);
+		SetType(CharacterClass.Type.PLAYER);
 		setFloorHeight();
 	}
 

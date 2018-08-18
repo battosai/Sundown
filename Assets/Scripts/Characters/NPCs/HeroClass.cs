@@ -18,7 +18,7 @@ public class HeroClass : CharacterClass
 	//common one time setups
 	protected void init()
 	{
-		SetType(CharacterType.HERO);
+		SetType(CharacterClass.Type.HERO);
 	}
 
 	public virtual void Track(int nodeID)

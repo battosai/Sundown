@@ -8,6 +8,7 @@ public class Guard : TownspersonClass, IHitboxResponder
     private readonly float RECOVERY_TIME = 5f;
     private readonly float ENTRANCE_RADIUS = 5f;
     private readonly int FLEE_HEALTH = 5;
+	private Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
     private Building barracks;
     public void SetBase(Building barracks){this.barracks=barracks;}
 
@@ -31,7 +32,7 @@ public class Guard : TownspersonClass, IHitboxResponder
                     SetIsAlive(false);
                     rb.velocity = Vector2.zero;
                     break;
-                case State.PATROL:
+                case State.IDLE:
                     if(isAlarmed)
                     {
                         state = State.DEFEND;
@@ -66,8 +67,8 @@ public class Guard : TownspersonClass, IHitboxResponder
                         SetHealth(maxHealth);
                         rend.enabled = true;
                         pushBox.enabled = true;
-                        state = State.PATROL;
-                        goto case State.PATROL;
+                        state = State.IDLE;
+                        goto case State.IDLE;
                     }
                     break;
                 default:
@@ -101,8 +102,6 @@ public class Guard : TownspersonClass, IHitboxResponder
 
     public override void Reset()
     {
-        state = State.PATROL;
-        SetIsAlarmed(false);
         base.Reset();
     }
 }

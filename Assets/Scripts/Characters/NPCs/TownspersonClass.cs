@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class TownspersonClass : CharacterClass
 {
-    protected enum State {DEAD, IDLE, PATROL, INSPECT, DEFEND, ALARM, HIDE, FLEE};
+    protected enum State {DEAD, IDLE, INSPECT, DEFEND, ALARM, HIDE, FLEE};
     protected State state;
     protected PlayerClass player;
     protected Hitbox hitbox;
     protected int nutrition;
+    protected Building building;
+    public void SetBuilding(Building building){this.building=building;}
     public void SetNutrition(int nutrition){this.nutrition=nutrition;}
     
     //called one time
@@ -16,13 +18,15 @@ public class TownspersonClass : CharacterClass
     {
         player = GameObject.Find("Player").GetComponent<PlayerClass>();
         hitbox = GetComponent<Hitbox>(); 
-        SetType(CharacterType.TOWNSPERSON);
+        SetType(CharacterClass.Type.TOWNSPERSON);
         base.Awake();
     }
 
     public override void Reset()
     {
         SetHealth(maxHealth);
+        SetIsAlarmed(false);
+        state = State.IDLE;
         nodeMap = PathFinding.Node.MakeNodeMap(World.wnodes[nodeID].map, nodeID);
         base.Reset();
     }

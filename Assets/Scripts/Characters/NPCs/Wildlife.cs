@@ -22,7 +22,7 @@ public class Wildlife : CharacterClass
     public void Init()
     {
         player = GameObject.Find("Player").GetComponent<PlayerClass>();
-        SetType(CharacterType.WILDLIFE);
+        SetType(CharacterClass.Type.WILDLIFE);
         base.Awake();
     }
 
