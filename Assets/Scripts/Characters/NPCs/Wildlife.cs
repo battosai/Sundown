@@ -28,7 +28,6 @@ public class Wildlife : CharacterClass
 
     public override void Update()
     {
-        setFloorHeight();
         if(health <= 0)
             state = State.DEAD;
         if(isAlive)

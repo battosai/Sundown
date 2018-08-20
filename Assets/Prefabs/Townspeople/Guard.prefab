@@ -22,6 +22,9 @@ GameObject:
   - component: {fileID: 50356914258786644}
   - component: {fileID: 61155691556831270}
   - component: {fileID: 212121202304442438}
+  - component: {fileID: 114904248520610416}
+  - component: {fileID: 114262826497044718}
+  - component: {fileID: 114662168243341116}
   m_Layer: 13
   m_Name: Guard
   m_TagString: NPC
@@ -87,6 +90,56 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 7, y: 3}
   m_EdgeRadius: 0
+--- !u!114 &114262826497044718
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1527521336724316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c70360e90a96bf41b019c5f32456c76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mask:
+    useTriggers: 0
+    useLayerMask: 0
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 0
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
+  closedColor: {r: 0, g: 0, b: 0, a: 0}
+  openColor: {r: 0, g: 0, b: 0, a: 0}
+  collidingColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &114662168243341116
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1527521336724316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 391aba0f39d291f43923cec8a04a1f2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114904248520610416
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1527521336724316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caa360c45f14354428edef04596b62a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212121202304442438
 SpriteRenderer:
   m_ObjectHideFlags: 1

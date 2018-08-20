@@ -161,7 +161,10 @@ public class World : MonoBehaviour
 			GameObject poolObject = wnode.buildingPool[i];
 			Building building = poolObject.GetComponent<Building>();
 			poolObject.transform.position = building.SetFloorPosition(point);
-			building.SetType(Building.Type.HOME);
+			if(poolObject == wnode.buildingPool[0])
+				building.SetType(Building.Type.BARRACKS);
+			else
+				building.SetType(Building.Type.HOME);
 			building.Reset();
 			poolObject.SetActive(true);
 			points.Remove(point);
@@ -172,7 +175,10 @@ public class World : MonoBehaviour
 			GameObject obj = Instantiate(buildingPrefabs[0], node.transform.Find("Buildings"));
 			Building building = obj.GetComponent<Building>();
 			building.Init();
-			building.SetType(Building.Type.HOME);
+			if(wnode.buildingPool.Count == 0)
+				building.SetType(Building.Type.BARRACKS);
+			else
+				building.SetType(Building.Type.HOME);
 			obj.transform.position = building.SetFloorPosition(point);
 			wnode.AddPoolObject(obj, wnode.buildingPool);
 		}

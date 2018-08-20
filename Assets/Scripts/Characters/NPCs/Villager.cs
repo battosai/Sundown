@@ -20,6 +20,8 @@ public class Villager : TownspersonClass, IHitboxResponder
 
     public override void Update()
     {
+        if(health <= 0)
+            state = State.DEAD;
         if(isAlive)
         {
             switch(state)
@@ -134,6 +136,7 @@ public class Villager : TownspersonClass, IHitboxResponder
 
     public override void Reset()
     {
+        SetMaxHealth(20);
         base.Reset();
     }
 }

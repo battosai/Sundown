@@ -88,8 +88,12 @@ public class CharacterClass : MonoBehaviour
 		Debug.DrawLine(new Vector3(destination.x-1f, destination.y, 0f), new Vector3(destination.x+1f, destination.y, 0f), Color.cyan, 100f);
 		for(int i = 0; i < path.Count; i++)
 		{
+			if(health <= 0)
+				break;
 			while(true)
 			{
+				if(health <= 0)
+					break;
 				if(Vector2.Distance(floorPosition, path[i]) <= tolerance)
 					break;
 				Debug.DrawLine(new Vector3(path[i].x-1f, path[i].y, 0f), new Vector3(path[i].x+1f, path[i].y, 0f), Color.cyan, 1f);

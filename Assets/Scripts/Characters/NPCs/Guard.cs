@@ -9,8 +9,6 @@ public class Guard : TownspersonClass, IHitboxResponder
     private readonly float ENTRANCE_RADIUS = 5f;
     private readonly int FLEE_HEALTH = 5;
 	private Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
-    private Building barracks;
-    public void SetBase(Building barracks){this.barracks=barracks;}
 
     public override void Awake()
     {
@@ -24,6 +22,8 @@ public class Guard : TownspersonClass, IHitboxResponder
 
     public override void Update()
     {
+        if(health <= 0)
+            state = State.DEAD;
         if(isAlive)
         {
             switch(state)
@@ -37,8 +37,12 @@ public class Guard : TownspersonClass, IHitboxResponder
                     {
                         state = State.DEFEND;
                         goto case State.DEFEND;
+                    } 
+                    if(Time.time-time > 1f)
+                    {
+                        time = Time.time;
+                        idleWalk(); //replace with patrol fnc later
                     }
-                    idleWalk(); //replace with patrol fnc later
                     break;
                 case State.DEFEND:
                     if(health < FLEE_HEALTH)
@@ -48,9 +52,10 @@ public class Guard : TownspersonClass, IHitboxResponder
                         goto case State.FLEE;
                     }
                     //should have a periodic alarm signal when fighting
+                    rb.velocity = PathFinding.GetVelocity(floorPosition, player.floorPosition, speed);
                     break;
                 case State.FLEE:
-                    if(Vector2.Distance(floorPosition, barracks.entrance.transform.position) <= ENTRANCE_RADIUS)
+                    if(Vector2.Distance(floorPosition, building.entrance.transform.position) <= ENTRANCE_RADIUS)
                     {
                         rb.velocity = Vector2.zero;
                         time = Time.time;
@@ -81,7 +86,7 @@ public class Guard : TownspersonClass, IHitboxResponder
 
     private void fleeToBarracks()
     {
-        StartCoroutine(takePath(barracks.entrance.transform.position));
+        StartCoroutine(takePath(building.entrance.transform.position));
     }
 
     public void Hit(Collider2D other, Action action)
@@ -102,6 +107,7 @@ public class Guard : TownspersonClass, IHitboxResponder
 
     public override void Reset()
     {
+        SetMaxHealth(30);
         base.Reset();
     }
 }
