@@ -7,7 +7,6 @@ public class Wildlife : CharacterClass
     public Sprite alive;
     public Sprite dead;
     public int clue {get; private set;}
-    public float blood {get; private set;}
     protected enum State {IDLE, FLEE, DEAD};
     protected PlayerClass player;
     protected State state;
@@ -16,7 +15,6 @@ public class Wildlife : CharacterClass
     private readonly float FLEE_DISTANCE = 100f;
     public void SetNutrition(int nutrition){this.nutrition=nutrition;}
     public void SetClue(int clue){this.clue = clue;}
-    public void SetBlood(float blood){this.blood=blood;}
 
     //called one time
     public void Init()
@@ -61,8 +59,8 @@ public class Wildlife : CharacterClass
                     SetIsAlive(false);
                     rend.sprite = dead;
                     rb.velocity = Vector2.zero;
-                    player.SetFood(player.food+nutrition);
-                    Debug.Log("Player now has "+player.food+" food");
+                    player.SetHunger(player.hunger-nutrition);
+                    Debug.Log("Player now has "+player.hunger+" hunger");
                     WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();
                     wnode.SetClues(wnode.clues+clue);
                     Debug.Log("WorldNode now has "+wnode.clues+" clues");

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class Villager : TownspersonClass, IHitboxResponder
 {
     private readonly float RECOVERY_TIME = 5f;
-    private readonly float ENTRANCE_RADIUS = 5f;
 	private Vector2[] ALARM = {new Vector2(0, 0), new Vector2(20, 16)};
 
     public override void Awake()

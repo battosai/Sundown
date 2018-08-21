@@ -14,8 +14,10 @@ public class PlayerInput : MonoBehaviour
 	private readonly float DEFAULT_MOUSE_Z = -9f;
   private readonly float CLICK_TOLERANCE = 0.2f;
   private readonly float UNSET_TIME = -1f;
+	private readonly float FORCE_SHAPESHIFT= 3f;
 
   private float downTime;
+  private float holdTime;
 	private GameObject mouse;
 	private Transform mouseTrans;
 	private SpriteRenderer mouseRend;
@@ -35,6 +37,7 @@ public class PlayerInput : MonoBehaviour
 	void Start()
 	{
 		downTime = UNSET_TIME;
+    holdTime = UNSET_TIME;
 	}
 
 	// Update is called once per frame
@@ -63,6 +66,13 @@ public class PlayerInput : MonoBehaviour
       player.actions.AttackCheck();
     if(E)
       player.actions.InteractCheck();
+    if(isLeftHold && holdTime > FORCE_SHAPESHIFT && player.isHuman)
+    {
+      //not sure how this is being called more than once during a single hold
+      Debug.Log("eyyyy");
+      player.Shapeshift();
+      player.actions.ShapeshiftCheck();
+    }
   }
 
   private Vector2 calculateVelocity()
@@ -91,19 +101,21 @@ public class PlayerInput : MonoBehaviour
   private void getMouseInput()
   {
     if(Input.GetMouseButtonDown(0))
+    {
       downTime = Time.time;
+    }
     isLeftClick = false;
     if(Input.GetMouseButtonUp(0))
     {
-      float duration = Time.time - downTime;
-      isLeftClick = duration < CLICK_TOLERANCE;
+      holdTime = Time.time - downTime;
+      isLeftClick = holdTime < CLICK_TOLERANCE;
 			downTime = UNSET_TIME;
     }
 		isLeftHold = false;
 		if(downTime != UNSET_TIME)
 		{
-			float duration = Time.time - downTime;
-			if(duration > CLICK_TOLERANCE)
+			holdTime = Time.time - downTime;
+			if(holdTime > CLICK_TOLERANCE)
 				isLeftHold = true;
 		}
     isRightClick = Input.GetMouseButtonDown(1);

@@ -5,6 +5,7 @@ using UnityEngine;
 public class TownspersonClass : CharacterClass
 {
     protected enum State {DEAD, IDLE, INSPECT, DEFEND, ALARM, HIDE, FLEE};
+    protected readonly float ENTRANCE_RADIUS = 5f;
     protected State state;
     protected PlayerClass player;
     protected Hitbox hitbox;

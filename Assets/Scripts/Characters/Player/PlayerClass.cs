@@ -10,13 +10,13 @@ public class PlayerClass : CharacterClass
 	public Sprite human, halfHuman, werewolf;
 	public bool isHuman {get; private set;}
 	public int strength {get; private set;}
-	public int food {get; private set;}
 	public int hunger {get; private set;}
 	public int gold {get; private set;}
 	public PlayerInput input {get; private set;}
 	public PlayerActions actions {get; private set;}
-	private readonly int succumbedToHungerPenalty = 10;
-	public void SetFood(int food){this.food=food;}
+	private readonly int BLOODTHIRSTY = 10;
+	private readonly int TOO_HUNGRY = 20;
+	public void SetHunger(int hunger){this.hunger=hunger;}
 	public void SetGold(int gold){this.gold=gold;}
 
 	public override void Awake()
@@ -52,7 +52,6 @@ public class PlayerClass : CharacterClass
 		rend.sprite = human;
 		isHuman = true;
 		strength = 5;
-		food = 5;
 		hunger = 0;
 		gold = 0;
 		UpdateAnimator();
@@ -75,18 +74,19 @@ public class PlayerClass : CharacterClass
 		else
 		{
 			rend.sprite = werewolf; //will be half human eventually
-			SetFood(food+succumbedToHungerPenalty);
+			SetHunger(hunger+BLOODTHIRSTY);
 		}
 	}
 
-	//handles player form with respect to hunger/food levels
+	//handles player form with respect to hunger levels
 	private void hungerHandler()
 	{
-		if(hunger > food && isHuman)
+		if(hunger > TOO_HUNGRY && isHuman)
 		{
 			Shapeshift();
+			actions.ShapeshiftCheck();
 		}
-		else if(hunger <= food && !isHuman)
+		else if(hunger <= TOO_HUNGRY && !isHuman)
 		{
 			Shapeshift();
 		}

@@ -44,7 +44,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 				attack(other);
 				break;
 			case Action.SHAPESHIFT:
-				//when character transforms, perform a hit detection check to see who gets alarmed
+				shapeshift(other);
 				break;
 			default:
 				Debug.Log("[Error] Unknown Player Action");
@@ -74,6 +74,29 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 		hitbox.StartCheckingCollision();
 		hitbox.CheckCollision();
 		hitbox.StopCheckingCollision();
+	}
+
+	public void ShapeshiftCheck()
+	{
+		hitbox.mask.useTriggers = false;
+		hitbox.SetAction(Action.SHAPESHIFT);
+		hitbox.SetOffset(SHAPESHIFT[0]);
+		hitbox.SetSize(SHAPESHIFT[1]);
+		hitbox.StartCheckingCollision();
+		hitbox.CheckCollision();
+		hitbox.StopCheckingCollision();
+	}
+
+	private void shapeshift(Collider2D other)
+	{
+	//fnc handles how shapeshift affects other characters
+	//playerclass has player shapeshift fnc
+		if(other.tag == "NPC")
+		{
+			CharacterClass npc = other.GetComponent<CharacterClass>();
+			npc.SetAlarmPoint(player.floorPosition);
+			npc.SetIsAlarmed(true);
+		}
 	}
 
 	private void attack(Collider2D other)

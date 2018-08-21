@@ -6,7 +6,7 @@ public class Guard : TownspersonClass, IHitboxResponder
 {
     //BUILDINGS STILL NEED TO BE SELECTED TO BE BARRACKS
     private readonly float RECOVERY_TIME = 5f;
-    private readonly float ENTRANCE_RADIUS = 5f;
+    private readonly float AGGRO_LEASH = 25f;
     private readonly int FLEE_HEALTH = 5;
 	private Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
 
@@ -52,6 +52,12 @@ public class Guard : TownspersonClass, IHitboxResponder
                         goto case State.FLEE;
                     }
                     //should have a periodic alarm signal when fighting
+                    if(Vector2.Distance(floorPosition, player.floorPosition) > AGGRO_LEASH)
+                    {
+                        SetIsAlarmed(false);
+                        state = State.IDLE;
+                        goto case State.IDLE;    
+                    }
                     rb.velocity = PathFinding.GetVelocity(floorPosition, player.floorPosition, speed);
                     break;
                 case State.FLEE:
