@@ -8,7 +8,9 @@ public class Guard : TownspersonClass, IHitboxResponder
     private readonly float RECOVERY_TIME = 5f;
     private readonly float AGGRO_LEASH = 25f;
     private readonly int FLEE_HEALTH = 5;
+    private readonly int ATTACK_RANGE = 10;
 	private Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
+    private int strength;
 
     public override void Awake()
     {
@@ -59,6 +61,13 @@ public class Guard : TownspersonClass, IHitboxResponder
                         goto case State.IDLE;    
                     }
                     rb.velocity = PathFinding.GetVelocity(floorPosition, player.floorPosition, speed);
+                    if(Vector2.Distance(floorPosition, player.floorPosition) <= ATTACK_RANGE)
+                    {
+                        //need some delay before the attack
+                        //small burst of movement towards the player
+                        attackCheck();
+                        //every attack do an alarm check?
+                    }
                     break;
                 case State.FLEE:
                     if(Vector2.Distance(floorPosition, building.entrance.transform.position) <= ENTRANCE_RADIUS)
@@ -100,6 +109,7 @@ public class Guard : TownspersonClass, IHitboxResponder
         switch(action)
         {
             case Action.ATTACK:
+                attack(other);
                 break;
             case Action.INTERACT:
                 break;
@@ -111,8 +121,32 @@ public class Guard : TownspersonClass, IHitboxResponder
         }
     }
 
+	private void attackCheck()
+	{
+		int dir = isLeft ? -1 : 1;
+		hitbox.mask.useTriggers = false;
+		hitbox.SetAction(Action.ATTACK);
+		hitbox.SetOffset(new Vector2(ATTACK[0].x*dir, ATTACK[0].y));
+		hitbox.SetSize(ATTACK[1]);
+		hitbox.StartCheckingCollision();
+		hitbox.CheckCollision();
+		hitbox.StopCheckingCollision();
+	}
+
+    private void attack(Collider2D other)
+    {
+        if(other.tag == "Player")
+		{
+			PlayerClass player = other.GetComponent<PlayerClass>();
+			player.SetAlarmPoint(player.floorPosition);
+			Hurtbox hurtbox = other.GetComponent<Hurtbox>();	
+			hurtbox.Hurt(strength);
+		}
+    }
+
     public override void Reset()
     {
+        strength = 4;
         SetMaxHealth(30);
         base.Reset();
     }
