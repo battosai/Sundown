@@ -8,7 +8,8 @@ public class Guard : TownspersonClass, IHitboxResponder
     private readonly float RECOVERY_TIME = 5f;
     private readonly float AGGRO_LEASH = 25f;
     private readonly int FLEE_HEALTH = 5;
-    private readonly int ATTACK_RANGE = 10;
+    private readonly int ATTACK_RANGE = 20;
+    private readonly int TIME_BETWEEN_ATTACKS = 3;
 	private Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
     private int strength;
 
@@ -61,11 +62,13 @@ public class Guard : TownspersonClass, IHitboxResponder
                         goto case State.IDLE;    
                     }
                     rb.velocity = PathFinding.GetVelocity(floorPosition, player.floorPosition, speed);
-                    if(Vector2.Distance(floorPosition, player.floorPosition) <= ATTACK_RANGE)
+                    if(Vector2.Distance(floorPosition, player.floorPosition) <= ATTACK_RANGE && Time.time-time > TIME_BETWEEN_ATTACKS)
                     {
                         //need some delay before the attack
                         //small burst of movement towards the player
+                        Debug.Log(this.tag+" is attacking!");
                         attackCheck();
+                        time = Time.time;
                         //every attack do an alarm check?
                     }
                     break;

@@ -13,6 +13,7 @@ public class Hurtbox : MonoBehaviour
 
     public void Hurt(int damage)
     {
+        Debug.Log(this.tag+" has been hit!");
         character.SetHealth(character.health-damage);
     }
 }
