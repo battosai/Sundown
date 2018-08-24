@@ -43,7 +43,6 @@ public class PlayerClass : CharacterClass
 	//called by gamestate in masterreset
 	public override void Reset()
 	{
-		base.Reset();
 		SetNodeID(0);
 		SetMaxHealth(20);
 		SetHealth(maxHealth);
@@ -55,6 +54,8 @@ public class PlayerClass : CharacterClass
 		hunger = 0;
 		gold = 0;
 		UpdateAnimator();
+		actions.Reset();
+		base.Reset();
 	}
 
 	public override void UpdateAnimator()

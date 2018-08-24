@@ -7,10 +7,12 @@ public class Guard : TownspersonClass, IHitboxResponder
     //BUILDINGS STILL NEED TO BE SELECTED TO BE BARRACKS
     private readonly float RECOVERY_TIME = 5f;
     private readonly float AGGRO_LEASH = 25f;
+    private readonly float DASH = 250f;
     private readonly int FLEE_HEALTH = 5;
     private readonly int ATTACK_RANGE = 20;
     private readonly int TIME_BETWEEN_ATTACKS = 3;
 	private Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
+    private bool isAttacking;
     private int strength;
 
     public override void Awake()
@@ -102,6 +104,17 @@ public class Guard : TownspersonClass, IHitboxResponder
         }
     }
 
+    public void FixedUpdate()
+    {
+        if(isAttacking)
+        {
+            isAttacking = false;
+			Vector2 force = PathFinding.GetVelocity(floorPosition, player.floorPosition, DASH);
+			rb.velocity = Vector2.zero;
+			rb.AddForce(force, ForceMode2D.Impulse);
+        }
+    }
+
     private void fleeToBarracks()
     {
         StartCoroutine(takePath(building.entrance.transform.position));
@@ -126,6 +139,7 @@ public class Guard : TownspersonClass, IHitboxResponder
 
 	private void attackCheck()
 	{
+        isAttacking = true;
 		int dir = isLeft ? -1 : 1;
 		hitbox.mask.useTriggers = false;
 		hitbox.SetAction(Action.ATTACK);
@@ -149,6 +163,7 @@ public class Guard : TownspersonClass, IHitboxResponder
 
     public override void Reset()
     {
+        isAttacking = false;
         strength = 4;
         SetMaxHealth(30);
         base.Reset();

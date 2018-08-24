@@ -9,12 +9,19 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	private Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
 	private Vector2[] INTERACT = {new Vector2(0, -12), new Vector2(5, 2)};
 	private Vector2[] SHAPESHIFT = {Vector2.zero, new Vector2(20, 20)};
+	private readonly float DASH = 500f;
 	private PlayerClass player;
 	private PlayerInput input;
 	private Hitbox hitbox;
 	private World world;
+	private bool isAttacking;
 
-	void Awake()
+	public void Reset()
+	{
+		isAttacking = false;
+	}
+
+	public void Awake()
 	{
 		player = GetComponent<PlayerClass>();
 		input = GetComponent<PlayerInput>();
@@ -23,14 +30,21 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	}
 
 	// Use this for initialization
-	void Start()
+	public void Start()
 	{
 		hitbox.SetResponder(this);
 	}
 
 	// Update is called once per frame
-	void Update()
+	public void FixedUpdate()
 	{
+		if(isAttacking)
+		{
+			isAttacking = false;
+			Vector2 force = PathFinding.GetVelocity(player.floorPosition, player.input.GetMousePos(), DASH);
+			player.rb.velocity = Vector2.zero;
+			player.rb.AddForce(force, ForceMode2D.Impulse);
+		}
 	}
 
 	public void Hit(Collider2D other, Action action)
@@ -54,6 +68,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 
 	public void AttackCheck()
 	{
+		isAttacking = true;
 		int dir = player.isLeft ? -1 : 1;
 		hitbox.mask.useTriggers = false;
 		hitbox.SetAction(Action.ATTACK);

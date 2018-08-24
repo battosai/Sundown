@@ -10,12 +10,10 @@ public class PlayerInput : MonoBehaviour
   public static bool isLeftHold;
   public static bool isRightClick;
   public static bool E, W, A, S, D, Space;
-
 	private readonly float DEFAULT_MOUSE_Z = -9f;
   private readonly float CLICK_TOLERANCE = 0.2f;
   private readonly float UNSET_TIME = -1f;
 	private readonly float FORCE_SHAPESHIFT= 3f;
-
   private float downTime;
   private float holdTime;
 	private GameObject mouse;
@@ -23,6 +21,7 @@ public class PlayerInput : MonoBehaviour
 	private SpriteRenderer mouseRend;
 	private Camera cam;
   private PlayerClass player;
+  public Vector2 GetMousePos(){return mouseTrans.position;}
 
 	void Awake()
 	{
