@@ -9,7 +9,6 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	private Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
 	private Vector2[] INTERACT = {new Vector2(0, -12), new Vector2(5, 2)};
 	private Vector2[] SHAPESHIFT = {Vector2.zero, new Vector2(20, 20)};
-	private readonly float DASH = 500f;
 	private PlayerClass player;
 	private PlayerInput input;
 	private Hitbox hitbox;
@@ -39,11 +38,19 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	public void FixedUpdate()
 	{
 		if(isAttacking)
+			StartCoroutine(dash());
+	}
+
+	private IEnumerator dash()
+	{
+		float DASH = 40f;
+	 	float DASH_TIME = 0.2f;
+		isAttacking = false;
+		float startTime = Time.time;
+		while(Time.time-startTime < DASH_TIME)
 		{
-			isAttacking = false;
-			Vector2 force = PathFinding.GetVelocity(player.floorPosition, player.input.GetMousePos(), DASH);
-			player.rb.velocity = Vector2.zero;
-			player.rb.AddForce(force, ForceMode2D.Impulse);
+			player.rb.velocity = PathFinding.GetVelocity(player.floorPosition, player.input.GetMousePos(), DASH);
+			yield return null;
 		}
 	}
 

@@ -7,7 +7,6 @@ public class Guard : TownspersonClass, IHitboxResponder
     //BUILDINGS STILL NEED TO BE SELECTED TO BE BARRACKS
     private readonly float RECOVERY_TIME = 5f;
     private readonly float AGGRO_LEASH = 25f;
-    private readonly float DASH = 250f;
     private readonly int FLEE_HEALTH = 5;
     private readonly int ATTACK_RANGE = 20;
     private readonly int TIME_BETWEEN_ATTACKS = 3;
@@ -67,7 +66,6 @@ public class Guard : TownspersonClass, IHitboxResponder
                     if(Vector2.Distance(floorPosition, player.floorPosition) <= ATTACK_RANGE && Time.time-time > TIME_BETWEEN_ATTACKS)
                     {
                         //need some delay before the attack
-                        //small burst of movement towards the player
                         Debug.Log(this.tag+" is attacking!");
                         attackCheck();
                         time = Time.time;
@@ -107,13 +105,28 @@ public class Guard : TownspersonClass, IHitboxResponder
     public void FixedUpdate()
     {
         if(isAttacking)
-        {
-            isAttacking = false;
-			Vector2 force = PathFinding.GetVelocity(floorPosition, player.floorPosition, DASH);
-			rb.velocity = Vector2.zero;
-			rb.AddForce(force, ForceMode2D.Impulse);
-        }
+            StartCoroutine(dash());
     }
+    
+    private IEnumerator dash()
+	{
+		float DASH = 40f;
+	 	float DASH_TIME = 0.2f;
+        float WAIT_TIME = 0.2f;
+		isAttacking = false;
+		float startTime = Time.time;
+		while(Time.time-startTime < DASH_TIME)
+		{
+			rb.velocity = PathFinding.GetVelocity(floorPosition, player.floorPosition, DASH);
+			yield return null;
+		}
+        startTime = Time.time;
+        while(Time.time-startTime < WAIT_TIME)
+        {
+            rb.velocity = Vector2.zero;
+            yield return null;
+        }
+	}
 
     private void fleeToBarracks()
     {
@@ -152,8 +165,10 @@ public class Guard : TownspersonClass, IHitboxResponder
 
     private void attack(Collider2D other)
     {
+        Debug.Log("HIT SOMETHING");
         if(other.tag == "Player")
 		{
+            Debug.Log("GOT THE PLAYER");
 			PlayerClass player = other.GetComponent<PlayerClass>();
 			player.SetAlarmPoint(player.floorPosition);
 			Hurtbox hurtbox = other.GetComponent<Hurtbox>();	
