@@ -21,11 +21,11 @@ GameObject:
   - component: {fileID: 4846081524454332}
   - component: {fileID: 50712681734792840}
   - component: {fileID: 212555040849024568}
+  - component: {fileID: 95601099350228094}
   - component: {fileID: 61016536701563168}
   - component: {fileID: 114329009188754942}
   - component: {fileID: 114169878308526654}
   - component: {fileID: 114617942016912956}
-  - component: {fileID: 95601099350228094}
   m_Layer: 13
   m_Name: Villager
   m_TagString: NPC

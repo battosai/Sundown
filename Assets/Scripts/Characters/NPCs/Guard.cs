@@ -98,6 +98,7 @@ public class Guard : TownspersonClass, IHitboxResponder
                     Debug.Log("[WARN]: Unknown Guard State "+state);
                     break;
             }
+            UpdateAnimator();
             base.Update();
         }
     }
@@ -172,6 +173,12 @@ public class Guard : TownspersonClass, IHitboxResponder
 			Hurtbox hurtbox = other.GetComponent<Hurtbox>();	
 			hurtbox.Hurt(strength);
 		}
+    }
+
+    public override void UpdateAnimator()
+    {
+        anim.SetBool("isAlarmed", isAlarmed);
+        anim.SetFloat("speed", Mathf.Abs(rb.velocity.x)+Mathf.Abs(rb.velocity.y));
     }
 
     public override void Reset()
