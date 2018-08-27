@@ -165,10 +165,8 @@ public class Guard : TownspersonClass, IHitboxResponder
 
     private void attack(Collider2D other)
     {
-        Debug.Log("HIT SOMETHING");
         if(other.tag == "Player")
 		{
-            Debug.Log("GOT THE PLAYER");
 			PlayerClass player = other.GetComponent<PlayerClass>();
 			player.SetAlarmPoint(player.floorPosition);
 			Hurtbox hurtbox = other.GetComponent<Hurtbox>();	
