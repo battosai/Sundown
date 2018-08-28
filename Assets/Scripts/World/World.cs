@@ -175,6 +175,7 @@ public class World : MonoBehaviour
 			GameObject obj = Instantiate(buildingPrefabs[0], node.transform.Find("Buildings"));
 			Building building = obj.GetComponent<Building>();
 			building.Init();
+			building.SetNodeID(nodeID);
 			if(wnode.buildingPool.Count == 0)
 				building.SetType(Building.Type.BARRACKS);
 			else

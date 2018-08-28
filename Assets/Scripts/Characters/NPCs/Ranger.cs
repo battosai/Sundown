@@ -55,8 +55,6 @@ public class Ranger : HeroClass, IHitboxResponder
             {
                 case State.IDLE:
                     break;
-                case State.PATROL:
-                    break;
                 case State.INSPECT:
                     interactCheck();
                     break;
@@ -73,20 +71,20 @@ public class Ranger : HeroClass, IHitboxResponder
     {
         Debug.Log("Ranger Mastery Track!"); 
         WorldNode wnode = World.wnodes[nodeID];
-        SetLead(lead+wnode.clues*tracking*MASTERY);
+        SetLeads(leads+wnode.clues*tracking*MASTERY);
         presentInNode(false);
-        if(lead >= PLAYER_FOUND)
+        if(leads >= PLAYER_FOUND)
         {
             Debug.Log("Ranger has found your current location!");
             presentInNode(true, nodeID+1);
-            SetLead(0);
+            SetLeads(0);
         }
-        Debug.Log("Ranger now has "+lead+" leads");
+        Debug.Log("Ranger now has "+leads+" leads");
     }
 
     public override void Reset()
     {
-        SetLead(0f);
+        SetLeads(0f);
         presentInNode(true, 0);
         tracking = 0.8f;
         visionRange = 100f;
@@ -151,6 +149,6 @@ public class Ranger : HeroClass, IHitboxResponder
                }
             }
         }
-        state = State.PATROL;
+        state = State.IDLE;
     }
 }

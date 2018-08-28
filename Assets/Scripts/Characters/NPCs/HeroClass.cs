@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class HeroClass : CharacterClass
 {
-	public float lead {get; private set;}
+	public float leads {get; private set;}
 	protected readonly int PLAYER_FOUND = 15;
-    protected enum State {IDLE, PATROL, INSPECT, CHASE, FOLLOW, ATTACK};
+    protected enum State {IDLE, INSPECT, CHASE, ATTACK};
     protected State state;
 	protected float tracking;
 	protected float visionRange;
 	protected bool isPresent;
 	protected PlayerClass player;
 	protected Hitbox hitBox;
-	public void SetLead(float lead){this.lead=lead;}
+	public void SetLeads(float leads){this.leads=leads;}
 
 	//common one time setups
 	protected void init()
@@ -24,15 +24,15 @@ public class HeroClass : CharacterClass
 	public virtual void Track(int nodeID)
 	{
 		Debug.Log("Default Track!");
- 		if(tracking >= PLAYER_FOUND)
+ 		if(leads >= PLAYER_FOUND)
         {
             SetNodeID(nodeID+1);
-            SetLead(0);
+            SetLeads(0);
         }
         else
         {
             WorldNode wnode = World.wnodes[nodeID];
-            SetLead(lead+wnode.clues*tracking);
+            SetLeads(leads+wnode.clues*tracking);
         }
 	}
 
