@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 114742344817077386}
   m_Layer: 11
   m_Name: Rat
-  m_TagString: NPC
+  m_TagString: Wildlife
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

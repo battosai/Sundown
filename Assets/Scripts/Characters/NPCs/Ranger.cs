@@ -7,8 +7,6 @@ public class Ranger : HeroClass, IHitboxResponder
     private readonly int MASTERY = 2;
     private readonly float AGGRO_RANGE = 100f;
 	private Vector2 INTERACT_SIZE = new Vector2(50f, 50f);
-    private List<GameObject> usedLeads;
-    private GameObject target;
 
 	public override void Awake()
 	{
@@ -22,7 +20,6 @@ public class Ranger : HeroClass, IHitboxResponder
         init();
         hitBox.SetResponder(this); 
         gameState.SetHero(this);
-    //    usedLeads = new List<GameObject>();
     }
 
     public override void Update()
@@ -54,6 +51,12 @@ public class Ranger : HeroClass, IHitboxResponder
             switch(state)
             {
                 case State.IDLE:
+                    if(isAlarmed)
+                    {
+                        //go to the alarmpoint
+                        //set to inspect?
+                        //maybe also add a trigger to constantly look for the player
+                    }
                     break;
                 case State.INSPECT:
                     interactCheck();
@@ -88,7 +91,6 @@ public class Ranger : HeroClass, IHitboxResponder
         presentInNode(true, 0);
         tracking = 0.8f;
         visionRange = 100f;
-        usedLeads = new List<GameObject>();
         base.Reset();
     }
 
@@ -121,34 +123,6 @@ public class Ranger : HeroClass, IHitboxResponder
     //effectively the ranger's "scout" ability
     private void interact(Collider2D other)
     {
-        target = null;
-        GameObject obj = other.gameObject;
-        if(!usedLeads.Contains(obj))
-        {
-            CharacterClass character = obj.GetComponent<CharacterClass>();
-            if(character != null)
-            {
-               switch(character.type)
-               {
-                    case CharacterClass.Type.PLAYER:
-                        break;
-                    case CharacterClass.Type.WILDLIFE:
-                        Wildlife animal = obj.GetComponent<Wildlife>();
-                        if(!animal.isAlive)
-                            target = obj;
-                        break;
-                    case CharacterClass.Type.TOWNSPERSON:
-                        break;
-                    default:
-                        Debug.Log("[Error] "+obj.name+" has no CharacterClass Type");
-                        break;
-               } 
-               if(target != null)
-               {
-                    usedLeads.Add(obj);
-               }
-            }
-        }
-        state = State.IDLE;
+       
     }
 }

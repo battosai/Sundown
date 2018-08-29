@@ -104,10 +104,16 @@ public class Villager : TownspersonClass, IHitboxResponder
 
     private void alarm(Collider2D other)
     {
-        if(other.tag == "NPC")
+        if(other.tag == "Wildlife")
+        {
+            CharacterClass animal = other.GetComponent<CharacterClass>();
+            animal.SetAlarmPoint(floorPosition);
+            animal.SetIsAlarmed(true);
+        }
+        else if(other.tag == "NPC" || other.tag == "Hero")
         {
             CharacterClass npc = other.GetComponent<CharacterClass>();
-            npc.SetAlarmPoint(floorPosition);
+            npc.SetAlarmPoint(alarmPoint);
             npc.SetIsAlarmed(true);
         }
     }
