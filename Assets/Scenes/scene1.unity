@@ -1361,7 +1361,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1418218222290802, guid: ee4c68029c7d5a64cba18ef6cd9f1973, type: 2}
       propertyPath: m_TagString
-      value: Untagged
+      value: Hero
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee4c68029c7d5a64cba18ef6cd9f1973, type: 2}

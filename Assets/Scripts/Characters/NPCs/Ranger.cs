@@ -53,9 +53,16 @@ public class Ranger : HeroClass, IHitboxResponder
                 case State.IDLE:
                     if(isAlarmed)
                     {
-                        //go to the alarmpoint
-                        //set to inspect?
+                        Debug.Log("RANGER IS DOING AN INSPECT");
+                        StartCoroutine(takePath(alarmPoint));
+                        state = State.INSPECT;
+                        goto case State.INSPECT;
                         //maybe also add a trigger to constantly look for the player
+                    } 
+                    if(Time.time-time > 1f)
+                    {
+                        time = Time.time;
+                        idleWalk();
                     }
                     break;
                 case State.INSPECT:
