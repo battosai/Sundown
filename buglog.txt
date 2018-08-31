@@ -1,0 +1,8 @@
+Bug (8/30)
+	Villagers spawn in (seemingly) random locations after returning from hiding in their homes
+	They should be spawning right at the entrances, or wherever they were close enough to the entrance
+Fix (/)
+----------------------------------
+Bug (8/29)
+	Ranger does not traverse path to alarmPoint when alarmed villagers trigger it
+Fix (/)

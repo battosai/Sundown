@@ -51,13 +51,17 @@ public class Ranger : HeroClass, IHitboxResponder
             switch(state)
             {
                 case State.IDLE:
+                    if(playerSpotted())
+                    {
+                        state = State.ATTACK;
+                        goto case State.ATTACK;
+                    }
                     if(isAlarmed)
                     {
                         Debug.Log("RANGER IS DOING AN INSPECT");
                         StartCoroutine(takePath(alarmPoint));
                         state = State.INSPECT;
                         goto case State.INSPECT;
-                        //maybe also add a trigger to constantly look for the player
                     } 
                     if(Time.time-time > 1f)
                     {
@@ -67,6 +71,8 @@ public class Ranger : HeroClass, IHitboxResponder
                     break;
                 case State.INSPECT:
                     interactCheck();
+                    break;
+                case State.ATTACK:
                     break;
                 default:
                     Debug.Log("[Error] Unknown Ranger Action: "+state);
