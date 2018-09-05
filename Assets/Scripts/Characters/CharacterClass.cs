@@ -80,7 +80,7 @@ public class CharacterClass : MonoBehaviour
             rb.velocity = Vector2.zero;
     } 
 
-	protected IEnumerator takePath(Vector2 destination)
+	protected IEnumerator takePath(Vector2 destination, System.Action callback)
 	{
 		Debug.Log("Taking path!");
 		float tolerance = 1f;
@@ -102,6 +102,8 @@ public class CharacterClass : MonoBehaviour
 			}
 		}
 		Debug.Log("Reached end of path");
+		if(callback != null)
+			callback();
 	}
 
 	public virtual void UpdateAnimator()

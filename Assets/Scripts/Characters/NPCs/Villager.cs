@@ -42,7 +42,8 @@ public class Villager : TownspersonClass, IHitboxResponder
                         idleWalk();
                     }
                     break;
-                case State.ALARM:
+                case State.HOME:
+                    //change how this interacts with the takePath subroutine, this is messy
                     if(Vector2.Distance(floorPosition, building.entrance.transform.position) <= ENTRANCE_RADIUS)
                     {
                         rb.velocity = Vector2.zero;
@@ -53,10 +54,9 @@ public class Villager : TownspersonClass, IHitboxResponder
                         pushBox.enabled = false;
                         goto case State.HIDE;
                     }
-                    // if(Time.time-time > 1f)
-                    // {
+                    goto case State.ALARM;
+                case State.ALARM:
                     alarmCheck();
-                    // }
                     break;
                 case State.HIDE:
                     if(Time.time-time > RECOVERY_TIME)
@@ -67,6 +67,7 @@ public class Villager : TownspersonClass, IHitboxResponder
                         state = State.IDLE;
                         goto case State.IDLE;
                     }
+                    rb.velocity = Vector2.zero;
                     break;
                 default:
                     Debug.Log("[Error] Unrecognized State: "+state);
@@ -77,15 +78,15 @@ public class Villager : TownspersonClass, IHitboxResponder
         }
     }
 
-    public void Hit(Collider2D other, Action action)
+    public void Hit(Collider2D other, Act act)
     {
-        switch(action)
+        switch(act)
         {
-            case Action.ALARM:
+            case Act.ALARM:
                 alarm(other);
                 break;
             default:
-                Debug.Log("[WARN]: Unknown Villager Action "+action);
+                Debug.Log("[WARN]: Unknown Villager Act "+act);
                 break;
         }
     }
@@ -94,7 +95,7 @@ public class Villager : TownspersonClass, IHitboxResponder
 	private void alarmCheck()
 	{
 		hitbox.mask.useTriggers = false;
-		hitbox.SetAction(Action.ALARM);
+		hitbox.SetAct(Act.ALARM);
 		hitbox.SetOffset(ALARM[0]);
 		hitbox.SetSize(ALARM[1]);
 		hitbox.StartCheckingCollision();
@@ -125,7 +126,7 @@ public class Villager : TownspersonClass, IHitboxResponder
 
     private void fleeToHome()
     {
-        StartCoroutine(takePath(building.entrance.transform.position));
+        StartCoroutine(takePath(building.entrance.transform.position, HomeCallback));
     }
 
     private void callGuards()

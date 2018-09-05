@@ -54,21 +54,21 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 		}
 	}
 
-	public void Hit(Collider2D other, Action action)
+	public void Hit(Collider2D other, Act act)
 	{
-		switch(action)
+		switch(act)
 		{
-			case Action.INTERACT:
+			case Act.INTERACT:
 				interact(other);
 				break;
-			case Action.ATTACK:
+			case Act.ATTACK:
 				attack(other);
 				break;
-			case Action.SHAPESHIFT:
+			case Act.SHAPESHIFT:
 				shapeshift(other);
 				break;
 			default:
-				Debug.Log("[Error] Unknown Player Action");
+				Debug.Log("[Error] Unknown Player Act");
 				break;
 		}
 	}
@@ -78,7 +78,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 		isAttacking = true;
 		int dir = player.isLeft ? -1 : 1;
 		hitbox.mask.useTriggers = false;
-		hitbox.SetAction(Action.ATTACK);
+		hitbox.SetAct(Act.ATTACK);
 		hitbox.SetOffset(new Vector2(ATTACK[0].x*dir, ATTACK[0].y));
 		hitbox.SetSize(ATTACK[1]);
 		hitbox.StartCheckingCollision();
@@ -90,7 +90,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	public void InteractCheck()
 	{
 		hitbox.mask.useTriggers = true;
-		hitbox.SetAction(Action.INTERACT);
+		hitbox.SetAct(Act.INTERACT);
 		hitbox.SetOffset(INTERACT[0]);
 		hitbox.SetSize(INTERACT[1]);
 		hitbox.StartCheckingCollision();
@@ -101,7 +101,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	public void ShapeshiftCheck()
 	{
 		hitbox.mask.useTriggers = false;
-		hitbox.SetAction(Action.SHAPESHIFT);
+		hitbox.SetAct(Act.SHAPESHIFT);
 		hitbox.SetOffset(SHAPESHIFT[0]);
 		hitbox.SetSize(SHAPESHIFT[1]);
 		hitbox.StartCheckingCollision();

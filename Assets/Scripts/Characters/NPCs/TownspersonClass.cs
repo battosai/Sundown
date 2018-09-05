@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TownspersonClass : CharacterClass
 {
-    protected enum State {DEAD, IDLE, INSPECT, DEFEND, ALARM, HIDE, FLEE};
+    protected enum State {DEAD, IDLE, HOME, DEFEND, ALARM, HIDE, FLEE};
     protected readonly float ENTRANCE_RADIUS = 5f;
     protected State state;
     protected PlayerClass player;
@@ -30,5 +30,11 @@ public class TownspersonClass : CharacterClass
         state = State.IDLE;
         nodeMap = PathFinding.Node.MakeNodeMap(World.wnodes[nodeID].map, nodeID);
         base.Reset();
+    }
+
+    //pass to coroutines to signify reaching end of path that leads home
+    public void HomeCallback()
+    {
+        state = State.HOME;
     }
 }

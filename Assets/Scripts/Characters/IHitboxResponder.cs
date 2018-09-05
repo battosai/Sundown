@@ -5,5 +5,5 @@ using System.Collections;
 
 public interface IHitboxResponder
 {
-  void Hit(Collider2D other, Action action);
+  void Hit(Collider2D other, Act act);
 }

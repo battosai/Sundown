@@ -59,7 +59,7 @@ public class Ranger : HeroClass, IHitboxResponder
                     if(isAlarmed)
                     {
                         Debug.Log("RANGER IS DOING AN INSPECT");
-                        StartCoroutine(takePath(alarmPoint));
+                        StartCoroutine(takePath(alarmPoint, null));
                         state = State.INSPECT;
                         goto case State.INSPECT;
                     } 
@@ -75,7 +75,7 @@ public class Ranger : HeroClass, IHitboxResponder
                 case State.ATTACK:
                     break;
                 default:
-                    Debug.Log("[Error] Unknown Ranger Action: "+state);
+                    Debug.Log("[Error] Unknown Ranger Act: "+state);
                     break;
             }
         }
@@ -107,17 +107,17 @@ public class Ranger : HeroClass, IHitboxResponder
         base.Reset();
     }
 
-    public void Hit(Collider2D other, Action action)
+    public void Hit(Collider2D other, Act act)
     {
-        switch(action)
+        switch(act)
         {
-            case Action.INTERACT:
+            case Act.INTERACT:
                 interact(other);
                 break;
-            case Action.ATTACK:
+            case Act.ATTACK:
                 break;
             default:
-                Debug.Log("[Error] Unrecognized Ranger Action");
+                Debug.Log("[Error] Unrecognized Ranger Act");
                 break;
         }
     }
@@ -125,7 +125,7 @@ public class Ranger : HeroClass, IHitboxResponder
     private void interactCheck()
     {
         hitBox.mask.useTriggers = false;
-		hitBox.SetAction(Action.INTERACT);
+		hitBox.SetAct(Act.INTERACT);
 		hitBox.SetOffset(floorPosition);
 		hitBox.SetSize(INTERACT_SIZE);
 		hitBox.StartCheckingCollision();

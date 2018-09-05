@@ -5,7 +5,7 @@ using UnityEngine;
 //ROLE: be a hitbox for attacks, player action key, etc. (no collider needed)
 
 public enum ColliderState {CLOSED, OPEN, COLLIDING};
-public enum Action {ATTACK, TRAVEL, INTERACT, ALARM, SHAPESHIFT}; //interact could hide in bushes, talk to npcs, search containers
+public enum Act {ATTACK, TRAVEL, INTERACT, ALARM, SHAPESHIFT}; //interact could hide in bushes, talk to npcs, search containers
 public class Hitbox : MonoBehaviour
 {
   public ContactFilter2D mask;
@@ -15,14 +15,14 @@ public class Hitbox : MonoBehaviour
   private Vector2 size = new Vector2(5, 5); //half dimensions
   private Vector2 offset = new Vector2(0, 0);
   private ColliderState state;
-  private Action action;
+  private Act act;
   private Transform trans;
   private IHitboxResponder responder;
 
   public void SetResponder(IHitboxResponder responder){this.responder = responder;}
   public void SetSize(Vector2 size){this.size = size;}
   public void SetOffset(Vector2 offset){this.offset = offset;}
-  public void SetAction(Action action){this.action = action;}
+  public void SetAct(Act act){this.act = act;}
   public IHitboxResponder GetResponder(){return responder;}
 
   void Awake()
@@ -53,7 +53,7 @@ public class Hitbox : MonoBehaviour
     {
       Collider2D coll = colliders[i];
       if(responder != null)
-        responder.Hit(coll, action);
+        responder.Hit(coll, act);
     }
     state = collisions > 0 ? ColliderState.COLLIDING : ColliderState.OPEN;
   }

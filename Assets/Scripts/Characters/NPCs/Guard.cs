@@ -131,22 +131,22 @@ public class Guard : TownspersonClass, IHitboxResponder
 
     private void fleeToBarracks()
     {
-        StartCoroutine(takePath(building.entrance.transform.position));
+        StartCoroutine(takePath(building.entrance.transform.position, HomeCallback));
     }
 
-    public void Hit(Collider2D other, Action action)
+    public void Hit(Collider2D other, Act act)
     {
-        switch(action)
+        switch(act)
         {
-            case Action.ATTACK:
+            case Act.ATTACK:
                 attack(other);
                 break;
-            case Action.INTERACT:
+            case Act.INTERACT:
                 break;
-            case Action.ALARM:
+            case Act.ALARM:
                 break;
             default:
-                Debug.Log("[WARN]: Unknown Guard Action "+action);
+                Debug.Log("[WARN]: Unknown Guard Act "+act);
                 break;
         }
     }
@@ -156,7 +156,7 @@ public class Guard : TownspersonClass, IHitboxResponder
         isAttacking = true;
 		int dir = isLeft ? -1 : 1;
 		hitbox.mask.useTriggers = false;
-		hitbox.SetAction(Action.ATTACK);
+		hitbox.SetAct(Act.ATTACK);
 		hitbox.SetOffset(new Vector2(ATTACK[0].x*dir, ATTACK[0].y));
 		hitbox.SetSize(ATTACK[1]);
 		hitbox.StartCheckingCollision();

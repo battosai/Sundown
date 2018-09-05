@@ -1,8 +1,12 @@
 Bug (8/30)
 	Villagers spawn in (seemingly) random locations after returning from hiding in their homes
 	They should be spawning right at the entrances, or wherever they were close enough to the entrance
-Fix (/)
-----------------------------------
+Fix (9/2)
+	ENTRANCE_RADIUS in Villager.cs was never set
+	Regardless, CharacterClass takePath ends at a different time than when Villager state machine switches to hiding, thus velocity is still set by takePath after going hidden
+	Added callback to takePath coroutine / separated alarm state from distance to home check in a new HOME states
+	Actions enum in Hitbox.cs was renamed to Act to not coincide with System.Actions used to pass methods as parameters
+-----------
 Bug (8/29)
 	Ranger does not traverse path to alarmPoint when alarmed villagers trigger it
 Fix (/)
