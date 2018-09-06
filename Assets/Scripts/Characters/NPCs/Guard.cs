@@ -35,6 +35,7 @@ public class Guard : TownspersonClass, IHitboxResponder
                 case State.DEAD:
                     SetIsAlive(false);
                     rb.velocity = Vector2.zero;
+                    rend.enabled = false;
                     break;
                 case State.IDLE:
                     if(isAlarmed)
@@ -49,7 +50,7 @@ public class Guard : TownspersonClass, IHitboxResponder
                     }
                     break;
                 case State.DEFEND:
-                    if(health < FLEE_HEALTH)
+                    if(health <= FLEE_HEALTH)
                     {
                         state = State.FLEE;
                         fleeToBarracks();
@@ -72,7 +73,7 @@ public class Guard : TownspersonClass, IHitboxResponder
                         //every attack do an alarm check?
                     }
                     break;
-                case State.FLEE:
+                case State.HOME:
                     if(Vector2.Distance(floorPosition, building.entrance.transform.position) <= ENTRANCE_RADIUS)
                     {
                         rb.velocity = Vector2.zero;
@@ -83,6 +84,9 @@ public class Guard : TownspersonClass, IHitboxResponder
                         SetIsAlarmed(false);
                         goto case State.HIDE;
                     }
+                    goto case State.FLEE;
+                case State.FLEE:
+                    //alarmCheck() ?
                     break;
                 case State.HIDE:
                     if(Time.time-time > RECOVERY_TIME)

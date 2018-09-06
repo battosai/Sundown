@@ -9,4 +9,7 @@ Fix (9/2)
 -----------
 Bug (8/29)
 	Ranger does not traverse path to alarmPoint when alarmed villagers trigger it
-Fix (/)
+Fix (9/5)
+	PlayerActions.cs attack() was only checking for tag "NPC" after previously changing wildlife to have "Wildlife" and hero to having "Hero"
+	Now it looks for "NPC", "Wildlife", and "Hero"
+	Ranger was also missing Hurtbox.cs

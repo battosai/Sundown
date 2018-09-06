@@ -6,6 +6,7 @@ public class Ranger : HeroClass, IHitboxResponder
 {
     private readonly int MASTERY = 2;
     private readonly float AGGRO_RANGE = 100f;
+    private readonly float ATTACK_RANGE = 200f;
 	private Vector2 INTERACT_SIZE = new Vector2(50f, 50f);
 
 	public override void Awake()
@@ -73,6 +74,8 @@ public class Ranger : HeroClass, IHitboxResponder
                     interactCheck();
                     break;
                 case State.ATTACK:
+                    if(Vector2.Distance(floorPosition, player.floorPosition) < ATTACK_RANGE)
+                        attackCheck();
                     break;
                 default:
                     Debug.Log("[Error] Unknown Ranger Act: "+state);
@@ -132,6 +135,9 @@ public class Ranger : HeroClass, IHitboxResponder
 		hitBox.CheckCollision();
 		hitBox.StopCheckingCollision();
     }
+
+    private void attackCheck()
+    {}
 
     //effectively the ranger's "scout" ability
     private void interact(Collider2D other)
