@@ -69,7 +69,8 @@ public class PlayerInput : MonoBehaviour
     {
       //not sure how this is being called more than once during a single hold
       Debug.Log("eyyyy");
-      player.Shapeshift();
+      downTime = UNSET_TIME;
+      player.Shapeshift(true);
       player.actions.ShapeshiftCheck();
     }
   }

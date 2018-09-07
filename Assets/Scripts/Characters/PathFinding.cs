@@ -51,7 +51,8 @@ public class PathFinding
 				}
 				path.Add(root.pos);
 				path.Reverse();
-				Debug.Log("Path discovered!");
+				Debug.Log("----------Path discovered-----------");
+				Debug.Log("[Info] Length: "+path.Count);
 				Debug.Log("[Info] Visited "+visited.Count+" nodes");
 				Debug.Log("[Info] Finished in "+(Time.realtimeSinceStartup-time)+"s");
 				return path;

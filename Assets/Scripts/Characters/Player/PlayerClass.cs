@@ -15,6 +15,7 @@ public class PlayerClass : CharacterClass
 	public PlayerInput input {get; private set;}
 	public PlayerActions actions {get; private set;}
 	private readonly int BLOODTHIRSTY = 10;
+	private readonly int FORCED_HUNGER = 40;
 	private readonly int TOO_HUNGRY = 20;
 	public void SetHunger(int hunger){this.hunger=hunger;}
 	public void SetGold(int gold){this.gold=gold;}
@@ -65,7 +66,7 @@ public class PlayerClass : CharacterClass
 	}
 
 	//called whenever player goes to next node or maybe by will
-	public void Shapeshift()
+	public void Shapeshift(bool isForced=false)
 	{
 		isHuman = !isHuman;
 		if(isHuman)
@@ -75,7 +76,10 @@ public class PlayerClass : CharacterClass
 		else
 		{
 			rend.sprite = werewolf; //will be half human eventually
-			SetHunger(hunger+BLOODTHIRSTY);
+			if(isForced)
+				SetHunger(hunger+FORCED_HUNGER);
+			else
+				SetHunger(hunger+BLOODTHIRSTY);
 		}
 	}
 
@@ -84,11 +88,13 @@ public class PlayerClass : CharacterClass
 	{
 		if(hunger > TOO_HUNGRY && isHuman)
 		{
+			Debug.Log("YOU'RE A HUNGRY WOLF");
 			Shapeshift();
 			actions.ShapeshiftCheck();
 		}
 		else if(hunger <= TOO_HUNGRY && !isHuman)
 		{
+			Debug.Log("YOU'VE BEEN FED, NOW YOU'RE HUMAN");
 			Shapeshift();
 		}
 	}

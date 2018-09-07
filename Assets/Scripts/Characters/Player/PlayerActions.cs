@@ -113,7 +113,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	{
 	//fnc handles how shapeshift affects other characters
 	//playerclass has player shapeshift fnc
-		if(other.tag == "NPC")
+		if(other.tag == "NPC" || other.tag == "Hero")
 		{
 			CharacterClass npc = other.GetComponent<CharacterClass>();
 			npc.SetAlarmPoint(player.floorPosition);

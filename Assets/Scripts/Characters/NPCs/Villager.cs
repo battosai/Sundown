@@ -113,9 +113,9 @@ public class Villager : TownspersonClass, IHitboxResponder
         }
         else if(other.tag == "NPC" || other.tag == "Hero")
         {
-            CharacterClass npc = other.GetComponent<CharacterClass>();
-            npc.SetAlarmPoint(alarmPoint);
-            npc.SetIsAlarmed(true);
+            CharacterClass character = other.GetComponent<CharacterClass>();
+            character.SetAlarmPoint(alarmPoint);
+            character.SetIsAlarmed(true);
         }
     }
 

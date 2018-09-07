@@ -9,7 +9,14 @@ Fix (9/2)
 -----------
 Bug (8/29)
 	Ranger does not traverse path to alarmPoint when alarmed villagers trigger it
-Fix (9/5)
-	PlayerActions.cs attack() was only checking for tag "NPC" after previously changing wildlife to have "Wildlife" and hero to having "Hero"
-	Now it looks for "NPC", "Wildlife", and "Hero"
-	Ranger was also missing Hurtbox.cs
+	Path is being found, but immediately reaches end of path somehow
+Fix (/)
+-----------
+Bug (9/6)
+	Holding down left-click calls shapeshift from PlayerInput.cs 3 times
+Fix (9/6)
+	Holding down left-click shapeshifts, but hunger is still less than the forced shapeshift hunger threshold, thus reverting back to human again.
+	Holding down LMouse will still be counted even if it's from the previous shapeshift, thus multiple shapeshifts
+	Fixed by setting downTime in PlayerInput.cs to UNSET_TIME when forcing shapeshift
+	In PlayerClass.Shapeshift() added optional isForced parameter to add FORCED_HUNGER hunger
+	

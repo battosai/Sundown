@@ -52,7 +52,7 @@ public class Ranger : HeroClass, IHitboxResponder
             switch(state)
             {
                 case State.IDLE:
-                    if(playerSpotted())
+                    if(playerSpotted() && isAlarmed)
                     {
                         state = State.ATTACK;
                         goto case State.ATTACK;
@@ -83,7 +83,6 @@ public class Ranger : HeroClass, IHitboxResponder
             }
         }
         base.Update();
-        setFloorHeight();
     }
 
     public override void Track(int nodeID)
@@ -137,7 +136,9 @@ public class Ranger : HeroClass, IHitboxResponder
     }
 
     private void attackCheck()
-    {}
+    {
+        Debug.Log("RANGER DOES AN ATTACC");
+    }
 
     //effectively the ranger's "scout" ability
     private void interact(Collider2D other)
