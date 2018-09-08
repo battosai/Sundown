@@ -88,13 +88,11 @@ public class PlayerClass : CharacterClass
 	{
 		if(hunger > TOO_HUNGRY && isHuman)
 		{
-			Debug.Log("YOU'RE A HUNGRY WOLF");
 			Shapeshift();
 			actions.ShapeshiftCheck();
 		}
 		else if(hunger <= TOO_HUNGRY && !isHuman)
 		{
-			Debug.Log("YOU'VE BEEN FED, NOW YOU'RE HUMAN");
 			Shapeshift();
 		}
 	}

@@ -10,7 +10,9 @@ Fix (9/2)
 Bug (8/29)
 	Ranger does not traverse path to alarmPoint when alarmed villagers trigger it
 	Path is being found, but immediately reaches end of path somehow
-Fix (/)
+Fix (9/7)
+	Ranger's health was not set, thus it was exiting the takePath coroutine early
+	Set it and now Ranger takes the path
 -----------
 Bug (9/6)
 	Holding down left-click calls shapeshift from PlayerInput.cs 3 times
@@ -19,4 +21,8 @@ Fix (9/6)
 	Holding down LMouse will still be counted even if it's from the previous shapeshift, thus multiple shapeshifts
 	Fixed by setting downTime in PlayerInput.cs to UNSET_TIME when forcing shapeshift
 	In PlayerClass.Shapeshift() added optional isForced parameter to add FORCED_HUNGER hunger
-	
+-----------
+Bug (9/7)
+	Ranger spawned outside the boundaries before, keep an eye out.
+	Could just use reset button to repeatedly test to see how often this happens.
+Fix (/)

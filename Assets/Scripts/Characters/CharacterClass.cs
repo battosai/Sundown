@@ -85,7 +85,7 @@ public class CharacterClass : MonoBehaviour
 		Debug.Log("Taking path!");
 		float tolerance = 1f;
 		List<Vector2> path = PathFinding.AStarJump(floorPosition, destination, nodeMap, nodeID);
-		Debug.DrawLine(new Vector3(destination.x-1f, destination.y, 0f), new Vector3(destination.x+1f, destination.y, 0f), Color.cyan, 100f);
+		Debug.DrawLine(new Vector3(destination.x-1f, destination.y, 0f), new Vector3(destination.x+1f, destination.y, 0f), Color.red, 100f);
 		for(int i = 0; i < path.Count; i++)
 		{
 			if(health <= 0)

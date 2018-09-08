@@ -67,8 +67,6 @@ public class PlayerInput : MonoBehaviour
       player.actions.InteractCheck();
     if(isLeftHold && holdTime > FORCE_SHAPESHIFT && player.isHuman)
     {
-      //not sure how this is being called more than once during a single hold
-      Debug.Log("eyyyy");
       downTime = UNSET_TIME;
       player.Shapeshift(true);
       player.actions.ShapeshiftCheck();

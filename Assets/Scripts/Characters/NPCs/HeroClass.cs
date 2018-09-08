@@ -103,6 +103,7 @@ public class HeroClass : CharacterClass
 	public override void Reset()
 	{
         state = State.IDLE;
+		SetHealth(maxHealth);
 		base.Reset();
 	}
 }
