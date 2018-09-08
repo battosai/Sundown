@@ -46,9 +46,7 @@ public class HeroClass : CharacterClass
 			if(vision.collider != null)
 			{
 				if(vision.collider.gameObject.name == "Player")
-				{
 					return true;
-				}
 			}
         }
         return false;
