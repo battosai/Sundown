@@ -5,6 +5,7 @@ using UnityEngine;
 public class Ranger : HeroClass, IHitboxResponder
 {
     private readonly int MASTERY = 2;
+    private readonly int INSPECT_TIME = 10;
     private readonly float AGGRO_RANGE = 100f;
     private readonly float ATTACK_RANGE = 200f;
 	private Vector2 INTERACT_SIZE = new Vector2(50f, 50f);
@@ -38,10 +39,9 @@ public class Ranger : HeroClass, IHitboxResponder
                             goto case State.ATTACK;
                         }
                         Debug.Log("RANGER IS DOING AN INSPECT");
-                        inspect();
-                        //add inspect point to patrol path?
-                        state = State.INSPECT;
-                        goto case State.INSPECT;
+                        StartCoroutine(takePath(alarmPoint, InspectCallback));
+                        state = State.COROUTINE;
+                        goto case State.COROUTINE;
                     } 
                     if(Time.time-time > 1f)
                     {
@@ -50,7 +50,14 @@ public class Ranger : HeroClass, IHitboxResponder
                     }
                     break;
                 case State.INSPECT:
+                    if(Time.time-time > INSPECT_TIME)
+                    {
+                        state = State.IDLE;
+                        goto case State.IDLE;
+                    } 
                     interactCheck();
+                    break;
+                case State.COROUTINE:
                     break;
                 case State.ATTACK:
                     if(Vector2.Distance(floorPosition, player.floorPosition) < ATTACK_RANGE)
@@ -64,9 +71,10 @@ public class Ranger : HeroClass, IHitboxResponder
         base.Update();
     }
 
-    private void inspect()
+    public void InspectCallback()
     {
-        StartCoroutine(takePath(alarmPoint, null));
+        state = State.INSPECT;
+        time = Time.time;
     }
 
     public override void Track(int nodeID)

@@ -6,7 +6,7 @@ public class HeroClass : CharacterClass
 {
 	public float leads {get; private set;}
 	protected readonly int PLAYER_FOUND = 15;
-    protected enum State {IDLE, INSPECT, ATTACK};
+    protected enum State {IDLE, INSPECT, ATTACK, COROUTINE};
     protected State state;
 	protected float tracking;
 	protected float visionRange;
@@ -72,31 +72,31 @@ public class HeroClass : CharacterClass
 		}
 	}
 
-	// private void follow()
-	// {
-	// 	if(nodeID != player.nodeID)
-	// 		return;
-	// 	float distance = Vector2.Distance(player.trans.position, trans.position);
-	// 	if(distance > leash)
-	// 	{
-	// 		rb.velocity = getVelocityTowardPlayer();
-	// 	}
-	// 	else
-	// 	{
-	// 		rb.velocity = Vector2.zero;
-	// 	}
-	// }
-
-	// private Vector2 getVelocityTowardPlayer()
-	// {
-	// 	float distance;
-	// 	Vector2 direction;
-	// 	Vector2 velocity;
-	// 	distance = Vector2.Distance(player.trans.position, trans.position);
-	// 	direction = player.trans.position - trans.position;
-	// 	velocity = new Vector2((direction.x*speed)/distance, (direction.y*speed)/distance);
-	// 	return velocity;
-	// }
+	protected IEnumerator takePath(Vector2 destination, System.Action callback)
+	{
+		Debug.Log("Taking path!");
+		float tolerance = 1f;
+		List<Vector2> path = PathFinding.AStarJump(floorPosition, destination, nodeMap, nodeID);
+		Debug.DrawLine(new Vector3(destination.x-1f, destination.y, 0f), new Vector3(destination.x+1f, destination.y, 0f), Color.red, 100f);
+		for(int i = 0; i < path.Count; i++)
+		{
+			if(health <= 0)
+				break;
+			while(true)
+			{
+				if(health <= 0)
+					break;
+				if(Vector2.Distance(floorPosition, path[i]) <= tolerance)
+					break;
+				Debug.DrawLine(new Vector3(path[i].x-1f, path[i].y, 0f), new Vector3(path[i].x+1f, path[i].y, 0f), Color.cyan, 1f);
+				rb.velocity = PathFinding.GetVelocity(floorPosition, path[i], speed);
+				yield return null;
+			}
+		}
+		Debug.Log("Reached end of path");
+		if(callback != null)
+			callback();
+	}
 
 	public override void Reset()
 	{
