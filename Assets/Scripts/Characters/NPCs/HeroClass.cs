@@ -72,7 +72,7 @@ public class HeroClass : CharacterClass
 		}
 	}
 
-	protected IEnumerator takePath(Vector2 destination, System.Action callback)
+	protected new IEnumerator takePath(Vector2 destination, System.Action callback)
 	{
 		Debug.Log("Taking path!");
 		float tolerance = 1f;
@@ -82,6 +82,11 @@ public class HeroClass : CharacterClass
 		{
 			if(health <= 0)
 				break;
+			else if(playerSpotted())
+			{
+				callback();
+				break;
+			}
 			while(true)
 			{
 				if(health <= 0)

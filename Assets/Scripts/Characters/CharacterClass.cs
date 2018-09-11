@@ -19,6 +19,7 @@ public class CharacterClass : MonoBehaviour
 	public Transform trans {get; private set;}
 	public Rigidbody2D rb {get; private set;}
 	public SpriteRenderer rend {get; private set;}
+	public Hurtbox hurtBox {get; private set;}
 	protected int maxHealth;
     protected float time;
     protected bool isAlarmed;
@@ -44,6 +45,7 @@ public class CharacterClass : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>();
 		rend = GetComponent<SpriteRenderer>();
 		pushBox = GetComponent<Collider2D>();
+		hurtBox = GetComponent<Hurtbox>();
 		anim = GetComponent<Animator>();
 	}
 

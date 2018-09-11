@@ -6,8 +6,10 @@ public class Ranger : HeroClass, IHitboxResponder
 {
     private readonly int MASTERY = 2;
     private readonly int INSPECT_TIME = 10;
+    private readonly int ATTACK_DMG = 5;
     private readonly float AGGRO_RANGE = 100f;
-    private readonly float ATTACK_RANGE = 200f;
+    private readonly float ATTACK_RANGE = 100f;
+    private readonly float ATTACK_WIDTH = 2f;
 	private Vector2 INTERACT_SIZE = new Vector2(50f, 50f);
 
 	public override void Awake()
@@ -33,7 +35,9 @@ public class Ranger : HeroClass, IHitboxResponder
                 case State.IDLE:
                     if(isAlarmed)
                     {
-                        if(playerSpotted())
+                        //attack if found player, or attacked directly
+                        //health will only go down if attacked by player
+                        if(playerSpotted() || health < maxHealth)
                         {
                             state = State.ATTACK;
                             goto case State.ATTACK;
@@ -61,7 +65,7 @@ public class Ranger : HeroClass, IHitboxResponder
                     break;
                 case State.ATTACK:
                     if(Vector2.Distance(floorPosition, player.floorPosition) < ATTACK_RANGE)
-                        attackCheck();
+                        basicAttack();
                     break;
                 default:
                     Debug.Log("[Error] Unknown Ranger Act: "+state);
@@ -128,9 +132,18 @@ public class Ranger : HeroClass, IHitboxResponder
 		hitBox.StopCheckingCollision();
     }
 
-    private void attackCheck()
+    private void basicAttack()
     {
-        Debug.Log("RANGER DOES AN ATTACC");
+        Debug.Log("Ranger is attacking!");
+        RaycastHit2D hit = Physics2D.CircleCast(floorPosition, ATTACK_WIDTH, player.floorPosition-floorPosition, ATTACK_RANGE);
+        if(hit.collider != null)
+        {
+            if(hit.collider.tag == "Player")
+            {
+                player.hurtBox.Hurt(ATTACK_DMG);
+                Debug.Log("Player has been hit!");
+            }
+        }
     }
 
     //effectively the ranger's "scout" ability
