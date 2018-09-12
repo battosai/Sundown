@@ -6,6 +6,7 @@ public class Ranger : HeroClass, IHitboxResponder
 {
     private readonly int MASTERY = 2;
     private readonly int INSPECT_TIME = 10;
+    private readonly int ATTACK_TIME = 3;
     private readonly int ATTACK_DMG = 5;
     private readonly float AGGRO_RANGE = 100f;
     private readonly float ATTACK_RANGE = 100f;
@@ -64,8 +65,11 @@ public class Ranger : HeroClass, IHitboxResponder
                 case State.COROUTINE:
                     break;
                 case State.ATTACK:
-                    if(Vector2.Distance(floorPosition, player.floorPosition) < ATTACK_RANGE)
+                    if(Vector2.Distance(floorPosition, player.floorPosition) < ATTACK_RANGE && Time.time-time > ATTACK_TIME)
+                    {
+                        time = Time.time;
                         basicAttack();
+                    }
                     break;
                 default:
                     Debug.Log("[Error] Unknown Ranger Act: "+state);
