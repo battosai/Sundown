@@ -65,7 +65,15 @@ public class Ranger : HeroClass, IHitboxResponder
                 case State.COROUTINE:
                     break;
                 case State.ATTACK:
-                    if(Vector2.Distance(floorPosition, player.floorPosition) < ATTACK_RANGE && Time.time-time > ATTACK_TIME)
+                    float distance = Vector2.Distance(floorPosition, player.floorPosition);
+                    if(distance > AGGRO_RANGE)
+                    {
+                        Debug.Log("Player has escaped the Ranger");
+                        SetIsAlarmed(false);
+                        state = State.IDLE;
+                        goto case State.IDLE;
+                    }
+                    if(distance < ATTACK_RANGE && Time.time-time > ATTACK_TIME)
                     {
                         time = Time.time;
                         basicAttack();
@@ -143,10 +151,7 @@ public class Ranger : HeroClass, IHitboxResponder
         if(hit.collider != null)
         {
             if(hit.collider.tag == "Player")
-            {
                 player.hurtBox.Hurt(ATTACK_DMG);
-                Debug.Log("Player has been hit!");
-            }
         }
     }
 

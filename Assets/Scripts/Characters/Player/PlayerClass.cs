@@ -36,6 +36,8 @@ public class PlayerClass : CharacterClass
 	// Update is called once per frame
 	public override void Update()
 	{
+		if(health <= 0)
+			Application.Quit();
 		setFloorHeight();
 		hungerHandler();
 		UpdateAnimator();
