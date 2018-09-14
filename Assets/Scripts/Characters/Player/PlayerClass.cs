@@ -17,12 +17,14 @@ public class PlayerClass : CharacterClass
 	private readonly int BLOODTHIRSTY = 10;
 	private readonly int FORCED_HUNGER = 40;
 	private readonly int TOO_HUNGRY = 20;
+	private Collider2D aggroBox;
 	public void SetHunger(int hunger){this.hunger=hunger;}
 	public void SetGold(int gold){this.gold=gold;}
 
 	public override void Awake()
 	{
 		base.Awake();
+		aggroBox = GameObject.Find("WerewolfAggroBox").GetComponent<Collider2D>();
 		input = GetComponent<PlayerInput>();
 		actions = GetComponent<PlayerActions>();
 	}
@@ -98,5 +100,4 @@ public class PlayerClass : CharacterClass
 			Shapeshift();
 		}
 	}
-
 }
