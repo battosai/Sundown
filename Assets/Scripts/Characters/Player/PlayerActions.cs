@@ -73,7 +73,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 		}
 	}
 
-	public void AttackCheck()
+	public void AttackCheck(int attackCount)
 	{
 		isAttacking = true;
 		int dir = player.isLeft ? -1 : 1;

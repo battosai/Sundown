@@ -40,7 +40,10 @@ public class PlayerClass : CharacterClass
 	public override void Update()
 	{
 		if(health <= 0)
-			Application.Quit();
+		{
+			//Application.Quit();
+			UnityEditor.EditorApplication.isPlaying = false;
+		}
 		setFloorHeight();
 		hungerHandler();
 		UpdateAnimator();
@@ -68,6 +71,7 @@ public class PlayerClass : CharacterClass
 	{
 		anim.SetBool("isHuman", isHuman);
 		anim.SetFloat("speed", Mathf.Abs(rb.velocity.x)+Mathf.Abs(rb.velocity.y));
+		//anim.SetInt("attackCount", PlayerInput.attackCount);
 	}
 
 	//called whenever player goes to next node or maybe by will

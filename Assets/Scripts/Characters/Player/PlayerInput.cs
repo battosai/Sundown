@@ -10,12 +10,18 @@ public class PlayerInput : MonoBehaviour
   public static bool isLeftHold;
   public static bool isRightClick;
   public static bool E, W, A, S, D, Space;
+  public static int attackCount;
+  private readonly int ATTACK_COMBO_LENGTH = 3;
 	private readonly float DEFAULT_MOUSE_Z = -9f;
   private readonly float CLICK_TOLERANCE = 0.2f;
   private readonly float UNSET_TIME = -1f;
-	private readonly float FORCE_SHAPESHIFT= 3f;
+	private readonly float FORCE_SHAPESHIFT = 3f;
+  private readonly float ATTACK_COOLDOWN = 1f;
+  private readonly float ATTACK_COMBO_TOLERANCE = 1f;
   private float downTime;
   private float holdTime;
+  private float lastRightClickTime;
+  private float cooldownTime;
 	private GameObject mouse;
 	private Transform mouseTrans;
 	private SpriteRenderer mouseRend;
@@ -37,6 +43,9 @@ public class PlayerInput : MonoBehaviour
 	{
 		downTime = UNSET_TIME;
     holdTime = UNSET_TIME;
+    lastRightClickTime = UNSET_TIME;
+    cooldownTime = UNSET_TIME;
+    attackCount = 0;
 	}
 
 	// Update is called once per frame
@@ -62,7 +71,34 @@ public class PlayerInput : MonoBehaviour
       player.SetIsLeft(player.rb.velocity.x < 0);
     player.rend.flipX = !player.isLeft;
     if(isRightClick)
-      player.actions.AttackCheck();
+    {
+      if(cooldownTime == UNSET_TIME)
+      {
+        if(lastRightClickTime == UNSET_TIME || Time.time-lastRightClickTime < ATTACK_COMBO_TOLERANCE)
+        {
+          player.actions.AttackCheck(attackCount);
+          lastRightClickTime = Time.time;
+          attackCount++;
+          if(attackCount >= ATTACK_COMBO_LENGTH)
+          {
+            cooldownTime = Time.time;
+            lastRightClickTime = UNSET_TIME;
+            attackCount = 0;
+          }
+        }
+        else if(Time.time-lastRightClickTime > ATTACK_COMBO_TOLERANCE)
+        {
+          cooldownTime = Time.time;
+          lastRightClickTime = UNSET_TIME;
+          attackCount = 0;
+        }
+      }
+      else
+      {
+        if(Time.time-cooldownTime > ATTACK_COOLDOWN)
+          cooldownTime = UNSET_TIME;
+      }
+    }
     if(E)
       player.actions.InteractCheck();
     if(isLeftHold && holdTime > FORCE_SHAPESHIFT && player.isHuman)
