@@ -31,6 +31,7 @@ public class PlayerClass : CharacterClass
 
 	public void Start()
 	{
+		aggroBox.enabled = false;
 		SetType(CharacterClass.Type.PLAYER);
 		setFloorHeight();
 	}
@@ -73,6 +74,7 @@ public class PlayerClass : CharacterClass
 	public void Shapeshift(bool isForced=false)
 	{
 		isHuman = !isHuman;
+		aggroBox.enabled = !isHuman;
 		if(isHuman)
 		{
 			rend.sprite = human;

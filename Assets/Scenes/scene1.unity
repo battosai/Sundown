@@ -1083,6 +1083,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1661397533}
   - component: {fileID: 1661397534}
+  - component: {fileID: 1661397535}
   m_Layer: 14
   m_Name: WerewolfAggroBox
   m_TagString: Untagged
@@ -1118,6 +1119,17 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 50
+--- !u!114 &1661397535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1661397532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e4ccc63e0dd9e6458c6c46b778467e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1711519681
 GameObject:
   m_ObjectHideFlags: 0
