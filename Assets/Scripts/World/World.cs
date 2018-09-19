@@ -6,19 +6,18 @@ using UnityEngine;
 
 public class World : MonoBehaviour
 {
-	public List<GameObject> buildingPrefabs;
-	public List<GameObject> villagerPrefabs;
-	public List<GameObject> guardPrefabs;
-	public List<GameObject> bigAnimalPrefabs;
-	public List<GameObject> smallAnimalPrefabs;
-	public Dictionary<string, List<GameObject>> beastiary;
-
 	public static readonly int RESERVED = 2;
 	public static readonly int WORLD_SIZE = GameState.DAYS_TO_WIN;
 	public static readonly float NODE_SPACING = MapGenerator.COLS*MeshGenerator.SQUARE_SIZE;
 	public static List<GameObject> nodes {get; private set;}
 	public static List<WorldNode> wnodes {get; private set;}
 	public static GameObject activeBuilding {get; private set;}
+	public List<GameObject> buildingPrefabs;
+	public List<GameObject> villagerPrefabs;
+	public List<GameObject> guardPrefabs;
+	public List<GameObject> bigAnimalPrefabs;
+	public List<GameObject> smallAnimalPrefabs;
+	public Dictionary<string, List<GameObject>> beastiary;
 	private readonly string SMALL_ANIMAL = "Small";
 	private readonly string BIG_ANIMAL = "Big";
 	private GameObject startNode;

@@ -25,4 +25,9 @@ Fix (9/6)
 Bug (9/7)
 	Ranger spawned outside the boundaries before, keep an eye out.
 	Could just use reset button to repeatedly test to see how often this happens.
+	Happened when Ranger spawned from tracking player to next node.
+Fix (/)
+-----------
+Bug (9/18)
+	Villagers in node1 (potentially all after the first one) are not pathing correctly to their homes
 Fix (/)

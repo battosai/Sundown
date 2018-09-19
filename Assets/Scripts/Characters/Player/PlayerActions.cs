@@ -138,13 +138,13 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 		switch(other.gameObject.name)
 		{
 			case "PlayerExit":
-				World.nodes[player.nodeID].SetActive(false);
+				// World.nodes[player.nodeID].SetActive(false);
 				player.gameState.NodeTransition(player.nodeID); //call before changing player's current nodeId
-				player.SetNodeID(player.nodeID+1);
-				World.nodes[player.nodeID].SetActive(true);
-				GameObject node = World.nodes[player.nodeID];
-				GameObject spawn = node.GetComponent<WorldNode>().playerSpawn;
-				player.trans.position = player.SetFloorPosition(spawn.transform.position);
+				// player.SetNodeID(player.nodeID+1);
+				// World.nodes[player.nodeID].SetActive(true);
+				// GameObject node = World.nodes[player.nodeID];
+				// GameObject spawn = node.GetComponent<WorldNode>().playerSpawn;
+				// player.trans.position = player.SetFloorPosition(spawn.transform.position);
 				return;
 			case "BuildingEntrance":
 				Building building = other.transform.parent.GetComponent<Building>();
