@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerActions : MonoBehaviour, IHitboxResponder
 {
+	public bool isAttacking;
+	public bool isAttackOnCooldown;
 	//Vector2: Offset, Vector2: Size
 	//position should default to the right side, use isLeft to flip
 	private Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
@@ -13,7 +15,6 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	private PlayerInput input;
 	private Hitbox hitbox;
 	private World world;
-	private bool isAttacking;
 
 	public void Reset()
 	{
@@ -45,7 +46,6 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	{
 		float DASH = 40f;
 	 	float DASH_TIME = 0.2f;
-		isAttacking = false;
 		float startTime = Time.time;
 		while(Time.time-startTime < DASH_TIME)
 		{
@@ -75,7 +75,6 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 
 	public void AttackCheck(int attackCount)
 	{
-		isAttacking = true;
 		int dir = player.isLeft ? -1 : 1;
 		hitbox.mask.useTriggers = false;
 		hitbox.SetAct(Act.ATTACK);

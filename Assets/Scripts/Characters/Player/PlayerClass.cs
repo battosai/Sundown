@@ -69,9 +69,13 @@ public class PlayerClass : CharacterClass
 
 	public override void UpdateAnimator()
 	{
+		if(actions.isAttacking)
+			anim.SetTrigger("isAttacking");
+		if(actions.isAttackOnCooldown)
+			anim.SetTrigger("isAttackOnCooldown");
 		anim.SetBool("isHuman", isHuman);
 		anim.SetFloat("speed", Mathf.Abs(rb.velocity.x)+Mathf.Abs(rb.velocity.y));
-		//anim.SetInt("attackCount", PlayerInput.attackCount);
+		anim.SetInteger("attackCount", input.attackCount);
 	}
 
 	//called whenever player goes to next node or maybe by will

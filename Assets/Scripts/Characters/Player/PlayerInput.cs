@@ -10,13 +10,13 @@ public class PlayerInput : MonoBehaviour
   public static bool isLeftHold;
   public static bool isRightClick;
   public static bool E, W, A, S, D, Space;
-  public static int attackCount;
+  public int attackCount;
   private readonly int ATTACK_COMBO_LENGTH = 3;
 	private readonly float DEFAULT_MOUSE_Z = -9f;
   private readonly float CLICK_TOLERANCE = 0.2f;
   private readonly float UNSET_TIME = -1f;
 	private readonly float FORCE_SHAPESHIFT = 3f;
-  private readonly float ATTACK_COOLDOWN = 1f;
+  private readonly float ATTACK_COOLDOWN = 2f;
   private readonly float ATTACK_COMBO_TOLERANCE = 1f;
   private float downTime;
   private float holdTime;
@@ -70,33 +70,45 @@ public class PlayerInput : MonoBehaviour
     else
       player.SetIsLeft(player.rb.velocity.x < 0);
     player.rend.flipX = !player.isLeft;
-    if(isRightClick)
+    player.actions.isAttacking = false;
+    player.actions.isAttackOnCooldown = false;
+    if(cooldownTime != UNSET_TIME)
     {
-      if(cooldownTime == UNSET_TIME)
+      //reset cooldown when time
+      if(Time.time-cooldownTime > ATTACK_COOLDOWN)
+        cooldownTime = UNSET_TIME;
+    }
+    else
+    {
+      if(lastRightClickTime != UNSET_TIME)
       {
-        if(lastRightClickTime == UNSET_TIME || Time.time-lastRightClickTime < ATTACK_COMBO_TOLERANCE)
-        {
-          player.actions.AttackCheck(attackCount);
-          lastRightClickTime = Time.time;
-          attackCount++;
-          if(attackCount >= ATTACK_COMBO_LENGTH)
-          {
-            cooldownTime = Time.time;
-            lastRightClickTime = UNSET_TIME;
-            attackCount = 0;
-          }
-        }
-        else if(Time.time-lastRightClickTime > ATTACK_COMBO_TOLERANCE)
+        //check right click time for combo continuation
+        if(Time.time-lastRightClickTime > ATTACK_COMBO_TOLERANCE)
         {
           cooldownTime = Time.time;
           lastRightClickTime = UNSET_TIME;
           attackCount = 0;
+          player.actions.isAttackOnCooldown = true;
+          Debug.Log("UNFINISHED COMBO!");
         }
       }
-      else
+      if(isRightClick && cooldownTime == UNSET_TIME)
       {
-        if(Time.time-cooldownTime > ATTACK_COOLDOWN)
-          cooldownTime = UNSET_TIME;
+        attackCount++;
+        if(attackCount > ATTACK_COMBO_LENGTH)
+        {
+          cooldownTime = Time.time;
+          lastRightClickTime = UNSET_TIME;
+          attackCount = 0;
+          player.actions.isAttackOnCooldown = true;
+          Debug.Log("FULL COMBO!");
+        }
+        else
+        {
+          player.actions.isAttacking = true;
+          player.actions.AttackCheck(attackCount);
+          lastRightClickTime = Time.time;
+        }
       }
     }
     if(E)
