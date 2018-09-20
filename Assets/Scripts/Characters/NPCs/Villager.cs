@@ -7,13 +7,9 @@ public class Villager : TownspersonClass, IHitboxResponder
     private readonly float RECOVERY_TIME = 5f;
 	private Vector2[] ALARM = {new Vector2(0, 0), new Vector2(20, 16)};
 
-    public override void Awake()
-    {
-        Reset();
-    }
-
     public void Start()
     {
+        Reset();
         hitbox.SetResponder(this);
     }
 
@@ -126,6 +122,7 @@ public class Villager : TownspersonClass, IHitboxResponder
 
     private void fleeToHome()
     {
+        Debug.Log("Running to home in node "+building.nodeID+" at "+building.transform.position);
         StartCoroutine(takePath(building.entrance.transform.position, HomeCallback));
     }
 

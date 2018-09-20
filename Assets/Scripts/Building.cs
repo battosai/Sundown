@@ -46,6 +46,7 @@ public class Building : MonoBehaviour
         {
             Destroy(objects);
         }
+        Debug.Log("Calling Populate in building in node: "+nodeID);
         Populate();
         size = randomSize();
         selectLayout(size);
@@ -82,6 +83,7 @@ public class Building : MonoBehaviour
                 Instantiate(world.guardPrefabs[UnityEngine.Random.Range(0, world.guardPrefabs.Count)], trans);
             TownspersonClass townie = obj.GetComponent<TownspersonClass>();
             townie.Init();
+            townie.SetNodeID(nodeID);
             townie.SetBuilding(this);
             townie.trans.position = townie.SetFloorPosition(points[i]);
             pool.Add(obj);

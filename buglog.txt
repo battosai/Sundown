@@ -30,4 +30,5 @@ Fix (/)
 -----------
 Bug (9/18)
 	Villagers in node1 (potentially all after the first one) are not pathing correctly to their homes
-Fix (/)
+Fix (9/19)
+	Villager Reset() was called in  Awake() function instead of Start() so it was being called before the nodeIDs were set properly.

@@ -175,6 +175,7 @@ public class World : MonoBehaviour
 			Building building = obj.GetComponent<Building>();
 			building.Init();
 			building.SetNodeID(nodeID);
+			Debug.Log("Building node has been set to: "+nodeID);
 			if(wnode.buildingPool.Count == 0)
 				building.SetType(Building.Type.BARRACKS);
 			else
