@@ -28,7 +28,6 @@ public class TownspersonClass : CharacterClass
         SetHealth(maxHealth);
         SetIsAlarmed(false);
         state = State.IDLE;
-        Debug.Log("villager in node "+nodeID+" has map for node "+nodeID);
         nodeMap = PathFinding.Node.MakeNodeMap(World.wnodes[nodeID].map, nodeID);
         base.Reset();
     }

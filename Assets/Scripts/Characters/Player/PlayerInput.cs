@@ -24,7 +24,6 @@ public class PlayerInput : MonoBehaviour
   private float cooldownTime;
 	private GameObject mouse;
 	private Transform mouseTrans;
-	private SpriteRenderer mouseRend;
 	private Camera cam;
   private PlayerClass player;
   public Vector2 GetMousePos(){return mouseTrans.position;}
@@ -33,7 +32,6 @@ public class PlayerInput : MonoBehaviour
 	{
 		mouse = GameObject.Find("Mouse");
 		mouseTrans = mouse.GetComponent<Transform>();
-		mouseRend = mouse.GetComponent<SpriteRenderer>();
 		cam = GameObject.Find("MainCamera").GetComponent<Camera>();
     player = GameObject.Find("Player").GetComponent<PlayerClass>();
   }

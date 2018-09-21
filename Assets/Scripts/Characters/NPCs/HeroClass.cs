@@ -11,6 +11,7 @@ public class HeroClass : CharacterClass
 	protected float tracking;
 	protected float visionRange;
 	protected bool isPresent;
+	protected bool isArenaTime;
 	protected PlayerClass player;
 	protected Hitbox hitBox;
 	public void SetLeads(float leads){this.leads=leads;}
@@ -19,6 +20,11 @@ public class HeroClass : CharacterClass
 	protected void init()
 	{
 		SetType(CharacterClass.Type.HERO);
+	}
+
+	protected void arenaUpdate()
+	{
+		// Debug.Log("Hero is Updating from arenaUpdate");
 	}
 
 	public virtual void Track(int nodeID)
@@ -51,6 +57,14 @@ public class HeroClass : CharacterClass
         }
         return false;
     }
+
+	public void PlaceInArena()
+	{
+		isPresent = true;
+		isArenaTime = true;
+		rend.enabled = true;
+		pushBox.enabled = true;
+	}
 
 	//handles making the hero (not) present in the player's node, but not making the game object inactive
 	protected void presentInNode(bool isPresent, int nodeID=-1)

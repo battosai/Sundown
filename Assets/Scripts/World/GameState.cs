@@ -7,15 +7,16 @@ using UnityEngine;
 public class GameState : MonoBehaviour
 {
 	public static readonly int DAYS_TO_WIN = 5;
-	private readonly float UNSET_TIME = -1f;
 	private int day;
 	private World world;
+	private Arena arena;
 	private PlayerClass player;
 	private HeroClass hero;
 	public void SetHero(HeroClass hero){this.hero = hero;}
 
 	public void Awake()
 	{
+		arena = GameObject.Find("Arena").GetComponent<Arena>();
 		world = GameObject.Find("World").GetComponent<World>();
 		player = GameObject.Find("Player").GetComponent<PlayerClass>();
 	}
@@ -51,6 +52,11 @@ public class GameState : MonoBehaviour
 		else
 		{
 			//time to fight the hero
+			world.gameObject.SetActive(false);
+			arena.gameObject.SetActive(true);
+			hero.PlaceInArena();
+			hero.trans.position = hero.SetFloorPosition(arena.heroSpawn);
+			player.trans.position = player.SetFloorPosition(arena.playerSpawn);
 			Debug.Log("FIGHT THE HERO!");
 		}
 	}
@@ -58,6 +64,7 @@ public class GameState : MonoBehaviour
 	private void masterReset()
 	{
 		day = 0;
+		arena.gameObject.SetActive(false);
 		world.Reset();
 		player.Reset();
 		hero.Reset();

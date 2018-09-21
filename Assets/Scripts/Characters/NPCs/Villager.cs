@@ -122,7 +122,6 @@ public class Villager : TownspersonClass, IHitboxResponder
 
     private void fleeToHome()
     {
-        Debug.Log("Running to home in node "+building.nodeID+" at "+building.transform.position);
         StartCoroutine(takePath(building.entrance.transform.position, HomeCallback));
     }
 

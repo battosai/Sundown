@@ -12,9 +12,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	private Vector2[] INTERACT = {new Vector2(0, -12), new Vector2(5, 2)};
 	private Vector2[] SHAPESHIFT = {Vector2.zero, new Vector2(20, 20)};
 	private PlayerClass player;
-	private PlayerInput input;
 	private Hitbox hitbox;
-	private World world;
 
 	public void Reset()
 	{
@@ -24,9 +22,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	public void Awake()
 	{
 		player = GetComponent<PlayerClass>();
-		input = GetComponent<PlayerInput>();
 		hitbox = GetComponent<Hitbox>();
-		world = GameObject.Find("World").GetComponent<World>();
 	}
 
 	// Use this for initialization
@@ -138,13 +134,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 		switch(other.gameObject.name)
 		{
 			case "PlayerExit":
-				// World.nodes[player.nodeID].SetActive(false);
 				player.gameState.NodeTransition(player.nodeID); //call before changing player's current nodeId
-				// player.SetNodeID(player.nodeID+1);
-				// World.nodes[player.nodeID].SetActive(true);
-				// GameObject node = World.nodes[player.nodeID];
-				// GameObject spawn = node.GetComponent<WorldNode>().playerSpawn;
-				// player.trans.position = player.SetFloorPosition(spawn.transform.position);
 				return;
 			case "BuildingEntrance":
 				Building building = other.transform.parent.GetComponent<Building>();
