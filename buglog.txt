@@ -22,13 +22,17 @@ Fix (9/6)
 	Fixed by setting downTime in PlayerInput.cs to UNSET_TIME when forcing shapeshift
 	In PlayerClass.Shapeshift() added optional isForced parameter to add FORCED_HUNGER hunger
 -----------
+Bug (9/18)
+	Villagers in node1 (potentially all after the first one) are not pathing correctly to their homes
+Fix (9/19)
+	Villager Reset() was called in  Awake() function instead of Start() so it was being called before the nodeIDs were set properly.
+-----------
 Bug (9/7)
 	Ranger spawned outside the boundaries before, keep an eye out.
 	Could just use reset button to repeatedly test to see how often this happens.
 	Happened once when Ranger spawned from tracking player to next node.
 Fix (/)
 -----------
-Bug (9/18)
-	Villagers in node1 (potentially all after the first one) are not pathing correctly to their homes
-Fix (9/19)
-	Villager Reset() was called in  Awake() function instead of Start() so it was being called before the nodeIDs were set properly.
+Bug (9/22)
+	Villagers and Guards floorHeights are messed up
+Fix (/)
