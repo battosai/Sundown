@@ -11,6 +11,8 @@ public class Ranger : HeroClass, IHitboxResponder
     private readonly float AGGRO_RANGE = 100f;
     private readonly float ATTACK_RANGE = 100f;
     private readonly float ATTACK_WIDTH = 2f;
+    private enum ArenaState {TRISHOT, TRAP, REPOSITION};
+    private Arena arenaState;
 	private Vector2 INTERACT_SIZE = new Vector2(50f, 50f);
 
 	public override void Awake()
@@ -89,9 +91,14 @@ public class Ranger : HeroClass, IHitboxResponder
         }
         else
         {
-            arenaUpdate();
+            ArenaUpdate();
         }
         base.Update();
+    }
+
+    public override void ArenaUpdate()
+    {
+
     }
 
     public void InspectCallback()

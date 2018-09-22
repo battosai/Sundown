@@ -22,9 +22,9 @@ public class HeroClass : CharacterClass
 		SetType(CharacterClass.Type.HERO);
 	}
 
-	protected void arenaUpdate()
+	public virtual void ArenaUpdate()
 	{
-		// Debug.Log("Hero is Updating from arenaUpdate");
+		Debug.Log("DEFAULT ARENA UPDATE!");
 	}
 
 	public virtual void Track(int nodeID)
