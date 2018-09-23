@@ -11,7 +11,7 @@ public class Ranger : HeroClass, IHitboxResponder
     private readonly float AGGRO_RANGE = 100f;
     private readonly float ATTACK_RANGE = 100f;
     private readonly float ATTACK_WIDTH = 2f;
-    private readonly float TRISHOT_DEVIATION = 2f;
+private readonly float TRISHOT_DEVIATION = 5f*Mathf.Deg2Rad;
     private enum ArenaState {TRISHOT, TRAP, REPOSITION};
     private ArenaState arenaState;
 	private Vector2 INTERACT_SIZE = new Vector2(50f, 50f);
@@ -32,6 +32,8 @@ public class Ranger : HeroClass, IHitboxResponder
 
     public override void Update()
     {
+        if(PlayerInput.Space)
+            trishot();
         if(!isArenaTime)
         {
             if(isPresent)
@@ -118,27 +120,43 @@ public class Ranger : HeroClass, IHitboxResponder
     {
         //midshot calculations
         float xdiff = player.floorPosition.x-floorPosition.x;
-        float ydiff = player.floorPosition.y - floorPosition.y;
-        float distance = Mathf.Sqrt(xdiff*xdiff+ydiff*ydiff);
-        float angle = Mathf.Asin(xdiff/distance);
+        float ydiff = player.floorPosition.y-floorPosition.y;
+        float distance = Vector2.Distance(player.floorPosition, floorPosition);//Mathf.Sqrt(xdiff*xdiff+ydiff*ydiff);
+        float angle = ydiff > 0 ? Mathf.Acos(xdiff/distance) : -Mathf.Acos(xdiff/distance);
+        Debug.Log("Angle is: "+angle*Mathf.Rad2Deg+" degrees");
         //sideshot calculations 
-        float xOffset = distance*Mathf.Sin(angle-TRISHOT_DEVIATION);
-        float yOffset = distance*Mathf.Cos(angle-TRISHOT_DEVIATION);
+        float xOffset = distance*Mathf.Cos(angle-TRISHOT_DEVIATION);
+        float yOffset = distance*Mathf.Sin(angle-TRISHOT_DEVIATION);
         Vector2 sideshotA = new Vector2(floorPosition.x+xOffset, floorPosition.y+yOffset);
-        xOffset = distance*Mathf.Sin(angle+TRISHOT_DEVIATION);
-        yOffset = distance*Mathf.Cos(angle+TRISHOT_DEVIATION);
+        xOffset = distance*Mathf.Cos(angle+TRISHOT_DEVIATION);
+        yOffset = distance*Mathf.Sin(angle+TRISHOT_DEVIATION);
         Vector2 sideshotB = new Vector2(floorPosition.x+xOffset, floorPosition.y+yOffset);
         //perform 3 raycasts
         RaycastHit2D midhit = Physics2D.CircleCast(floorPosition, ATTACK_WIDTH, player.floorPosition-floorPosition, ATTACK_RANGE);
+        Debug.DrawRay(floorPosition, player.floorPosition-floorPosition, Color.cyan, 2f);
         RaycastHit2D sidehitA = Physics2D.CircleCast(floorPosition, ATTACK_WIDTH, sideshotA-floorPosition, ATTACK_RANGE);
+        Debug.DrawRay(floorPosition, sideshotA-floorPosition, Color.red, 2f);
         RaycastHit2D sidehitB = Physics2D.CircleCast(floorPosition, ATTACK_WIDTH, sideshotB-floorPosition, ATTACK_RANGE);
+        Debug.DrawRay(floorPosition, sideshotB-floorPosition, Color.red, 2f);
         int hits = 0;
         if(midhit.collider != null && midhit.collider.tag == "Player")
+        {
             hits++;
-        if(sidehitA.collider != null && midhit.collider.tag == "Player")
+            Vector3 pos = midhit.collider.transform.position;
+            Debug.DrawLine(new Vector3(pos.x-2f, pos.y, 0f), new Vector3(pos.x+2f, pos.y, 0f), Color.cyan, 2f);
+        }
+        if(sidehitA.collider != null && sidehitA.collider.tag == "Player")
+        {
             hits++;
-        if(sidehitB.collider != null && midhit.collider.tag == "Player")
+            Vector3 pos = midhit.collider.transform.position;
+            Debug.DrawLine(new Vector3(pos.x-2f, pos.y, 0f), new Vector3(pos.x+2f, pos.y, 0f), Color.cyan, 2f);
+        }
+        if(sidehitB.collider != null && sidehitB.collider.tag == "Player")
+        {
             hits++;
+            Vector3 pos = midhit.collider.transform.position;
+            Debug.DrawLine(new Vector3(pos.x-2f, pos.y, 0f), new Vector3(pos.x+2f, pos.y, 0f), Color.cyan, 2f);
+        }
         if(hits > 0)
             player.hurtBox.Hurt(ATTACK_DMG*hits); 
     }
