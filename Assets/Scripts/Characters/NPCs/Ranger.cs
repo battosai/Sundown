@@ -11,8 +11,9 @@ public class Ranger : HeroClass, IHitboxResponder
     private readonly float AGGRO_RANGE = 100f;
     private readonly float ATTACK_RANGE = 100f;
     private readonly float ATTACK_WIDTH = 2f;
+    private readonly float TRISHOT_DEVIATION = 2f;
     private enum ArenaState {TRISHOT, TRAP, REPOSITION};
-    private Arena arenaState;
+    private ArenaState arenaState;
 	private Vector2 INTERACT_SIZE = new Vector2(50f, 50f);
 
 	public override void Awake()
@@ -98,7 +99,48 @@ public class Ranger : HeroClass, IHitboxResponder
 
     public override void ArenaUpdate()
     {
+        switch(arenaState)
+        {
+            case ArenaState.TRISHOT:
+                trishot();
+                break;
+            case ArenaState.TRAP:
+                break;
+            case ArenaState.REPOSITION:
+                break;
+            default:
+                Debug.Log("[Error] Unknown Ranger Arena State: "+arenaState);
+                break;
+        }
+    }
 
+    private void trishot()
+    {
+        //midshot calculations
+        float xdiff = player.floorPosition.x-floorPosition.x;
+        float ydiff = player.floorPosition.y - floorPosition.y;
+        float distance = Mathf.Sqrt(xdiff*xdiff+ydiff*ydiff);
+        float angle = Mathf.Asin(xdiff/distance);
+        //sideshot calculations 
+        float xOffset = distance*Mathf.Sin(angle-TRISHOT_DEVIATION);
+        float yOffset = distance*Mathf.Cos(angle-TRISHOT_DEVIATION);
+        Vector2 sideshotA = new Vector2(floorPosition.x+xOffset, floorPosition.y+yOffset);
+        xOffset = distance*Mathf.Sin(angle+TRISHOT_DEVIATION);
+        yOffset = distance*Mathf.Cos(angle+TRISHOT_DEVIATION);
+        Vector2 sideshotB = new Vector2(floorPosition.x+xOffset, floorPosition.y+yOffset);
+        //perform 3 raycasts
+        RaycastHit2D midhit = Physics2D.CircleCast(floorPosition, ATTACK_WIDTH, player.floorPosition-floorPosition, ATTACK_RANGE);
+        RaycastHit2D sidehitA = Physics2D.CircleCast(floorPosition, ATTACK_WIDTH, sideshotA-floorPosition, ATTACK_RANGE);
+        RaycastHit2D sidehitB = Physics2D.CircleCast(floorPosition, ATTACK_WIDTH, sideshotB-floorPosition, ATTACK_RANGE);
+        int hits = 0;
+        if(midhit.collider != null && midhit.collider.tag == "Player")
+            hits++;
+        if(sidehitA.collider != null && midhit.collider.tag == "Player")
+            hits++;
+        if(sidehitB.collider != null && midhit.collider.tag == "Player")
+            hits++;
+        if(hits > 0)
+            player.hurtBox.Hurt(ATTACK_DMG*hits); 
     }
 
     public void InspectCallback()
