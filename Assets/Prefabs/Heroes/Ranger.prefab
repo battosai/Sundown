@@ -140,6 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1e2bfe6f7a6c6a4f93c28a05b016472, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trap: {fileID: 1396520567294506, guid: b2297f9ed6dff24409d79fbb0254ca7d, type: 2}
 --- !u!212 &212135468449056146
 SpriteRenderer:
   m_ObjectHideFlags: 1

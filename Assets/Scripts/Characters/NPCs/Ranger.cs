@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class Ranger : HeroClass, IHitboxResponder
 {
+    public GameObject trap;
     private readonly int MASTERY = 2;
     private readonly int INSPECT_TIME = 10;
     private readonly int ATTACK_TIME = 3;
     private readonly int ATTACK_DMG = 5;
+    private readonly int TRAP_MAX = 3;
     private readonly float AGGRO_RANGE = 100f;
     private readonly float ATTACK_RANGE = 100f;
     private readonly float ATTACK_WIDTH = 2f;
-private readonly float TRISHOT_DEVIATION = 5f*Mathf.Deg2Rad;
+    private readonly float TRISHOT_DEVIATION = 5f*Mathf.Deg2Rad;
     private enum ArenaState {TRISHOT, TRAP, REPOSITION};
     private ArenaState arenaState;
 	private Vector2 INTERACT_SIZE = new Vector2(50f, 50f);
+    private List<GameObject> traps;
 
 	public override void Awake()
 	{
@@ -26,6 +29,7 @@ private readonly float TRISHOT_DEVIATION = 5f*Mathf.Deg2Rad;
     public void Start()
     {
         init();
+        traps = new List<GameObject>();
         hitBox.SetResponder(this); 
         gameState.SetHero(this);
     }
@@ -33,7 +37,7 @@ private readonly float TRISHOT_DEVIATION = 5f*Mathf.Deg2Rad;
     public override void Update()
     {
         if(PlayerInput.Space)
-            trishot();
+            placeTrap();
         if(!isArenaTime)
         {
             if(isPresent)
@@ -107,6 +111,7 @@ private readonly float TRISHOT_DEVIATION = 5f*Mathf.Deg2Rad;
                 trishot();
                 break;
             case ArenaState.TRAP:
+                placeTrap();
                 break;
             case ArenaState.REPOSITION:
                 break;
@@ -159,6 +164,34 @@ private readonly float TRISHOT_DEVIATION = 5f*Mathf.Deg2Rad;
         }
         if(hits > 0)
             player.hurtBox.Hurt(ATTACK_DMG*hits); 
+    }
+
+    private void placeTrap()
+    {
+        int active = 0;
+        foreach(GameObject trap in traps)
+            if(trap.activeInHierarchy)
+                active++;
+        Debug.Log("Active: "+active);
+        if(active < TRAP_MAX)
+        {
+            GameObject newTrap;
+            if(traps.Count < TRAP_MAX && traps.Count == active)
+            {
+                Debug.Log("Creating new trap");
+                newTrap = Instantiate(trap);
+                traps.Add(newTrap);
+            }
+            else
+            {
+                Debug.Log("Using trap pool");
+                newTrap = traps[active]; 
+                newTrap.SetActive(true);
+            }
+            Vector2 offset = (player.floorPosition-floorPosition)/2;
+            Vector2 pos = floorPosition+offset;
+            newTrap.transform.position = pos;
+        }
     }
 
     public void InspectCallback()
