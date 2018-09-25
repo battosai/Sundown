@@ -9,9 +9,11 @@ public class PlayerClass : CharacterClass
 {
 	public Sprite human, halfHuman, werewolf;
 	public bool isHuman {get; private set;}
+	public bool isTrapped {get; private set;}
 	public int strength {get; private set;}
 	public int hunger {get; private set;}
 	public int gold {get; private set;}
+	public new float time {get; private set;}
 	public PlayerInput input {get; private set;}
 	public PlayerActions actions {get; private set;}
 	private readonly int BLOODTHIRSTY = 10;
@@ -20,6 +22,7 @@ public class PlayerClass : CharacterClass
 	private Collider2D aggroBox;
 	public void SetHunger(int hunger){this.hunger=hunger;}
 	public void SetGold(int gold){this.gold=gold;}
+	public void SetIsTrapped(bool isTrapped){this.isTrapped=isTrapped;}
 
 	public override void Awake()
 	{
@@ -55,6 +58,7 @@ public class PlayerClass : CharacterClass
 		SetNodeID(0);
 		SetMaxHealth(20);
 		SetHealth(maxHealth);
+		SetIsTrapped(false);
 		World.nodes[nodeID].SetActive(true);
 		trans.position = SetFloorPosition(World.wnodes[nodeID].playerSpawn.transform.position);
 		rend.sprite = human;
@@ -76,6 +80,12 @@ public class PlayerClass : CharacterClass
 		anim.SetBool("isHuman", isHuman);
 		anim.SetFloat("speed", Mathf.Abs(rb.velocity.x)+Mathf.Abs(rb.velocity.y));
 		anim.SetInteger("attackCount", input.attackCount);
+	}
+
+	public void BecomeTrapped()
+	{
+		SetIsTrapped(true);
+		time = Time.time;
 	}
 
 	//called whenever player goes to next node or maybe by will

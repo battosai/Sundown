@@ -128,7 +128,6 @@ public class Ranger : HeroClass, IHitboxResponder
         float ydiff = player.floorPosition.y-floorPosition.y;
         float distance = Vector2.Distance(player.floorPosition, floorPosition);//Mathf.Sqrt(xdiff*xdiff+ydiff*ydiff);
         float angle = ydiff > 0 ? Mathf.Acos(xdiff/distance) : -Mathf.Acos(xdiff/distance);
-        Debug.Log("Angle is: "+angle*Mathf.Rad2Deg+" degrees");
         //sideshot calculations 
         float xOffset = distance*Mathf.Cos(angle-TRISHOT_DEVIATION);
         float yOffset = distance*Mathf.Sin(angle-TRISHOT_DEVIATION);
@@ -145,23 +144,11 @@ public class Ranger : HeroClass, IHitboxResponder
         Debug.DrawRay(floorPosition, sideshotB-floorPosition, Color.red, 2f);
         int hits = 0;
         if(midhit.collider != null && midhit.collider.tag == "Player")
-        {
             hits++;
-            Vector3 pos = midhit.collider.transform.position;
-            Debug.DrawLine(new Vector3(pos.x-2f, pos.y, 0f), new Vector3(pos.x+2f, pos.y, 0f), Color.cyan, 2f);
-        }
         if(sidehitA.collider != null && sidehitA.collider.tag == "Player")
-        {
             hits++;
-            Vector3 pos = midhit.collider.transform.position;
-            Debug.DrawLine(new Vector3(pos.x-2f, pos.y, 0f), new Vector3(pos.x+2f, pos.y, 0f), Color.cyan, 2f);
-        }
         if(sidehitB.collider != null && sidehitB.collider.tag == "Player")
-        {
             hits++;
-            Vector3 pos = midhit.collider.transform.position;
-            Debug.DrawLine(new Vector3(pos.x-2f, pos.y, 0f), new Vector3(pos.x+2f, pos.y, 0f), Color.cyan, 2f);
-        }
         if(hits > 0)
             player.hurtBox.Hurt(ATTACK_DMG*hits); 
     }

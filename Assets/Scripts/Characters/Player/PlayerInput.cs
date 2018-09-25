@@ -52,7 +52,10 @@ public class PlayerInput : MonoBehaviour
 		trackMouse();
     getMouseInput();
     getKeyboardInput();
-    useInput();
+    if(!player.isTrapped)
+      useInput();
+    else if(Time.time-player.time > Trap.TRAP_TIME)
+      player.SetIsTrapped(false);
 	}
 
   private void useInput()

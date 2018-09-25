@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Trap : MonoBehaviour 
 {
+	public static readonly float TRAP_TIME = 2f;
 	private PlayerClass player;
 
 	public void Awake()
@@ -17,6 +18,8 @@ public class Trap : MonoBehaviour
 		{
 			Debug.Log("Player has been trapped!");
 			gameObject.SetActive(false);
+			player.rb.velocity = Vector2.zero;
+			player.BecomeTrapped();
 		}
 	}
 }
