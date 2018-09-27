@@ -64,6 +64,8 @@ public class GameState : MonoBehaviour
 	private void masterReset()
 	{
 		day = 0;
+		if(!arena.isReady)
+			arena.ConstructArena();
 		arena.gameObject.SetActive(false);
 		world.Reset();
 		player.Reset();

@@ -38,12 +38,6 @@ public class WorldNode : MonoBehaviour
     buildingPool = new List<GameObject>();
   }
 
-	// Update is called once per frame
-	void Update()
-	{
-
-	}
-
   //called by parent class World when being reset
   public void ParentReset()
   {
