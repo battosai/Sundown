@@ -25,6 +25,25 @@ public class ColliderGenerator : MonoBehaviour
         useColliderPool(rooms, node);
     }
 
+    public void GenerateArenaCollider(GameObject arenaObj)
+    {
+        MeshFilter meshFilter = arenaObj.GetComponent<MeshFilter>();
+        if(meshFilter == null)
+        {
+            Debug.Log("[Error] Arena Missing Mesh Filter!");
+            return;
+        }
+        List<Edge> edges = createEdges(meshFilter.mesh.vertices, meshFilter.mesh.triangles);
+        List<List<Vector2>> rooms = parseEdges(edges);
+        Arena arena = arenaObj.GetComponent<Arena>();
+        foreach(List<Vector2> room in rooms)
+        {
+            GameObject child = Instantiate(collPrefab, arena.transform.Find("Colliders"));
+            child.GetComponent<EdgeCollider2D>().points = room.ToArray();
+            child.transform.localPosition = Vector2.zero;
+        }
+    }
+
     private void useColliderPool(List<List<Vector2>> rooms, GameObject node)
     {
         List<GameObject> collPool = node.GetComponent<WorldNode>().collPool;
