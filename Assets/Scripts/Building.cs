@@ -30,13 +30,13 @@ public class Building : MonoBehaviour
         entrance = transform.Find("BuildingEntrance").gameObject;
         trans = GetComponent<Transform>();
         rend = GetComponent<SpriteRenderer>();
+        villagerPool = new List<GameObject>();
+        guardPool = new List<GameObject>();
+        Reset();
     }
 
     public void Start()
     {
-        villagerPool = new List<GameObject>();
-        guardPool = new List<GameObject>();
-        Reset();
     }
 
     //called in World.cs when reusing a building pool object after setting its new position

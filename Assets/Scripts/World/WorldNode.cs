@@ -43,5 +43,11 @@ public class WorldNode : MonoBehaviour
   {
     isActive = true;
     clues = 0;
+    playerExit.SetActive(false);
+  }
+
+  public void ExitFound()
+  {
+    playerExit.SetActive(true);
   }
 }

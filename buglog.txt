@@ -36,3 +36,7 @@ Fix (/)
 Bug (9/22)
 	Villagers and Guards floorHeights are messed up
 Fix (/)
+-----------
+Bug (10/1)
+	Building floorHeights are messed up after adding map item spawning
+Fix (/)

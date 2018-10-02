@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameState : MonoBehaviour
 {
 	public static readonly int DAYS_TO_WIN = 5;
-	private int day;
+	public static int day;
 	private World world;
 	private Arena arena;
 	private PlayerClass player;

@@ -80,6 +80,7 @@ public class World : MonoBehaviour
 			generateMapMeshCollider(nodeID);
 			placeSpawnAndExit(nodeID);
 			generateBuildings(nodeID);
+			placeMapItem(nodeID);
 			generateWildlife(nodeID);
 			wnodes[nodeID].ParentReset();
 		}
@@ -173,8 +174,8 @@ public class World : MonoBehaviour
 			Vector2 point = points[i];
 			GameObject obj = Instantiate(buildingPrefabs[0], node.transform.Find("Buildings"));
 			Building building = obj.GetComponent<Building>();
-			building.Init();
 			building.SetNodeID(nodeID);
+			building.Init();
 			if(wnode.buildingPool.Count == 0)
 				building.SetType(Building.Type.BARRACKS);
 			else
@@ -182,6 +183,13 @@ public class World : MonoBehaviour
 			obj.transform.position = building.SetFloorPosition(point);
 			wnode.AddPoolObject(obj, wnode.buildingPool);
 		}
+	}
+
+	private void placeMapItem(int nodeID)
+	{
+		Debug.Log("Map has been placed!");
+		GameObject objects = wnodes[nodeID].buildingPool[1].GetComponent<Building>().objects;
+		objects.transform.Find("Chest").Find("InteractableChest").GetComponent<Container>().SetHasMap(true);
 	}
 	
 	//rolls a new map, mesh, and pool of colliders for walls

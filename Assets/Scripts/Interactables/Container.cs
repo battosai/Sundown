@@ -8,9 +8,11 @@ public class Container : MonoBehaviour
     public bool isEmpty {get; private set;}
     public int gold {get; private set;} 
     public float floorHeight {get; private set;}
+    private bool hasMap;
     private PlayerClass player;
     private SpriteRenderer rend;
     private Transform trans;
+    public void SetHasMap(bool hasMap){this.hasMap=hasMap;}
 
     public void Awake()
     {
@@ -38,6 +40,12 @@ public class Container : MonoBehaviour
         {
             Debug.Log("[Error] Search being called on empty chest");
             return;
+        }
+        if(hasMap)
+        {
+            SetHasMap(false);
+            Debug.Log("Exit has been revealed!");
+            World.wnodes[GameState.day].ExitFound();
         }
         rend.sprite = empty;
         isEmpty = true;
