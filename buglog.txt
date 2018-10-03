@@ -27,6 +27,11 @@ Bug (9/18)
 Fix (9/19)
 	Villager Reset() was called in  Awake() function instead of Start() so it was being called before the nodeIDs were set properly.
 -----------
+Bug (10/1)
+	Building floorHeights are messed up after adding map item spawning
+Fix (10/2)
+	When joining the building Start and Init function, Reset (which calls setFloorHeight) needs to be called after setting building position to point in generation
+-----------
 Bug (9/7)
 	Ranger spawned outside the boundaries before, keep an eye out.
 	Could just use reset button to repeatedly test to see how often this happens.
@@ -37,6 +42,3 @@ Bug (9/22)
 	Villagers and Guards floorHeights are messed up
 Fix (/)
 -----------
-Bug (10/1)
-	Building floorHeights are messed up after adding map item spawning
-Fix (/)

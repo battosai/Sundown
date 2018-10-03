@@ -174,13 +174,14 @@ public class World : MonoBehaviour
 			Vector2 point = points[i];
 			GameObject obj = Instantiate(buildingPrefabs[0], node.transform.Find("Buildings"));
 			Building building = obj.GetComponent<Building>();
-			building.SetNodeID(nodeID);
 			building.Init();
+			building.SetNodeID(nodeID);
 			if(wnode.buildingPool.Count == 0)
 				building.SetType(Building.Type.BARRACKS);
 			else
 				building.SetType(Building.Type.HOME);
 			obj.transform.position = building.SetFloorPosition(point);
+        	building.Reset();
 			wnode.AddPoolObject(obj, wnode.buildingPool);
 		}
 	}
