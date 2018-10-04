@@ -32,13 +32,14 @@ Bug (10/1)
 Fix (10/2)
 	When joining the building Start and Init function, Reset (which calls setFloorHeight) needs to be called after setting building position to point in generation
 -----------
+Bug (9/22)
+	Villagers and Guards floorHeights are messed up
+Fix (10/3)
+	Sprite Renderer layer was set to Default, needed to be set to Gameground
+-----------
 Bug (9/7)
 	Ranger spawned outside the boundaries before, keep an eye out.
 	Could just use reset button to repeatedly test to see how often this happens.
 	Happened once when Ranger spawned from tracking player to next node.
-Fix (/)
------------
-Bug (9/22)
-	Villagers and Guards floorHeights are messed up
 Fix (/)
 -----------

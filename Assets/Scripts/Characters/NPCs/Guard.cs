@@ -25,7 +25,7 @@ public class Guard : TownspersonClass, IHitboxResponder
     }
 
     public override void Update()
-    {
+    { 
         if(health <= 0)
             state = State.DEAD;
         if(isAlive)
