@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class MeshGenerator : MonoBehaviour
 {
     public static readonly float SQUARE_SIZE = 5f;
+    private static readonly float MESH_Z = 500f;
     private SquareGrid squareGrid;
     private List<Vector3> vertices;
     private List<int> triangles;
@@ -176,7 +177,7 @@ public class MeshGenerator : MonoBehaviour
             {
                 for(int j = 0; j < nodeCols; j++)
                 {
-                    Vector3 position = new Vector3(-mapWidth/2 + j*SQUARE_SIZE + SQUARE_SIZE/2, mapHeight/2 - i*SQUARE_SIZE - SQUARE_SIZE/2, 0);
+                    Vector3 position = new Vector3(-mapWidth/2 + j*SQUARE_SIZE + SQUARE_SIZE/2, mapHeight/2 - i*SQUARE_SIZE - SQUARE_SIZE/2, MESH_Z);
                     controlNodes[i, j] = new ControlNode(position, map[i, j] == 1);
                 }
             }

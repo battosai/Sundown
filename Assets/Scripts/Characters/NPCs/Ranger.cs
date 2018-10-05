@@ -105,6 +105,7 @@ public class Ranger : HeroClass, IHitboxResponder
 
     public override void ArenaUpdate()
     {
+        //based on distance can change roll values for abilities?
         switch(arenaState)
         {
             case ArenaState.TRISHOT:
