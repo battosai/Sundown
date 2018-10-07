@@ -40,7 +40,7 @@ public class Ranger : HeroClass, IHitboxResponder
     public override void Update()
     {
         if(PlayerInput.Space)
-            trishot();
+            reposition();
         if(!isArenaTime)
         {
             if(isPresent)
@@ -118,11 +118,18 @@ public class Ranger : HeroClass, IHitboxResponder
                 placeTrap();
                 break;
             case ArenaState.REPOSITION:
+                reposition();
                 break;
             default:
                 Debug.Log("[Error] Unknown Ranger Arena State: "+arenaState);
                 break;
         }
+    }
+
+    private void reposition()
+    {
+        Vector2 repos = Arena.GetOpenPosition();
+        trans.position = repos;
     }
 
     private void trishot()

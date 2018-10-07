@@ -7,12 +7,13 @@ public class Arena : MonoBehaviour
 	public bool isReady {get; private set;}
 	public Vector2 playerSpawn {get; private set;}
 	public Vector2 heroSpawn {get; private set;}
+	private static int rows, cols;
 	private MeshFilter meshFilter;
 	private PlayerClass player;
 	private HeroClass hero;	
 	private MeshGenerator meshGen;
 	private ColliderGenerator collGen;
-	private readonly int[,] map = new int[,] {
+	private static readonly int[,] map = new int[,] {
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,},
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,},
 		{1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,},
@@ -75,11 +76,52 @@ public class Arena : MonoBehaviour
 		meshFilter = GetComponent<MeshFilter>();
 	}
 
+	public void Start()
+	{
+		rows = map.GetLength(0);
+		cols = map.GetLength(1);
+	}
+
+	private void DisplayArena()
+	{
+		for(int i = 0; i < rows; i++)
+		{
+			for(int j = 0; j < cols; j++)
+			{
+				if(map[i,j] == MapGenerator.FLOOR)
+				{
+					Vector2 pos = convertMapToArena(i, j);
+					Debug.DrawLine(new Vector3(pos.x-2f, pos.y, 0f), new Vector3(pos.x+2f, pos.y, 0f), Color.cyan, 100f);
+				}
+			}
+		}
+	}
+
 	public void ConstructArena()
 	{
 		isReady = true;
 		Mesh mesh = meshGen.GenerateMesh(map);
 		meshFilter.mesh = mesh;
 		collGen.GenerateArenaCollider(this.gameObject);
+	}
+
+	public static Vector2 GetOpenPosition()
+	{
+		while(true)
+		{
+			int row = Random.Range(2, rows-2);
+			int col = Random.Range(2, cols-2);
+			if(map[row,col] == MapGenerator.FLOOR)
+				return convertMapToArena(row, col);
+		}
+	}
+
+	private static Vector2 convertMapToArena(int row, int col)
+	{
+    	float mapWidth = cols*MeshGenerator.SQUARE_SIZE;
+    	float mapHeight = rows*MeshGenerator.SQUARE_SIZE;
+		float x = -mapWidth/2+col*MeshGenerator.SQUARE_SIZE+MeshGenerator.SQUARE_SIZE/2;
+		float y = mapHeight/2-row*MeshGenerator.SQUARE_SIZE-MeshGenerator.SQUARE_SIZE/2;
+		return new Vector2(x, y);
 	}
 }

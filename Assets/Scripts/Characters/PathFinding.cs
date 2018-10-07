@@ -4,28 +4,6 @@ using UnityEngine;
 
 public class PathFinding
 {
-    //bit order: left|bottom|top|right
-    // public static readonly int RIGHT = 1;
-    // public static readonly int TOP = 2;
-    // public static readonly int TOPRIGHT = 3; 
-    // public static readonly int BOTTOM = 4;
-    // public static readonly int BOTTOMRIGHT = 5;
-    // public static readonly int LEFT = 8;
-    // public static readonly int TOPLEFT = 10;
-    // public static readonly int BOTTOMLEFT = 12;
-    // private static Dictionary<int, int[]> splitDirections = new Dictionary<int, int[]>() 
-    // {
-    //     //directions are based on row,col orientation
-    //     {TOP, new int[]{-1, 0}},
-    //     {BOTTOM, new int[]{1, 0}},
-    //     {RIGHT, new int[]{0, 1}},
-    //     {LEFT, new int[]{0, -1}},
-    //     {TOPRIGHT, new int[]{-1, 1}},
-    //     {TOPLEFT, new int[]{-1, -1}},
-    //     {BOTTOMRIGHT, new int[]{1, 1}}, 
-    //     {BOTTOMLEFT, new int[]{1, -1}}
-    // };
-
     public static List<Vector2> AStarJump(Vector2 start, Vector2 destination, Node[,] nodeMap, int nodeID)
 	{
 		float time = Time.realtimeSinceStartup;
@@ -158,16 +136,6 @@ public class PathFinding
 		return new Vector2(vx, vy);
 	}
 	
-    //checks specific neighbor
-    // public static bool CheckNeighbor(Node origin, Node[,] nodeMap, int nodeID, int direction)
-    // {
-    //     int row = origin.row;
-    //     int col = origin.col;
-    //     int[,] map = World.wnodes[nodeID].map;
-    //     int[] directions = splitDirections[direction];
-    //     return map[row+directions[0], col+directions[1]] == MapGenerator.FLOOR;
-    // }
-
 	//return list of neighbors as pathnodes
 	public static List<Node> GetNeighbors(Node origin, Node[,] nodeMap)
 	{
