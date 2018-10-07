@@ -11,12 +11,15 @@ public class Ranger : HeroClass, IHitboxResponder
     private readonly int ATTACK_TIME = 3;
     private readonly int ATTACK_DMG = 5;
     private readonly int TRAP_MAX = 3;
+    private readonly float REPOSITION_THRESHOLD = 10f;
+    private readonly float LONG_DISTANCE = 100f;
+    private readonly float MID_DISTANCE = 60f;
     private readonly float AGGRO_RANGE = 100f;
     private readonly float ATTACK_RANGE = 100f;
     private readonly float ATTACK_WIDTH = 2f;
     private readonly float TRISHOT_DEVIATION = 5f*Mathf.Deg2Rad;
-    private enum ArenaState {TRISHOT, TRAP, REPOSITION};
-    private ArenaState arenaState;
+    private enum Spacing {FAR, MID, CLOSE};
+    private Spacing spacing;
 	private Vector2 INTERACT_SIZE = new Vector2(50f, 50f);
     private List<GameObject> traps;
     private List<GameObject> needles;
@@ -108,20 +111,21 @@ public class Ranger : HeroClass, IHitboxResponder
 
     public override void ArenaUpdate()
     {
-        //based on distance can change roll values for abilities?
-        switch(arenaState)
+        float distance = Vector2.Distance(player.floorPosition, floorPosition);
+        spacing = distance > LONG_DISTANCE ? Spacing.FAR : (distance > MID_DISTANCE ? Spacing.MID : Spacing.CLOSE);
+        switch(spacing)
         {
-            case ArenaState.TRISHOT:
+            case Spacing.FAR:
                 trishot();
                 break;
-            case ArenaState.TRAP:
+            case Spacing.MID:
                 placeTrap();
                 break;
-            case ArenaState.REPOSITION:
+            case Spacing.CLOSE:
                 reposition();
                 break;
             default:
-                Debug.Log("[Error] Unknown Ranger Arena State: "+arenaState);
+                Debug.Log("[Error] Unknown Spacing: "+spacing);
                 break;
         }
     }
@@ -137,7 +141,7 @@ public class Ranger : HeroClass, IHitboxResponder
         //midshot calculations
         float xdiff = player.floorPosition.x-floorPosition.x;
         float ydiff = player.floorPosition.y-floorPosition.y;
-        float distance = Vector2.Distance(player.floorPosition, floorPosition);
+        float distance = Vector2.Distance(player.floorPosition, trans.position);
         float angle = ydiff > 0 ? Mathf.Acos(xdiff/distance) : -Mathf.Acos(xdiff/distance);
         float[] angles = new float[3]{angle, angle-TRISHOT_DEVIATION, angle+TRISHOT_DEVIATION};
         for(int i = 0; i < 3; i++)

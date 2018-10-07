@@ -6,6 +6,8 @@ public class CharacterClass : MonoBehaviour
 {
 	public enum Type {PLAYER, HERO, WILDLIFE, TOWNSPERSON};
 	public readonly float BASE_SPEED = 20f;
+    public Sprite alive;
+    public Sprite dead;
 	public int nodeID {get; private set;}
 	public int health {get; private set;}
 	public float speed {get; private set;}
@@ -67,6 +69,17 @@ public class CharacterClass : MonoBehaviour
 		SetIsAlive(true);
 		SetIsAlarmed(false);
 		time = Time.time;
+	}
+
+	protected void deathPrep()
+	{
+		SetIsAlive(false);
+		rb.velocity = Vector2.zero;
+		if(dead == null)
+			rend.enabled = false;
+		else
+			rend.enabled = dead;
+		pushBox.enabled = false;
 	}
 
   	protected void idleWalk()

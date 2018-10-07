@@ -33,9 +33,7 @@ public class Guard : TownspersonClass, IHitboxResponder
             switch(state)
             {
                 case State.DEAD:
-                    SetIsAlive(false);
-                    rb.velocity = Vector2.zero;
-                    rend.enabled = false;
+                    deathPrep(); 
                     break;
                 case State.IDLE:
                     if(isAlarmed)

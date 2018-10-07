@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public class Wildlife : CharacterClass
 {
-    public Sprite alive;
-    public Sprite dead;
     public int clue {get; private set;}
     protected enum State {IDLE, FLEE, DEAD};
     protected PlayerClass player;
@@ -56,9 +54,7 @@ public class Wildlife : CharacterClass
                     rb.velocity = new Vector2(-1f, -1f)*PathFinding.GetVelocity(floorPosition, alarmPoint, speed);
                     break;
                 case State.DEAD:
-                    SetIsAlive(false);
-                    rend.sprite = dead;
-                    rb.velocity = Vector2.zero;
+                    deathPrep();
                     player.SetHunger(player.hunger-nutrition);
                     Debug.Log("Player now has "+player.hunger+" hunger");
                     WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();

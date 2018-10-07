@@ -22,8 +22,7 @@ public class Villager : TownspersonClass, IHitboxResponder
             switch(state)
             {
                 case State.DEAD:
-                    SetIsAlive(false);
-                    rb.velocity = Vector2.zero;
+                    deathPrep(); 
                     break;
                 case State.IDLE:
                     if(isAlarmed)
