@@ -148,6 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f9bc51162cc84e40b9d037408d691db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alive: {fileID: 21300000, guid: 061d8792830640749a12914dc2088253, type: 3}
+  dead: {fileID: 21300000, guid: f123a7acc5b05504c8c02c10a775c477, type: 3}
 --- !u!114 &114617942016912956
 MonoBehaviour:
   m_ObjectHideFlags: 1

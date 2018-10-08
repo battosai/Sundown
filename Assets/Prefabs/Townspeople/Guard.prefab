@@ -159,6 +159,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caa360c45f14354428edef04596b62a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alive: {fileID: 21300000, guid: 3bccba609691bfb4e8fd2e811cd423b1, type: 3}
+  dead: {fileID: 21300000, guid: b692b8693ed1c4b4eb3f56defbd776a6, type: 3}
 --- !u!212 &212121202304442438
 SpriteRenderer:
   m_ObjectHideFlags: 1
