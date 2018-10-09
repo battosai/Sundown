@@ -95,6 +95,18 @@ public class CharacterClass : MonoBehaviour
             rb.velocity = Vector2.zero;
     } 
 
+ 	protected virtual IEnumerator dash(Vector2 target)
+	{
+		float DASH = 40f;
+	 	float DASH_TIME = 0.2f;
+		float startTime = Time.time;
+		while(Time.time-startTime < DASH_TIME)
+		{
+			rb.velocity = PathFinding.GetVelocity(floorPosition, target, DASH);
+			yield return null;
+		}
+	}
+
 	protected IEnumerator takePath(Vector2 destination, System.Action callback)
 	{
 		Debug.Log("Taking path!");

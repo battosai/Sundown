@@ -35,17 +35,17 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 	public void FixedUpdate()
 	{
 		if(isAttacking)
-			StartCoroutine(dash());
+			StartCoroutine(dash(player.input.GetMousePos()));
 	}
 
-	private IEnumerator dash()
+	private IEnumerator dash(Vector2 target)
 	{
 		float DASH = 40f;
 	 	float DASH_TIME = 0.2f;
 		float startTime = Time.time;
 		while(Time.time-startTime < DASH_TIME)
 		{
-			player.rb.velocity = PathFinding.GetVelocity(player.floorPosition, player.input.GetMousePos(), DASH);
+			player.rb.velocity = PathFinding.GetVelocity(player.floorPosition, target, DASH);
 			yield return null;
 		}
 	}

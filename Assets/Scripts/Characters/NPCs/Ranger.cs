@@ -11,7 +11,9 @@ public class Ranger : HeroClass, IHitboxResponder
     private readonly int ATTACK_TIME = 3;
     private readonly int ATTACK_DMG = 5;
     private readonly int TRAP_MAX = 3;
+    private readonly float TRISHOT_TIME = 3f;
     private readonly float REPOSITION_THRESHOLD = 10f;
+    private readonly float REPOSITION_TIME = 5f;
     private readonly float LONG_DISTANCE = 100f;
     private readonly float MID_DISTANCE = 60f;
     private readonly float AGGRO_RANGE = 100f;
@@ -112,17 +114,33 @@ public class Ranger : HeroClass, IHitboxResponder
     public override void ArenaUpdate()
     {
         float distance = Vector2.Distance(player.floorPosition, floorPosition);
+        Spacing prevSpacing = spacing; 
         spacing = distance > LONG_DISTANCE ? Spacing.FAR : (distance > MID_DISTANCE ? Spacing.MID : Spacing.CLOSE);
+        if(spacing != prevSpacing)
+            time = Time.time;
         switch(spacing)
         {
             case Spacing.FAR:
-                trishot();
+                if(Time.time-time > TRISHOT_TIME)
+                {
+                    time = Time.time;
+                    trishot();
+                    Vector2 away = floorPosition-player.floorPosition;
+                    StartCoroutine(dash(floorPosition+away));
+                }
                 break;
             case Spacing.MID:
+                //maybe just place all 3 in a curve like trishot, and replace if a trap is missing
+                //otherwise just triple shot?
+                //maybe triple shot for midrange, pentashot for long range
                 placeTrap();
                 break;
             case Spacing.CLOSE:
-                reposition();
+                if(Time.time-time > REPOSITION_TIME)
+                {
+                    time = Time.time;
+                    reposition();
+                }
                 break;
             default:
                 Debug.Log("[Error] Unknown Spacing: "+spacing);

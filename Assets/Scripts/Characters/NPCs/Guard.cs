@@ -108,10 +108,10 @@ public class Guard : TownspersonClass, IHitboxResponder
     public void FixedUpdate()
     {
         if(isAttacking)
-            StartCoroutine(dash());
+            StartCoroutine(dash(player.floorPosition));
     }
     
-    private IEnumerator dash()
+    protected override IEnumerator dash(Vector2 target)
 	{
 		float DASH = 40f;
 	 	float DASH_TIME = 0.2f;
@@ -120,7 +120,7 @@ public class Guard : TownspersonClass, IHitboxResponder
 		float startTime = Time.time;
 		while(Time.time-startTime < DASH_TIME)
 		{
-			rb.velocity = PathFinding.GetVelocity(floorPosition, player.floorPosition, DASH);
+			rb.velocity = PathFinding.GetVelocity(floorPosition, target, DASH);
 			yield return null;
 		}
         startTime = Time.time;
