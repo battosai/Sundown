@@ -11,7 +11,6 @@ public class Guard : TownspersonClass, IHitboxResponder
     private readonly int ATTACK_RANGE = 20;
     private readonly int TIME_BETWEEN_ATTACKS = 3;
 	private Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
-    private bool isAttacking;
     private int strength;
 
     public override void Awake()
@@ -67,6 +66,7 @@ public class Guard : TownspersonClass, IHitboxResponder
                         //need some delay before the attack
                         Debug.Log(this.tag+" is attacking!");
                         attackCheck();
+                        StartCoroutine(dash(player.floorPosition, WaitCallback));
                         time = Time.time;
                         //every attack do an alarm check?
                     }
@@ -104,33 +104,7 @@ public class Guard : TownspersonClass, IHitboxResponder
             base.Update();
         }
     }
-
-    public void FixedUpdate()
-    {
-        if(isAttacking)
-            StartCoroutine(dash(player.floorPosition));
-    }
     
-    protected override IEnumerator dash(Vector2 target)
-	{
-		float DASH = 40f;
-	 	float DASH_TIME = 0.2f;
-        float WAIT_TIME = 0.2f;
-		isAttacking = false;
-		float startTime = Time.time;
-		while(Time.time-startTime < DASH_TIME)
-		{
-			rb.velocity = PathFinding.GetVelocity(floorPosition, target, DASH);
-			yield return null;
-		}
-        startTime = Time.time;
-        while(Time.time-startTime < WAIT_TIME)
-        {
-            rb.velocity = Vector2.zero;
-            yield return null;
-        }
-	}
-
     private void fleeToBarracks()
     {
         StartCoroutine(takePath(building.entrance.transform.position, HomeCallback));
@@ -155,7 +129,6 @@ public class Guard : TownspersonClass, IHitboxResponder
 
 	private void attackCheck()
 	{
-        isAttacking = true;
 		int dir = isLeft ? -1 : 1;
 		hitbox.mask.useTriggers = false;
 		hitbox.SetAct(Act.ATTACK);
@@ -185,7 +158,6 @@ public class Guard : TownspersonClass, IHitboxResponder
 
     public override void Reset()
     {
-        isAttacking = false;
         strength = 4;
         SetMaxHealth(30);
         base.Reset();

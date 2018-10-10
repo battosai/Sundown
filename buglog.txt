@@ -43,3 +43,6 @@ Bug (9/7)
 	Happened once when Ranger spawned from tracking player to next node.
 Fix (/)
 -----------
+Bug (10/9)
+	Ranger during arena fight will only shoot trishot twice for some reason
+Fix (/)

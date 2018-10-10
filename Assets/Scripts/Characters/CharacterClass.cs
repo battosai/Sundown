@@ -78,8 +78,10 @@ public class CharacterClass : MonoBehaviour
 		if(dead == null)
 			rend.enabled = false;
 		else
-			rend.enabled = dead;
+			rend.sprite = dead;
 		pushBox.enabled = false;
+		if(anim != null)
+			anim.enabled = false;
 	}
 
   	protected void idleWalk()
@@ -95,7 +97,7 @@ public class CharacterClass : MonoBehaviour
             rb.velocity = Vector2.zero;
     } 
 
- 	protected virtual IEnumerator dash(Vector2 target)
+ 	protected virtual IEnumerator dash(Vector2 target, System.Action callback=null)
 	{
 		float DASH = 40f;
 	 	float DASH_TIME = 0.2f;
@@ -105,9 +107,21 @@ public class CharacterClass : MonoBehaviour
 			rb.velocity = PathFinding.GetVelocity(floorPosition, target, DASH);
 			yield return null;
 		}
+		if(callback != null)
+			callback();
 	}
 
-	protected IEnumerator takePath(Vector2 destination, System.Action callback)
+	protected IEnumerator wait(float waitTime)
+	{	
+		float startTime = Time.time;
+		while(Time.time-startTime < waitTime)
+        {
+            rb.velocity = Vector2.zero;
+            yield return null;
+        }
+	}
+
+	protected IEnumerator takePath(Vector2 destination, System.Action callback=null)
 	{
 		Debug.Log("Taking path!");
 		float tolerance = 1f;

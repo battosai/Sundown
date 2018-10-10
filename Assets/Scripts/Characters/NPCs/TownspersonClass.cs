@@ -37,4 +37,9 @@ public class TownspersonClass : CharacterClass
     {
         state = State.HOME;
     }
+
+    public void WaitCallback()
+    {
+        StartCoroutine(wait(0.2f));
+    }
 }
