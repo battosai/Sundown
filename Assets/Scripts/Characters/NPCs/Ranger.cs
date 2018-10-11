@@ -20,6 +20,7 @@ public class Ranger : HeroClass, IHitboxResponder
     private readonly float ATTACK_RANGE = 100f;
     private readonly float ATTACK_WIDTH = 2f;
     private readonly float TRISHOT_DEVIATION = 5f*Mathf.Deg2Rad;
+    private readonly float TRITRAP_DEVIATION = 10f*Mathf.Deg2Rad;
     private enum Spacing {FAR, MID, CLOSE};
     private Spacing spacing;
 	private Vector2 INTERACT_SIZE = new Vector2(50f, 50f);
@@ -156,6 +157,7 @@ public class Ranger : HeroClass, IHitboxResponder
 
     private void trishot()
     {
+        Debug.Log("Trishot!");
         //midshot calculations
         float xdiff = player.floorPosition.x-floorPosition.x;
         float ydiff = player.floorPosition.y-floorPosition.y;
@@ -180,6 +182,15 @@ public class Ranger : HeroClass, IHitboxResponder
         GameObject newNeedle = Instantiate(needle, trans.position, Quaternion.Euler(0f, 0f, angle*Mathf.Rad2Deg));
         newNeedle.GetComponent<Rigidbody2D>().velocity = newNeedle.transform.right*Needle.SPEED;
         needles.Add(newNeedle);
+    }
+
+    private void tritrap()
+    {
+        float xdiff = (player.floorPosition.x-floorPosition.x)/2;
+        float ydiff = (player.floorPosition.y-floorPosition.y)/2;
+        float distance = Vector2.Distance(player.floorPosition, trans.position);
+        float angle = ydiff > 0 ? Mathf.Acos(xdiff/distance) : -Mathf.Acos(xdiff/distance);
+        float[] angles = new float[3]{angle, angle-TRITRAP_DEVIATION, angle+TRITRAP_DEVIATION};
     }
 
     private void placeTrap()
