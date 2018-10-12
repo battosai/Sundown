@@ -190,7 +190,28 @@ public class Ranger : HeroClass, IHitboxResponder
         float ydiff = (player.floorPosition.y-floorPosition.y)/2;
         float distance = Vector2.Distance(player.floorPosition, trans.position);
         float angle = ydiff > 0 ? Mathf.Acos(xdiff/distance) : -Mathf.Acos(xdiff/distance);
-        float[] angles = new float[3]{angle, angle-TRITRAP_DEVIATION, angle+TRITRAP_DEVIATION};
+        float axdiff = distance*Mathf.Cos(angle+TRITRAP_DEVIATION);
+        float aydiff = distance*Mathf.Sin(angle+TRITRAP_DEVIATION);
+        float bxdiff = distance*Mathf.Cos(angle-TRITRAP_DEVIATION);
+        float bydiff = distance*Mathf.Sin(angle-TRITRAP_DEVIATION);
+        if(traps.Count == 0)
+        {
+            GameObject midtrap = Instantiate(trap, floorPosition + new Vector2(xdiff, ydiff), Quaternion.identity);
+            GameObject atrap = Instantiate(trap, floorPosition + new Vector2(axdiff, aydiff), Quaternion.identity);
+            GameObject btrap = Instantiate(trap, floorPosition + new Vector2(bxdiff, bydiff), Quaternion.identity);
+            traps.Add(midtrap);
+            traps.Add(atrap);
+            traps.Add(btrap);
+        }
+        else
+        {
+            traps[0].SetActive(true);
+            traps[1].SetActive(true);
+            traps[2].SetActive(true);
+            traps[0].transform.position = floorPosition + new Vector2(xdiff, ydiff);
+            traps[1].transform.position = floorPosition + new Vector2(axdiff, aydiff);
+            traps[2].transform.position = floorPosition + new Vector2(bxdiff, bydiff);
+        }
     }
 
     private void placeTrap()
