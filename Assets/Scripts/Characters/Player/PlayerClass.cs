@@ -44,8 +44,8 @@ public class PlayerClass : CharacterClass
 	{
 		if(health <= 0)
 		{
-			//Application.Quit();
-			UnityEditor.EditorApplication.isPlaying = false;
+			Application.Quit();
+			// UnityEditor.EditorApplication.isPlaying = false;
 		}
 		setFloorHeight();
 		hungerHandler();

@@ -41,7 +41,7 @@ public class Building : MonoBehaviour
         {
             Destroy(objects);
         }
-        Debug.Log("Calling Populate in building in node: "+nodeID);
+        // Debug.Log("Calling Populate in building in node: "+nodeID);
         Populate();
         size = randomSize();
         selectLayout(size);

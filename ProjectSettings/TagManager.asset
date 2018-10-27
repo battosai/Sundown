@@ -3,12 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Wildlife
-  - Townsperson
-  - Hero
-  - NPC
-  - Container
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -18,15 +13,15 @@ TagManager:
   - UI
   - 
   - 
-  - HurtBox
-  - PushBox
-  - PlayerPushBox
-  - WildlifePushBox
-  - HeroPushBox
-  - TownspersonPushBox
-  - WerewolfAggroBox
-  - Trap
-  - EnemyProjectile
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 
@@ -45,13 +40,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Foreground
-    uniqueID: 1871943571
-    locked: 0
-  - name: Background
-    uniqueID: 1361770575
-    locked: 0
-  - name: Gameground
-    uniqueID: 420290461
     locked: 0

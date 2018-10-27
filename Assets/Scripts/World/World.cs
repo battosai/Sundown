@@ -188,7 +188,6 @@ public class World : MonoBehaviour
 
 	private void placeMapItem(int nodeID)
 	{
-		Debug.Log("Map has been placed!");
 		GameObject objects = wnodes[nodeID].buildingPool[1].GetComponent<Building>().objects;
 		objects.transform.Find("Chest").Find("InteractableChest").GetComponent<Container>().SetHasMap(true);
 	}

@@ -32,6 +32,7 @@ public class Ranger : HeroClass, IHitboxResponder
 		player = GameObject.Find("Player").GetComponent<PlayerClass>();
         hitBox = GetComponent<Hitbox>();
 		base.Awake();
+        gameState.SetHero(this);
 	}
 
     public void Start()
@@ -40,7 +41,6 @@ public class Ranger : HeroClass, IHitboxResponder
         traps = new List<GameObject>();
         needles = new List<GameObject>();
         hitBox.SetResponder(this); 
-        gameState.SetHero(this);
     }
 
     public override void Update()
