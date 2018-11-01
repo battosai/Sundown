@@ -140,6 +140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1e2bfe6f7a6c6a4f93c28a05b016472, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alive: {fileID: 0}
+  dead: {fileID: 0}
   trap: {fileID: 1396520567294506, guid: b2297f9ed6dff24409d79fbb0254ca7d, type: 2}
   needle: {fileID: 1775341092293416, guid: 774446cc788f7374ba0372214fd088a2, type: 2}
 --- !u!212 &212135468449056146
@@ -174,8 +176,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 420290461
-  m_SortingLayer: 3
+  m_SortingLayerID: -555336987
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 97513121261afba48a697e1358174c7e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

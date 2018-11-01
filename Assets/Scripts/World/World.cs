@@ -44,7 +44,7 @@ public class World : MonoBehaviour
 		beastiary[BIG_ANIMAL] = bigAnimalPrefabs;
 		beastiary[SMALL_ANIMAL] = smallAnimalPrefabs;
 	}
-	
+
 	public void DisplayFloor()
 	{
 		foreach(GameObject node in nodes)
