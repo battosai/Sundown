@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Wildlife
+  - NPC
+  - Hero
   layers:
   - Default
   - TransparentFX
@@ -38,6 +41,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 1135851199
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Gameground
+    uniqueID: 3739630309
+    locked: 0
+  - name: Foreground
+    uniqueID: 2881242693
     locked: 0
