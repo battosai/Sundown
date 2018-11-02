@@ -25,6 +25,13 @@ public class ColliderGenerator : MonoBehaviour
         useColliderPool(rooms, node);
     }
 
+    public void GenerateCollider(GameObject node, Mesh mesh)
+    {
+        List<Edge> edges = createEdges(mesh.vertices, mesh.triangles);
+        List<List<Vector2>> rooms = parseEdges(edges);
+        useColliderPool(rooms, node);
+    }
+
     public void GenerateArenaCollider(GameObject arenaObj)
     {
         MeshFilter meshFilter = arenaObj.GetComponent<MeshFilter>();
