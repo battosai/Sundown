@@ -10,6 +10,7 @@ public class PlayerClass : CharacterClass
 	public Sprite human, halfHuman, werewolf;
 	public bool isHuman {get; private set;}
 	public bool isTrapped {get; private set;}
+	public bool foundMap {get; private set;}
 	public int strength {get; private set;}
 	public int hunger {get; private set;}
 	public int gold {get; private set;}
@@ -23,6 +24,7 @@ public class PlayerClass : CharacterClass
 	public void SetHunger(int hunger){this.hunger=hunger;}
 	public void SetGold(int gold){this.gold=gold;}
 	public void SetIsTrapped(bool isTrapped){this.isTrapped=isTrapped;}
+	public void SetFoundMap(bool foundMap){this.foundMap=foundMap;}
 
 	public override void Awake()
 	{
@@ -42,6 +44,7 @@ public class PlayerClass : CharacterClass
 	// Update is called once per frame
 	public override void Update()
 	{
+		foundMap = false;
 		if(health <= 0)
 		{
 			Application.Quit();

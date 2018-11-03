@@ -45,8 +45,6 @@ public class Ranger : HeroClass, IHitboxResponder
 
     public override void Update()
     {
-        if(PlayerInput.Space)
-            reposition();
         if(!isArenaTime)
         {
             if(isPresent)

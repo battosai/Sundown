@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class SpriteList
+public class SpriteList : MonoBehaviour
 {
-   public static Sprite map;
-   public static Sprite zone; 
-   public static Sprite victory; 
-   public static Sprite defeat; 
+   public Sprite map;
+   public Sprite zone; 
+   public Sprite victory; 
+   public Sprite defeat; 
 }

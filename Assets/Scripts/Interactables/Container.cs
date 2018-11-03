@@ -43,8 +43,9 @@ public class Container : MonoBehaviour
         }
         if(hasMap)
         {
-            SetHasMap(false);
             Debug.Log("Exit has been revealed!");
+            SetHasMap(false);
+            player.SetFoundMap(true);
             World.wnodes[GameState.day].ExitFound();
         }
         rend.sprite = empty;

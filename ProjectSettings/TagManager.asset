@@ -50,6 +50,6 @@ TagManager:
   - name: Gameground
     uniqueID: 3739630309
     locked: 0
-  - name: Foreground
+  - name: UI
     uniqueID: 2881242693
     locked: 0
