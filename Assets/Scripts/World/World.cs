@@ -200,8 +200,8 @@ public class World : MonoBehaviour
 		int[,] map = mapGen.GenerateMap();
 		wnode.SetMap(map);
 		Mesh mesh = meshGen.GenerateMesh(map);
-		// wnode.meshFilter.mesh = mesh;
-		collGen.GenerateCollider(node, mesh);
+		wnode.meshFilter.mesh = mesh;
+		collGen.GenerateCollider(node);
 	}
 
 	//deactivates all world nodes

@@ -13,7 +13,23 @@ public class UIHandler : MonoBehaviour
         topMidNotifRend = topMidNotif.GetComponent<SpriteRenderer>();
     } 
 
-    public void restart()
+    public void FoundMap()
+    {
+        topMidNotifRend.sprite = SpriteList.map;
+        StartCoroutine(DisplayNotification(topMidNotifRend, 3f));
+    }
+
+    public IEnumerator DisplayNotification(SpriteRenderer rend, float seconds)
+    {
+        float start = Time.time;
+        while(Time.time-start < seconds)
+        {
+            yield return null;
+        }
+        rend.sprite = null;
+    }
+
+    public void Reset()
     {
         topMidNotifRend.sprite = null;
     }

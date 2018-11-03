@@ -8,6 +8,7 @@ public class GameState : MonoBehaviour
 {
 	public static readonly int DAYS_TO_WIN = 5;
 	public static int day;
+	private UIHandler uiHandler;
 	private World world;
 	private Arena arena;
 	private PlayerClass player;
@@ -16,6 +17,7 @@ public class GameState : MonoBehaviour
 
 	public void Awake()
 	{
+		uiHandler = GameObject.Find("UI").GetComponent<UIHandler>();
 		arena = GameObject.Find("Arena").GetComponent<Arena>();
 		world = GameObject.Find("World").GetComponent<World>();
 		player = GameObject.Find("Player").GetComponent<PlayerClass>();
@@ -67,6 +69,7 @@ public class GameState : MonoBehaviour
 		if(!arena.isReady)
 			arena.ConstructArena();
 		arena.gameObject.SetActive(false);
+		uiHandler.Reset();
 		world.Reset();
 		player.Reset();
 		hero.Reset();
