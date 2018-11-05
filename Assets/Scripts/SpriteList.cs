@@ -8,4 +8,6 @@ public class SpriteList : MonoBehaviour
    public Sprite zone; 
    public Sprite victory; 
    public Sprite defeat; 
+   public Sprite hunger;
+   public Sprite[] bloodBar;
 }

@@ -7,6 +7,8 @@ public class UIHandler : MonoBehaviour
     private int nodeID;
     private PlayerClass player;
     private SpriteList sprites;
+    private GameObject bloodBar;
+    private SpriteRenderer bloodBarRend;
     private GameObject topMidNotif;
     private SpriteRenderer topMidNotifRend;
 
@@ -14,6 +16,8 @@ public class UIHandler : MonoBehaviour
     {
         player = GameObject.Find("Player").GetComponent<PlayerClass>();
         sprites = GetComponent<SpriteList>();
+        bloodBar = GameObject.Find("BloodBar");
+        bloodBarRend = bloodBar.GetComponent<SpriteRenderer>();
         topMidNotif = GameObject.Find("TopMidNotification");
         topMidNotifRend = topMidNotif.GetComponent<SpriteRenderer>();
     } 
@@ -27,6 +31,22 @@ public class UIHandler : MonoBehaviour
             nodeID++;
             nextZone();
         }
+    }
+
+    private void updateBloodBar(int progress)
+    {
+        if(progress > sprites.bloodBar.Length-1 || progress < 0)
+        {
+            Debug.Log("[Error] Invalid Blood Bar Progress: "+progress);
+            return;
+        }
+        bloodBarRend.sprite = sprites.bloodBar[progress];
+    }
+
+    private void tooHungry()
+    {
+        topMidNotifRend.sprite = sprites.hunger;
+        StartCoroutine(displayNotification(topMidNotifRend, 3f));
     }
 
     private void foundMap()
