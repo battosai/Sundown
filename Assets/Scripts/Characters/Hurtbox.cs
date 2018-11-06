@@ -16,4 +16,12 @@ public class Hurtbox : MonoBehaviour
         Debug.Log(this.tag+" has been hit!");
         character.SetHealth(character.health-damage);
     }
+
+    public void Hurt(int damage, PlayerClass player)
+    {
+        if(player.isHuman)
+            player.SetHunger(player.hunger+damage);
+        else
+            player.SetHealth(player.health-damage);
+    }
 }

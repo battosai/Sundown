@@ -137,7 +137,7 @@ public class Villager : TownspersonClass, IHitboxResponder
 
     public override void Reset()
     {
-        SetMaxHealth(20);
+        SetMaxHealth(4);
         base.Reset();
     }
 }

@@ -10,7 +10,7 @@ public class SmallAnimal : Wildlife
     }
     public override void Reset()
     {
-        SetMaxHealth(5);
+        SetMaxHealth(1);
         SetNutrition(1);
         SetClue(2);
         base.Reset();

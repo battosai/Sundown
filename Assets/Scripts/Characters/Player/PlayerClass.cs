@@ -18,13 +18,18 @@ public class PlayerClass : CharacterClass
 	public PlayerInput input {get; private set;}
 	public PlayerActions actions {get; private set;}
 	private readonly int BLOODTHIRSTY = 10;
-	private readonly int FORCED_HUNGER = 40;
-	private readonly int TOO_HUNGRY = 20;
+	private readonly int FORCED_HUNGER = 10;
 	private Collider2D aggroBox;
-	public void SetHunger(int hunger){this.hunger=hunger;}
-	public void SetGold(int gold){this.gold=gold;}
 	public void SetIsTrapped(bool isTrapped){this.isTrapped=isTrapped;}
 	public void SetFoundMap(bool foundMap){this.foundMap=foundMap;}
+	public void SetGold(int gold){this.gold=gold;}
+	public void SetHunger(int hunger)
+	{
+		if(hunger >= 0)
+			this.hunger = Mathf.Min(hunger, 10);
+		else
+			this.hunger = Mathf.Max(hunger, 0);
+	}
 
 	public override void Awake()
 	{
@@ -59,14 +64,14 @@ public class PlayerClass : CharacterClass
 	public override void Reset()
 	{
 		SetNodeID(0);
-		SetMaxHealth(20);
+		SetMaxHealth(10);
 		SetHealth(maxHealth);
 		SetIsTrapped(false);
 		World.nodes[nodeID].SetActive(true);
 		trans.position = SetFloorPosition(World.wnodes[nodeID].playerSpawn.transform.position);
 		rend.sprite = human;
 		isHuman = true;
-		strength = 5;
+		strength = 1;
 		hunger = 0;
 		gold = 0;
 		UpdateAnimator();
@@ -92,7 +97,7 @@ public class PlayerClass : CharacterClass
 	}
 
 	//called whenever player goes to next node or maybe by will
-	public void Shapeshift(bool isForced=false)
+	public void Shapeshift()
 	{
 		isHuman = !isHuman;
 		aggroBox.enabled = !isHuman;
@@ -102,23 +107,20 @@ public class PlayerClass : CharacterClass
 		}
 		else
 		{
-			rend.sprite = werewolf; //will be half human eventually
-			if(isForced)
-				SetHunger(hunger+FORCED_HUNGER);
-			else
-				SetHunger(hunger+BLOODTHIRSTY);
+			rend.sprite = werewolf;
+			SetHunger(BLOODTHIRSTY);
 		}
 	}
 
 	//handles player form with respect to hunger levels
 	private void hungerHandler()
 	{
-		if(hunger > TOO_HUNGRY && isHuman)
+		if(hunger >= BLOODTHIRSTY && isHuman)
 		{
 			Shapeshift();
 			actions.ShapeshiftCheck();
 		}
-		else if(hunger <= TOO_HUNGRY && !isHuman)
+		else if(hunger == 0 && !isHuman)
 		{
 			Shapeshift();
 		}

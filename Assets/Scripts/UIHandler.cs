@@ -24,6 +24,7 @@ public class UIHandler : MonoBehaviour
 
     public void Update()
     {
+        updateBloodBar(player.hunger);
         if(player.foundMap)
             foundMap();
         if(player.nodeID > nodeID)

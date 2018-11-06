@@ -26,9 +26,16 @@ public class Needle : MonoBehaviour
 
 	public void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.tag == "Player" || other.tag == "Wildlife")
+		switch(other.tag)
 		{
-			other.GetComponent<Hurtbox>().Hurt(DMG);
+			case "Player":
+				other.GetComponent<Hurtbox>().Hurt(DMG, player);
+				break;
+			case "Wildlife":
+				other.GetComponent<Hurtbox>().Hurt(DMG);
+				break;
+			default:
+				break;
 		}
 		this.gameObject.SetActive(false);
 	}  

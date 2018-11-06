@@ -117,7 +117,7 @@ public class PlayerInput : MonoBehaviour
     if(isLeftHold && holdTime > FORCE_SHAPESHIFT && player.isHuman)
     {
       downTime = UNSET_TIME;
-      player.Shapeshift(true);
+      player.Shapeshift();
       player.actions.ShapeshiftCheck();
     }
   }

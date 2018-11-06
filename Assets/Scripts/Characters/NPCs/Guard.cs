@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Guard : TownspersonClass, IHitboxResponder
 {
-    //BUILDINGS STILL NEED TO BE SELECTED TO BE BARRACKS
     private readonly float RECOVERY_TIME = 5f;
     private readonly float AGGRO_LEASH = 25f;
-    private readonly int FLEE_HEALTH = 5;
+    private readonly int FLEE_HEALTH = 1;
     private readonly int ATTACK_RANGE = 20;
     private readonly int TIME_BETWEEN_ATTACKS = 3;
 	private Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
-    private int strength;
+    private int strength = 2;
 
     public override void Awake()
     {
@@ -146,7 +145,7 @@ public class Guard : TownspersonClass, IHitboxResponder
 			PlayerClass player = other.GetComponent<PlayerClass>();
 			player.SetAlarmPoint(player.floorPosition);
 			Hurtbox hurtbox = other.GetComponent<Hurtbox>();	
-			hurtbox.Hurt(strength);
+			hurtbox.Hurt(strength, player);
 		}
     }
 
@@ -158,8 +157,7 @@ public class Guard : TownspersonClass, IHitboxResponder
 
     public override void Reset()
     {
-        strength = 4;
-        SetMaxHealth(30);
+        SetMaxHealth(6);
         base.Reset();
     }
 }

@@ -9,7 +9,7 @@ public class Ranger : HeroClass, IHitboxResponder
     private readonly int MASTERY = 2;
     private readonly int INSPECT_TIME = 10;
     private readonly int ATTACK_TIME = 3;
-    private readonly int ATTACK_DMG = 5;
+    private readonly int ATTACK_DMG = 2;
     private readonly int TRAP_MAX = 3;
     private readonly float TRISHOT_TIME = 3f;
     private readonly float REPOSITION_THRESHOLD = 10f;
@@ -260,7 +260,7 @@ public class Ranger : HeroClass, IHitboxResponder
 
     public override void Reset()
     {
-        SetMaxHealth(50);
+        SetMaxHealth(12);
         SetLeads(0f);
         presentInNode(true, 0);
         tracking = 0.8f;
