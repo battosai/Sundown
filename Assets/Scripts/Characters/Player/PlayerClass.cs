@@ -25,10 +25,8 @@ public class PlayerClass : CharacterClass
 	public void SetGold(int gold){this.gold=gold;}
 	public void SetHunger(int hunger)
 	{
-		if(hunger >= 0)
-			this.hunger = Mathf.Min(hunger, 10);
-		else
-			this.hunger = Mathf.Max(hunger, 0);
+		this.hunger = Mathf.Min(hunger, 10);
+		this.hunger = Mathf.Max(hunger, 0);
 	}
 
 	public override void Awake()

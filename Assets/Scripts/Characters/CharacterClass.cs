@@ -31,13 +31,17 @@ public class CharacterClass : MonoBehaviour
 	protected Collider2D pushBox;
 	public void SetType(Type type){this.type = type;}
 	public void SetNodeID(int id){nodeID = id;}
+	public void SetAlarmPoint(Vector2 alarmPoint){this.alarmPoint=alarmPoint;}
 	public void SetIsLeft(bool isLeft){this.isLeft = isLeft;}
 	public void SetIsAlive(bool isAlive){this.isAlive = isAlive;}
     public void SetIsAlarmed(bool isAlarmed){this.isAlarmed=isAlarmed;}
-    public void SetMaxHealth(int maxHealth){this.maxHealth=maxHealth;}
-	public void SetHealth(int health){this.health = health;}
 	public void SetSpeed(float speed){this.speed = speed;}
-	public void SetAlarmPoint(Vector2 alarmPoint){this.alarmPoint=alarmPoint;}
+    public void SetMaxHealth(int maxHealth){this.maxHealth=maxHealth;}
+	public void SetHealth(int health)
+	{
+		this.health = Mathf.Max(health, 0);
+		this.health = Mathf.Min(health, this.maxHealth);
+	}
 
 	public virtual void Awake()
 	{
