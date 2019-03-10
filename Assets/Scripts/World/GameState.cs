@@ -14,6 +14,7 @@ public class GameState : MonoBehaviour
 	private PlayerClass player;
 	private HeroClass hero;
 	public void SetHero(HeroClass hero){this.hero = hero;}
+	public HeroClass GetHero(){return this.hero;}
 
 	public void Awake()
 	{

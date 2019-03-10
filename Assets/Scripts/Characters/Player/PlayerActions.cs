@@ -140,6 +140,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 				Building building = other.transform.parent.GetComponent<Building>();
 				World.activeBuilding.SetActive(true);
 				World.nodes[player.nodeID].SetActive(false);
+				player.gameState.GetHero().gameObject.SetActive(false);
 				building.Load(player);
 				return;
 			case "BuildingExit":
@@ -147,6 +148,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 				interior.building.Store(player);
 				World.nodes[player.nodeID].SetActive(true);
 				World.activeBuilding.SetActive(false);
+				player.gameState.GetHero().gameObject.SetActive(true);
 				return;	
 			default:
 				break;
