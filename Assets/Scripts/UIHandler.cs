@@ -7,8 +7,8 @@ public class UIHandler : MonoBehaviour
     private int nodeID;
     private PlayerClass player;
     private SpriteList sprites;
-    private GameObject bloodBar;
-    private SpriteRenderer bloodBarRend;
+    private GameObject hungerBar;
+    private SpriteRenderer hungerBarRend;
     private GameObject healthBar;
     private SpriteRenderer healthBarRend;
     private GameObject topMidNotif;
@@ -18,8 +18,8 @@ public class UIHandler : MonoBehaviour
     {
         player = GameObject.Find("Player").GetComponent<PlayerClass>();
         sprites = GetComponent<SpriteList>();
-        bloodBar = GameObject.Find("BloodBar");
-        bloodBarRend = bloodBar.GetComponent<SpriteRenderer>();
+        hungerBar = GameObject.Find("HungerBar");
+        hungerBarRend = hungerBar.GetComponent<SpriteRenderer>();
         healthBar = GameObject.Find("HealthBar");
         healthBarRend = healthBar.GetComponent<SpriteRenderer>();
         topMidNotif = GameObject.Find("TopMidNotification");
@@ -28,9 +28,8 @@ public class UIHandler : MonoBehaviour
 
     public void Update()
     {
-        updateBloodBar(player.hunger);
-        if(!player.isHuman)
-            updateHealthBar(player.health);
+        updateHungerBar(player.hunger);
+        updateHealthBar(player.health);
         if(player.foundMap)
             foundMap();
         if(player.nodeID > nodeID)
@@ -40,18 +39,20 @@ public class UIHandler : MonoBehaviour
         }
     }
 
-    private void updateBloodBar(int progress)
+    private void updateHungerBar(int progress)
     {
-        if(progress > sprites.bloodBar.Length-1 || progress < 0)
+        if(progress > sprites.hungerBar.Length-1 || progress < 0)
         {
             Debug.Log("[Error] Invalid Blood Bar Progress: "+progress);
             return;
         }
-        bloodBarRend.sprite = sprites.bloodBar[progress];
+        hungerBarRend.sprite = sprites.hungerBar[progress];
     }
 
+    //NOTE: healthbar will be removed later on, use for visual debugging for now
     private void updateHealthBar(int progress)
     {
+        // Debug.Log("Player Health: "+progress);
         if(progress > sprites.healthBar.Length-1 || progress < 0)
         {
             Debug.Log("[Error] Invalid Health Bar Progress: "+progress);

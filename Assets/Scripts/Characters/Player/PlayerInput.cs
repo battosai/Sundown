@@ -90,7 +90,7 @@ public class PlayerInput : MonoBehaviour
           lastRightClickTime = UNSET_TIME;
           attackCount = 0;
           player.actions.isAttackOnCooldown = true;
-          Debug.Log("UNFINISHED COMBO!");
+          // Debug.Log("UNFINISHED COMBO!");
         }
       }
       if(isRightClick && cooldownTime == UNSET_TIME)
@@ -102,7 +102,7 @@ public class PlayerInput : MonoBehaviour
           lastRightClickTime = UNSET_TIME;
           attackCount = 0;
           player.actions.isAttackOnCooldown = true;
-          Debug.Log("FULL COMBO!");
+          // Debug.Log("FULL COMBO!");
         }
         else
         {

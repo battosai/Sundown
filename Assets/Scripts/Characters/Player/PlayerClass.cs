@@ -19,6 +19,8 @@ public class PlayerClass : CharacterClass
 	public PlayerActions actions {get; private set;}
 	private readonly int BLOODTHIRSTY = 10;
 	private readonly int FORCED_HUNGER = 10;
+	private readonly float HEALTH_REGEN_DELAY = 6f;
+	private float lastDamagedTime = -1f;
 	private Collider2D aggroBox;
 	public void SetIsTrapped(bool isTrapped){this.isTrapped=isTrapped;}
 	public void SetFoundMap(bool foundMap){this.foundMap=foundMap;}
@@ -28,6 +30,7 @@ public class PlayerClass : CharacterClass
 		this.hunger = Mathf.Min(hunger, 10);
 		this.hunger = Mathf.Max(hunger, 0);
 	}
+	public void SetLastDamagedTime(float time){this.lastDamagedTime=time;}
 
 	public override void Awake()
 	{
@@ -55,6 +58,7 @@ public class PlayerClass : CharacterClass
 		}
 		setFloorHeight();
 		hungerHandler();
+		healthRegenHandler();
 		UpdateAnimator();
 	}
 
@@ -108,6 +112,30 @@ public class PlayerClass : CharacterClass
 			rend.sprite = werewolf;
 			SetHunger(BLOODTHIRSTY);
 		}
+	}
+
+	private void healthRegenHandler()
+	{
+		if(lastDamagedTime > 0 && Time.time-lastDamagedTime > HEALTH_REGEN_DELAY)
+		{
+			lastDamagedTime = -1f;
+			StartCoroutine(regenerateHealth(lastDamagedTime));
+		}
+	}
+
+	//reference time is set to the lastDamagedTime, this way if LDT is reset then regen is interrupted
+	private IEnumerator regenerateHealth(float referenceTime)
+	{
+		Debug.Log("Player is regenerating health!");
+		while(lastDamagedTime == referenceTime && health < maxHealth)
+		{
+			SetHealth(health+1);
+			yield return new WaitForSeconds(0.5f);
+		}
+		if(health == maxHealth)
+			Debug.Log("Player is at full health!");
+		else
+			Debug.Log("Regeneration was interrupted!");
 	}
 
 	//handles player form with respect to hunger levels

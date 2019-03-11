@@ -9,6 +9,6 @@ public class SpriteList : MonoBehaviour
    public Sprite victory; 
    public Sprite defeat; 
    public Sprite hunger;
-   public Sprite[] bloodBar;
    public Sprite[] healthBar;
+   public Sprite[] hungerBar;
 }

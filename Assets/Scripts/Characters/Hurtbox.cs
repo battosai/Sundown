@@ -21,7 +21,7 @@ public class Hurtbox : MonoBehaviour
     {
         if(player.isHuman)
             player.SetHunger(player.hunger+damage);
-        else
-            player.SetHealth(player.health-damage);
+        player.SetHealth(player.health-damage);
+        player.SetLastDamagedTime(Time.time);
     }
 }
