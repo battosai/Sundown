@@ -46,3 +46,11 @@ Fix (/)
 Bug (10/9)
 	Ranger during arena fight will only shoot trishot twice for some reason
 Fix (/)
+-----------
+Bug (3/20)
+	Chest sprite's z-axis is not set properly, player appears in front when should be behind
+Fix (/)
+-----------
+Bug (3/20)
+	Player sprite when in building appears under the top side of the mesh
+Fix (/)
