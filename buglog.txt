@@ -49,7 +49,8 @@ Fix (/)
 -----------
 Bug (3/20)
 	Chest sprite's z-axis is not set properly, player appears in front when should be behind
-Fix (/)
+Fix (3/23)
+	Building interior prefabs' chests and beds were not synced with the prefab chest and bed, thus the sprite layer was not set to gamegroound
 -----------
 Bug (3/20)
 	Player sprite when in building appears under the top side of the mesh

@@ -31,7 +31,7 @@ public class Container : MonoBehaviour
 
     public void Update()
     {
-        setFloorHeight();
+        // setFloorHeight();
     }
 
     public void Search()

@@ -869,17 +869,17 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1371c3d289a510f4e89ed3a9dd9e3727, type: 3}
   - {fileID: 21300000, guid: d5360a676ddc0134d85b2d59eaf44589, type: 3}
   hungerBar:
-  - {fileID: 21300000, guid: d8cf73912db102a4e8f386ee4e590b15, type: 3}
-  - {fileID: 21300000, guid: af7c565c686767c43b93897cba25815e, type: 3}
-  - {fileID: 21300000, guid: 03a1e351dde1d134790c66f804df16ba, type: 3}
-  - {fileID: 21300000, guid: 8924b94934d3ef142b80ed40ff8204fb, type: 3}
-  - {fileID: 21300000, guid: ba91e5d8c4dbf6b4a9b9dc0b4a1d0d91, type: 3}
-  - {fileID: 21300000, guid: e49ef85b7921e2243bf692b5c2e65da3, type: 3}
-  - {fileID: 21300000, guid: c833f8fdc229a0f4bb0cd07986afee31, type: 3}
-  - {fileID: 21300000, guid: 01bdb8cd27a53544aafba93b7ff4170e, type: 3}
-  - {fileID: 21300000, guid: b8a076861d153e64ea42f16524ba7c04, type: 3}
-  - {fileID: 21300000, guid: 37d431e28ea66144881c2959f4149a7d, type: 3}
-  - {fileID: 21300000, guid: 90e08222855ba8649a501abe8bd9ded8, type: 3}
+  - {fileID: 21300000, guid: 8b2e6829e70094581909e3db3d8e09f3, type: 3}
+  - {fileID: 21300000, guid: 52785c2326e6b434f94d6339a350a798, type: 3}
+  - {fileID: 21300000, guid: 80fece117ab874877837e25d3f01f3dc, type: 3}
+  - {fileID: 21300000, guid: c343dce11732748018023d4662759f81, type: 3}
+  - {fileID: 21300000, guid: b92b9967fcab84dd88aad3548d7d88b3, type: 3}
+  - {fileID: 21300000, guid: cb756e31a985042ae8b08e0f097f25f5, type: 3}
+  - {fileID: 21300000, guid: 551e95b31d7c54a9496a730c3012d46f, type: 3}
+  - {fileID: 21300000, guid: da25d0dc16f484e70b004ebfeb460290, type: 3}
+  - {fileID: 21300000, guid: 19929f4e6a9974f7cb06e03eb2f63e6d, type: 3}
+  - {fileID: 21300000, guid: ff63f520c9b8b45e1a72c7a115d51965, type: 3}
+  - {fileID: 21300000, guid: 2d3f31482ac3f423d91b2789e83b215e, type: 3}
 --- !u!1 &1002248609
 GameObject:
   m_ObjectHideFlags: 0
@@ -2054,6 +2054,6 @@ SpriteRenderer:
   m_Size: {x: 52, y: 15}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
