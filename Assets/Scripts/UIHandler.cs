@@ -26,12 +26,15 @@ public class UIHandler : MonoBehaviour
         topMidNotifRend = topMidNotif.GetComponent<SpriteRenderer>();
     } 
 
+    public void Start()
+    {
+        Container.OnFoundMap += foundMap;
+    }
+
     public void Update()
     {
         updateHungerBar(player.hunger);
         updateHealthBar(player.health);
-        if(player.foundMap)
-            foundMap();
         if(player.nodeID > nodeID)
         {
             nodeID++;

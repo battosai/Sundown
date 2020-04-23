@@ -10,7 +10,6 @@ public class PlayerClass : CharacterClass
 	public Sprite human, halfHuman, werewolf;
 	public bool isHuman {get; private set;}
 	public bool isTrapped {get; private set;}
-	public bool foundMap {get; private set;}
 	public int strength {get; private set;}
 	public int hunger {get; private set;}
 	public int gold {get; private set;}
@@ -23,7 +22,6 @@ public class PlayerClass : CharacterClass
 	private float lastDamagedTime = -1f;
 	private Collider2D aggroBox;
 	public void SetIsTrapped(bool isTrapped){this.isTrapped=isTrapped;}
-	public void SetFoundMap(bool foundMap){this.foundMap=foundMap;}
 	public void SetGold(int gold){this.gold=gold;}
 	public void SetHunger(int hunger)
 	{
@@ -31,6 +29,7 @@ public class PlayerClass : CharacterClass
 		this.hunger = Mathf.Max(hunger, 0);
 	}
 	public void SetLastDamagedTime(float time){this.lastDamagedTime=time;}
+
 
 	public override void Awake()
 	{
@@ -50,11 +49,13 @@ public class PlayerClass : CharacterClass
 	// Update is called once per frame
 	public override void Update()
 	{
-		foundMap = false;
 		if(health <= 0)
 		{
-			Application.Quit();
-			// UnityEditor.EditorApplication.isPlaying = false;
+			#if UNITY_EDITOR
+				UnityEditor.EditorApplication.isPlaying = false;
+			#else
+				Application.Quit();
+			#endif
 		}
 		setFloorHeight();
 		hungerHandler();

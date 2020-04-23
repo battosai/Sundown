@@ -14,6 +14,10 @@ public class Container : MonoBehaviour
     private Transform trans;
     public void SetHasMap(bool hasMap){this.hasMap=hasMap;}
 
+	//event for map discovery
+	public delegate void FoundMap();
+	public static event FoundMap OnFoundMap;
+
     public void Awake()
     {
         player = GameObject.Find("Player").GetComponent<PlayerClass>();
@@ -29,11 +33,6 @@ public class Container : MonoBehaviour
         setFloorHeight();
     }
 
-    public void Update()
-    {
-        // setFloorHeight();
-    }
-
     public void Search()
     {
         if(isEmpty)
@@ -45,8 +44,7 @@ public class Container : MonoBehaviour
         {
             Debug.Log("Exit has been revealed!");
             SetHasMap(false);
-            player.SetFoundMap(true);
-            World.wnodes[GameState.day].ExitFound();
+            OnFoundMap.Invoke();
         }
         rend.sprite = empty;
         isEmpty = true;

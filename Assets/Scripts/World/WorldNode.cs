@@ -27,7 +27,7 @@ public class WorldNode : MonoBehaviour
   public void SetMap(int[,] map){this.map = map;}
   public void AddPoolObject(GameObject obj, List<GameObject> pool){pool.Add(obj);}
 
-  void Awake()
+  public void Awake()
   {
     playerSpawn = GameObject.Find(this.name + "/PlayerSpawn");
     playerExit = GameObject.Find(this.name + "/PlayerExit");
@@ -36,6 +36,11 @@ public class WorldNode : MonoBehaviour
     bigAnimalPool = new List<GameObject>();
     smallAnimalPool = new List<GameObject>();
     buildingPool = new List<GameObject>();
+  }
+
+  public void Start()
+  {
+    Container.OnFoundMap += ExitFound;
   }
 
   //called by parent class World when being reset
