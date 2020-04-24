@@ -13,7 +13,6 @@ public class PlayerClass : CharacterClass
 	public int strength {get; private set;}
 	public int hunger {get; private set;}
 	public int gold {get; private set;}
-	public new float time {get; private set;}
 	public PlayerInput input {get; private set;}
 	public PlayerActions actions {get; private set;}
 	private readonly int BLOODTHIRSTY = 10;
@@ -21,7 +20,6 @@ public class PlayerClass : CharacterClass
 	private readonly float HEALTH_REGEN_DELAY = 6f;
 	private float lastDamagedTime = -1f;
 	private Collider2D aggroBox;
-	public void SetIsTrapped(bool isTrapped){this.isTrapped=isTrapped;}
 	public void SetGold(int gold){this.gold=gold;}
 	public void SetHunger(int hunger)
 	{
@@ -44,6 +42,7 @@ public class PlayerClass : CharacterClass
 		aggroBox.enabled = false;
 		SetType(CharacterClass.Type.PLAYER);
 		setFloorHeight();
+		Trap.OnTrapped += Trapped;
 	}
 
 	// Update is called once per frame
@@ -69,11 +68,11 @@ public class PlayerClass : CharacterClass
 		SetNodeID(0);
 		SetMaxHealth(10);
 		SetHealth(maxHealth);
-		SetIsTrapped(false);
 		World.nodes[nodeID].SetActive(true);
 		trans.position = SetFloorPosition(World.wnodes[nodeID].playerSpawn.transform.position);
 		rend.sprite = human;
 		isHuman = true;
+		isTrapped = false;
 		strength = 1;
 		hunger = 0;
 		gold = 0;
@@ -93,10 +92,24 @@ public class PlayerClass : CharacterClass
 		anim.SetInteger("attackCount", input.attackCount);
 	}
 
-	public void BecomeTrapped()
+	//subscribed to Trap.OnTrapped event
+	private void Trapped()
 	{
-		SetIsTrapped(true);
-		time = Time.time;
+		isTrapped = true;	
+		rb.velocity = Vector2.zero;
+		StartCoroutine(TrappedDuration());
+	}
+
+	//begins when player steps in trap;
+	private IEnumerator TrappedDuration()
+	{
+		float time = 0f;
+		while(time <= Trap.TRAP_TIME)
+		{
+			time += Time.deltaTime;
+			yield return null;
+		}
+		isTrapped = false;
 	}
 
 	//called whenever player goes to next node or maybe by will

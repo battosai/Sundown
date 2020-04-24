@@ -54,8 +54,6 @@ public class PlayerInput : MonoBehaviour
     getKeyboardInput();
     if(!player.isTrapped)
       useInput();
-    else if(Time.time-player.time > Trap.TRAP_TIME)
-      player.SetIsTrapped(false);
 	}
 
   private void useInput()
