@@ -11,23 +11,11 @@ public class PlayerClass : CharacterClass
 	public bool isHuman {get; private set;}
 	public bool isTrapped {get; private set;}
 	public int strength {get; private set;}
-	public int hunger {get; private set;}
 	public int gold {get; private set;}
 	public PlayerInput input {get; private set;}
 	public PlayerActions actions {get; private set;}
-	private readonly int BLOODTHIRSTY = 10;
-	private readonly int FORCED_HUNGER = 10;
-	private readonly float HEALTH_REGEN_DELAY = 6f;
-	private float lastDamagedTime = -1f;
 	private Collider2D aggroBox;
 	public void SetGold(int gold){this.gold=gold;}
-	public void SetHunger(int hunger)
-	{
-		this.hunger = Mathf.Min(hunger, 10);
-		this.hunger = Mathf.Max(hunger, 0);
-	}
-	public void SetLastDamagedTime(float time){this.lastDamagedTime=time;}
-
 
 	public override void Awake()
 	{
@@ -57,8 +45,6 @@ public class PlayerClass : CharacterClass
 			#endif
 		}
 		setFloorHeight();
-		hungerHandler();
-		healthRegenHandler();
 		UpdateAnimator();
 	}
 
@@ -74,7 +60,6 @@ public class PlayerClass : CharacterClass
 		isHuman = true;
 		isTrapped = false;
 		strength = 1;
-		hunger = 0;
 		gold = 0;
 		UpdateAnimator();
 		actions.Reset();
@@ -124,45 +109,6 @@ public class PlayerClass : CharacterClass
 		else
 		{
 			rend.sprite = werewolf;
-			SetHunger(BLOODTHIRSTY);
-		}
-	}
-
-	private void healthRegenHandler()
-	{
-		if(lastDamagedTime > 0 && Time.time-lastDamagedTime > HEALTH_REGEN_DELAY)
-		{
-			lastDamagedTime = -1f;
-			StartCoroutine(regenerateHealth(lastDamagedTime));
-		}
-	}
-
-	//reference time is set to the lastDamagedTime, this way if LDT is reset then regen is interrupted
-	private IEnumerator regenerateHealth(float referenceTime)
-	{
-		Debug.Log("Player is regenerating health!");
-		while(lastDamagedTime == referenceTime && health < maxHealth)
-		{
-			SetHealth(health+1);
-			yield return new WaitForSeconds(0.5f);
-		}
-		if(health == maxHealth)
-			Debug.Log("Player is at full health!");
-		else
-			Debug.Log("Regeneration was interrupted!");
-	}
-
-	//handles player form with respect to hunger levels
-	private void hungerHandler()
-	{
-		if(hunger >= BLOODTHIRSTY && isHuman)
-		{
-			Shapeshift();
-			actions.ShapeshiftCheck();
-		}
-		else if(hunger == 0 && !isHuman)
-		{
-			Shapeshift();
 		}
 	}
 }

@@ -247,13 +247,13 @@ public class Ranger : HeroClass, IHitboxResponder
     {
         Debug.Log("Ranger Mastery Track!"); 
         WorldNode wnode = World.wnodes[nodeID];
-        SetLeads(leads+wnode.clues*tracking*MASTERY);
+        leads += wnode.clues*tracking*MASTERY;
         presentInNode(false);
         if(leads >= PLAYER_FOUND)
         {
             Debug.Log("Ranger has found your current location!");
             presentInNode(true, nodeID+1);
-            SetLeads(0);
+            leads = 0;
         }
         Debug.Log("Ranger now has "+leads+" leads");
     }
@@ -261,8 +261,8 @@ public class Ranger : HeroClass, IHitboxResponder
     public override void Reset()
     {
         SetMaxHealth(12);
-        SetLeads(0f);
         presentInNode(true, 0);
+        leads = 0;
         tracking = 0.8f;
         visionRange = 100f;
         base.Reset();

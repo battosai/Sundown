@@ -55,8 +55,6 @@ public class Wildlife : CharacterClass
                     break;
                 case State.DEAD:
                     deathPrep();
-                    player.SetHunger(player.hunger-nutrition);
-                    Debug.Log("Player now has "+player.hunger+" hunger");
                     WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();
                     wnode.SetClues(wnode.clues+clue);
                     Debug.Log("WorldNode now has "+wnode.clues+" clues");

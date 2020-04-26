@@ -1,40 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIHandler : MonoBehaviour
 {
     private int nodeID;
     private PlayerClass player;
     private SpriteList sprites;
-    private GameObject hungerBar;
-    private SpriteRenderer hungerBarRend;
-    private GameObject healthBar;
-    private SpriteRenderer healthBarRend;
-    private GameObject topMidNotif;
-    private SpriteRenderer topMidNotifRend;
+    private Image topMidNotif;
 
     public void Awake()
     {
         player = GameObject.Find("Player").GetComponent<PlayerClass>();
         sprites = GetComponent<SpriteList>();
-        hungerBar = GameObject.Find("HungerBar");
-        hungerBarRend = hungerBar.GetComponent<SpriteRenderer>();
-        healthBar = GameObject.Find("HealthBar");
-        healthBarRend = healthBar.GetComponent<SpriteRenderer>();
-        topMidNotif = GameObject.Find("TopMidNotification");
-        topMidNotifRend = topMidNotif.GetComponent<SpriteRenderer>();
+        topMidNotif = GameObject.Find("TopMidNotification").GetComponent<Image>();
     } 
 
     public void Start()
     {
+        topMidNotif.enabled = false;
         Container.OnFoundMap += foundMap;
     }
 
     public void Update()
     {
-        updateHungerBar(player.hunger);
-        updateHealthBar(player.health);
         if(player.nodeID > nodeID)
         {
             nodeID++;
@@ -42,59 +32,33 @@ public class UIHandler : MonoBehaviour
         }
     }
 
-    private void updateHungerBar(int progress)
-    {
-        if(progress > sprites.hungerBar.Length-1 || progress < 0)
-        {
-            Debug.Log("[Error] Invalid Blood Bar Progress: "+progress);
-            return;
-        }
-        hungerBarRend.sprite = sprites.hungerBar[progress];
-    }
-
-    //NOTE: healthbar will be removed later on, use for visual debugging for now
-    private void updateHealthBar(int progress)
-    {
-        // Debug.Log("Player Health: "+progress);
-        if(progress > sprites.healthBar.Length-1 || progress < 0)
-        {
-            Debug.Log("[Error] Invalid Health Bar Progress: "+progress);
-            return;
-        }
-        healthBarRend.sprite = sprites.healthBar[progress];
-    }
-
-    private void tooHungry()
-    {
-        topMidNotifRend.sprite = sprites.hunger;
-        StartCoroutine(displayNotification(topMidNotifRend, 3f));
-    }
-
     private void foundMap()
     {
-        topMidNotifRend.sprite = sprites.map;
-        StartCoroutine(displayNotification(topMidNotifRend, 3f));
+        topMidNotif.sprite = sprites.map;
+        StartCoroutine(displayNotification(topMidNotif, 3f));
     }
 
     private void nextZone()
     {
-        topMidNotifRend.sprite = sprites.zone;
-        StartCoroutine(displayNotification(topMidNotifRend, 3f));
+        topMidNotif.sprite = sprites.zone;
+        StartCoroutine(displayNotification(topMidNotif, 3f));
     }
 
-    private IEnumerator displayNotification(SpriteRenderer rend, float seconds)
+    private IEnumerator displayNotification(Image img, float seconds)
     {
+        img.enabled = true;
         float start = Time.time;
         while(Time.time-start < seconds)
         {
             yield return null;
         }
-        rend.sprite = null;
+        img.sprite = null;
+        img.enabled = false;
     }
 
     public void Reset()
     {
-        topMidNotifRend.sprite = null;
+        topMidNotif.sprite = null;
         nodeID = 0;
     }
 }

@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class HeroClass : CharacterClass
 {
-	public float leads {get; private set;}
 	protected readonly int PLAYER_FOUND = 15;
     protected enum State {IDLE, INSPECT, ATTACK, COROUTINE};
     protected State state;
+	protected float leads;
 	protected float tracking;
 	protected float visionRange;
 	protected bool isPresent;
 	protected bool isArenaTime;
 	protected PlayerClass player;
 	protected Hitbox hitBox;
-	public void SetLeads(float leads){this.leads=leads;}
 
 	//common one time setups
 	protected void init()
@@ -33,12 +32,12 @@ public class HeroClass : CharacterClass
  		if(leads >= PLAYER_FOUND)
         {
             SetNodeID(nodeID+1);
-            SetLeads(0);
+			leads = 0;
         }
         else
         {
             WorldNode wnode = World.wnodes[nodeID];
-            SetLeads(leads+wnode.clues*tracking);
+			leads += wnode.clues*tracking;
         }
 	}
 
