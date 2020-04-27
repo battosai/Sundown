@@ -6,6 +6,9 @@ public class Hurtbox : MonoBehaviour
 {
     private CharacterClass character;
 
+    public delegate void PlayerHurt();
+    public static event PlayerHurt OnPlayerHurt;
+
     public void Awake()
     {
         character = GetComponent<CharacterClass>();
@@ -20,5 +23,6 @@ public class Hurtbox : MonoBehaviour
     public void Hurt(int damage, PlayerClass player)
     {
         player.SetHealth(player.health-damage);
+        OnPlayerHurt.Invoke();
     }
 }

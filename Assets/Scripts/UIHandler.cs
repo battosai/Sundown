@@ -8,18 +8,19 @@ public class UIHandler : MonoBehaviour
     private int nodeID;
     private PlayerClass player;
     private SpriteList sprites;
-    private Image topMidNotif;
+    public Image topMidNotif;
+    public Image[] hpSegments;
 
     public void Awake()
     {
         player = GameObject.Find("Player").GetComponent<PlayerClass>();
         sprites = GetComponent<SpriteList>();
-        topMidNotif = GameObject.Find("TopMidNotification").GetComponent<Image>();
     } 
 
     public void Start()
     {
         topMidNotif.enabled = false;
+        Hurtbox.OnPlayerHurt += UpdateHP;
         Container.OnFoundMap += foundMap;
     }
 
@@ -29,6 +30,15 @@ public class UIHandler : MonoBehaviour
         {
             nodeID++;
             nextZone();
+        }
+    }
+
+    private void UpdateHP()
+    {
+        for(int i = 0; i < player.maxHealth; i++)
+        {
+            Image hpSegment = hpSegments[i];
+            hpSegment.sprite = (player.health >= i+1) ? sprites.hp : sprites.emptyHp;
         }
     }
 

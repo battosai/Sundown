@@ -1014,6 +1014,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3ae0eebfb8273a40a64f670318cdfd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  topMidNotif: {fileID: 1904528026}
+  hpSegments:
+  - {fileID: 7460212}
+  - {fileID: 458999324}
+  - {fileID: 447204319}
+  - {fileID: 717463138}
+  - {fileID: 2108107330}
+  - {fileID: 1208399507}
+  - {fileID: 1400190167}
+  - {fileID: 735031078}
+  - {fileID: 1849879626}
+  - {fileID: 1353524256}
 --- !u!114 &521128987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1030,6 +1042,8 @@ MonoBehaviour:
   zone: {fileID: 21300000, guid: 474e0f30c4d3d8041be4168a339bfd56, type: 3}
   victory: {fileID: 21300000, guid: a0d2f3b4fcfbdae4791ba92a7433a897, type: 3}
   defeat: {fileID: 21300000, guid: 9878e7ec64b362b458aa224a613aa115, type: 3}
+  hp: {fileID: 21300000, guid: a4b3be349339a2144a778716ea998955, type: 3}
+  emptyHp: {fileID: 21300000, guid: 54b8230aa59fca04eaf0a1230e92579c, type: 3}
 --- !u!1 &548795184
 GameObject:
   m_ObjectHideFlags: 0
@@ -1387,6 +1401,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3ae0eebfb8273a40a64f670318cdfd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  topMidNotif: {fileID: 0}
+  hpSegments: []
 --- !u!114 &975980463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1403,6 +1419,8 @@ MonoBehaviour:
   zone: {fileID: 21300000, guid: 474e0f30c4d3d8041be4168a339bfd56, type: 3}
   victory: {fileID: 21300000, guid: a0d2f3b4fcfbdae4791ba92a7433a897, type: 3}
   defeat: {fileID: 21300000, guid: 9878e7ec64b362b458aa224a613aa115, type: 3}
+  hp: {fileID: 0}
+  emptyHp: {fileID: 0}
 --- !u!1 &979696386
 GameObject:
   m_ObjectHideFlags: 0

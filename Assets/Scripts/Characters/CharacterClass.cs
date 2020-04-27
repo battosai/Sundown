@@ -9,6 +9,7 @@ public class CharacterClass : MonoBehaviour
     public Sprite alive;
     public Sprite dead;
 	public int nodeID {get; private set;}
+	public int maxHealth {get; private set;}
 	public int health {get; private set;}
 	public float speed {get; private set;}
 	public float floorHeight {get; private set;}
@@ -22,7 +23,6 @@ public class CharacterClass : MonoBehaviour
 	public Rigidbody2D rb {get; private set;}
 	public SpriteRenderer rend {get; private set;}
 	public Hurtbox hurtBox {get; private set;}
-	protected int maxHealth;
     protected float time;
     protected bool isAlarmed;
     protected Vector2 alarmPoint;
