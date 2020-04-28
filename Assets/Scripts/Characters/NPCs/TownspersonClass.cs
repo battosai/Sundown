@@ -9,10 +9,8 @@ public class TownspersonClass : CharacterClass
     protected State state;
     protected PlayerClass player;
     protected Hitbox hitbox;
-    protected int nutrition;
     protected Building building;
     public void SetBuilding(Building building){this.building=building;}
-    public void SetNutrition(int nutrition){this.nutrition=nutrition;}
     
     //called one time
     public void Init()

@@ -10,8 +10,8 @@ public class BigAnimal : Wildlife
     }
     public override void Reset()
     {
-        SetMaxHealth(3);
-        SetNutrition(2);
+        maxHealth = 3;
+        nutrition = 2;
         SetClue(4);
         base.Reset();
     }

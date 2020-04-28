@@ -9,7 +9,7 @@ public class CharacterClass : MonoBehaviour
     public Sprite alive;
     public Sprite dead;
 	public int nodeID {get; private set;}
-	public int maxHealth {get; private set;}
+	public int maxHealth {get; protected set;}
 	public int health {get; private set;}
 	public float speed {get; private set;}
 	public float floorHeight {get; private set;}
@@ -36,7 +36,6 @@ public class CharacterClass : MonoBehaviour
 	public void SetIsAlive(bool isAlive){this.isAlive = isAlive;}
     public void SetIsAlarmed(bool isAlarmed){this.isAlarmed=isAlarmed;}
 	public void SetSpeed(float speed){this.speed = speed;}
-    public void SetMaxHealth(int maxHealth){this.maxHealth=maxHealth;}
 	public void SetHealth(int health)
 	{
 		this.health = Mathf.Max(health, 0);

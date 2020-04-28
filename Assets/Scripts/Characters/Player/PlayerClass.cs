@@ -52,7 +52,7 @@ public class PlayerClass : CharacterClass
 	public override void Reset()
 	{
 		SetNodeID(0);
-		SetMaxHealth(10);
+		maxHealth = 10;
 		SetHealth(maxHealth);
 		World.nodes[nodeID].SetActive(true);
 		trans.position = SetFloorPosition(World.wnodes[nodeID].playerSpawn.transform.position);

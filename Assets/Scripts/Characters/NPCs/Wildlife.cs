@@ -6,18 +6,21 @@ public class Wildlife : CharacterClass
 {
     public int clue {get; private set;}
     protected enum State {IDLE, FLEE, DEAD};
-    protected PlayerClass player;
+    protected static PlayerClass player;
     protected State state;
     protected int nutrition;
     private readonly float FLEE_SPEED = 40f;
     private readonly float FLEE_DISTANCE = 100f;
-    public void SetNutrition(int nutrition){this.nutrition=nutrition;}
     public void SetClue(int clue){this.clue = clue;}
+
+    public delegate void PlayerWildlifeHeal();
+    public static event PlayerWildlifeHeal OnPlayerWildlifeHeal;
 
     //called one time
     public void Init()
     {
-        player = GameObject.Find("Player").GetComponent<PlayerClass>();
+        if(player == null)
+            player = GameObject.Find("Player").GetComponent<PlayerClass>();
         SetType(CharacterClass.Type.WILDLIFE);
         base.Awake();
     }
@@ -55,6 +58,8 @@ public class Wildlife : CharacterClass
                     break;
                 case State.DEAD:
                     deathPrep();
+                    player.SetHealth(player.health+nutrition);
+                    OnPlayerWildlifeHeal.Invoke();
                     WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();
                     wnode.SetClues(wnode.clues+clue);
                     Debug.Log("WorldNode now has "+wnode.clues+" clues");

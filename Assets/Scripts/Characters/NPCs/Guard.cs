@@ -157,7 +157,7 @@ public class Guard : TownspersonClass, IHitboxResponder
 
     public override void Reset()
     {
-        SetMaxHealth(6);
+        maxHealth = 6;
         base.Reset();
     }
 }

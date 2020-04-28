@@ -260,7 +260,7 @@ public class Ranger : HeroClass, IHitboxResponder
 
     public override void Reset()
     {
-        SetMaxHealth(12);
+        maxHealth = 12;
         presentInNode(true, 0);
         leads = 0;
         tracking = 0.8f;

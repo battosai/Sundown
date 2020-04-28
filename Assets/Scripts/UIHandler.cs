@@ -21,6 +21,7 @@ public class UIHandler : MonoBehaviour
     {
         topMidNotif.enabled = false;
         Hurtbox.OnPlayerHurt += UpdateHP;
+        Wildlife.OnPlayerWildlifeHeal += UpdateHP;
         Container.OnFoundMap += foundMap;
     }
 
