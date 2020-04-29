@@ -76,7 +76,7 @@ public class HeroClass : CharacterClass
 		{
 			if(nodeID < 0)
 			{
-				Debug.Log("[Error] Invalid NodeID when making Hero present in node");
+				Debug.LogError("Invalid NodeID when making Hero present in node");
 				return;
 			}
 			nodeMap = PathFinding.Node.MakeNodeMap(World.wnodes[nodeID].map, nodeID);

@@ -16,7 +16,7 @@ public class WerewolfAggroBox : MonoBehaviour
         CharacterClass character = other.GetComponent<CharacterClass>();
         if(character != null)
         {
-            Debug.Log(other.tag+" is scared of werewolf!");
+            Debug.Log(other.name+" is scared of werewolf!");
             character.SetIsAlarmed(true);
             character.SetAlarmPoint(player.floorPosition);
         }

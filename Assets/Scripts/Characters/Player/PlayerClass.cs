@@ -11,11 +11,9 @@ public class PlayerClass : CharacterClass
 	public bool isHuman {get; private set;}
 	public bool isTrapped {get; private set;}
 	public int strength {get; private set;}
-	public int gold {get; private set;}
 	public PlayerInput input {get; private set;}
 	public PlayerActions actions {get; private set;}
 	private Collider2D aggroBox;
-	public void SetGold(int gold){this.gold=gold;}
 
 	public override void Awake()
 	{
@@ -60,7 +58,6 @@ public class PlayerClass : CharacterClass
 		isHuman = true;
 		isTrapped = false;
 		strength = 1;
-		gold = 0;
 		UpdateAnimator();
 		actions.Reset();
 		base.Reset();

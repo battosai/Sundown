@@ -17,7 +17,7 @@ public class ColliderGenerator : MonoBehaviour
         MeshFilter meshFilter = node.GetComponent<MeshFilter>();
         if(meshFilter == null)
         {
-            Debug.Log("[Error] No Mesh Filter!");
+            Debug.LogError("No Mesh Filter!");
             return;
         }
         List<Edge> edges = createEdges(meshFilter.mesh.vertices, meshFilter.mesh.triangles);
@@ -37,7 +37,7 @@ public class ColliderGenerator : MonoBehaviour
         MeshFilter meshFilter = arenaObj.GetComponent<MeshFilter>();
         if(meshFilter == null)
         {
-            Debug.Log("[Error] Arena Missing Mesh Filter!");
+            Debug.LogError("Arena Missing Mesh Filter!");
             return;
         }
         List<Edge> edges = createEdges(meshFilter.mesh.vertices, meshFilter.mesh.triangles);

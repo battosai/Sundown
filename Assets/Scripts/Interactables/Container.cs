@@ -6,7 +6,6 @@ public class Container : MonoBehaviour
 {
     public Sprite full, empty;
     public bool isEmpty {get; private set;}
-    public int gold {get; private set;} 
     public float floorHeight {get; private set;}
     private bool hasMap;
     private PlayerClass player;
@@ -27,7 +26,6 @@ public class Container : MonoBehaviour
 
     public void Start()
     {
-        gold = Random.Range(0, 10);
         isEmpty = false;
         rend.sprite = full;
         setFloorHeight();
@@ -37,7 +35,7 @@ public class Container : MonoBehaviour
     {
         if(isEmpty)
         {
-            Debug.Log("[Error] Search being called on empty chest");
+            Debug.LogError("Search being called on empty chest");
             return;
         }
         if(hasMap)
@@ -48,8 +46,6 @@ public class Container : MonoBehaviour
         }
         rend.sprite = empty;
         isEmpty = true;
-        player.SetGold(player.gold+gold); 
-        Debug.Log("player now has "+player.gold+" gold");
     }
 
     private void setFloorHeight()

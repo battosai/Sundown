@@ -29,10 +29,10 @@ public class PathFinding
 				}
 				path.Add(root.pos);
 				path.Reverse();
-				Debug.Log("----------Path discovered-----------");
-				Debug.Log("[Info] Length: "+path.Count);
-				Debug.Log("[Info] Visited "+visited.Count+" nodes");
-				Debug.Log("[Info] Finished in "+(Time.realtimeSinceStartup-time)+"s");
+				// Debug.Log("----------Path discovered-----------");
+				// Debug.Log("Length: "+path.Count);
+				// Debug.Log("Visited "+visited.Count+" nodes");
+				// Debug.Log($"Finished in {Time.realtimeSinceStartup-time}s);
 				return path;
 			}
 			else
@@ -55,7 +55,7 @@ public class PathFinding
                 stack = new Stack<Node>(bubbleSort(stack.ToArray()));
 			}
 		}
-		Debug.Log("[Warning] Could not find path to destination");
+		Debug.LogError("Could not find path to destination");
 		return null;
 	}
 
@@ -125,7 +125,7 @@ public class PathFinding
 	{
 		if(speed <= 0)
 		{
-			Debug.Log("[Warn] Character has non-positive speed");
+			Debug.LogWarning("Character has non-positive speed");
 			return Vector2.zero;
 		}
 		float dx = destination.x-start.x;

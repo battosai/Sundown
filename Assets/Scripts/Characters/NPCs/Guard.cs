@@ -5,7 +5,7 @@ using UnityEngine;
 public class Guard : TownspersonClass, IHitboxResponder
 {
     private readonly float RECOVERY_TIME = 5f;
-    private readonly float AGGRO_LEASH = 25f;
+    private readonly float AGGRO_LEASH = 75f; //make sure this is larger than the radius of werewolfaggrobox
     private readonly int FLEE_HEALTH = 1;
     private readonly int ATTACK_RANGE = 20;
     private readonly int TIME_BETWEEN_ATTACKS = 3;
@@ -55,6 +55,7 @@ public class Guard : TownspersonClass, IHitboxResponder
                     //should have a periodic alarm signal when fighting
                     if(Vector2.Distance(floorPosition, player.floorPosition) > AGGRO_LEASH)
                     {
+                        Debug.Log($"WE'RE CHILL BRUV, your floorPos is {player.floorPosition}");
                         SetIsAlarmed(false);
                         state = State.IDLE;
                         goto case State.IDLE;    
@@ -96,7 +97,7 @@ public class Guard : TownspersonClass, IHitboxResponder
                     }
                     break;
                 default:
-                    Debug.Log("[WARN]: Unknown Guard State "+state);
+                    Debug.LogError($"Unknown Guard State {state}");
                     break;
             }
             UpdateAnimator();
@@ -121,7 +122,7 @@ public class Guard : TownspersonClass, IHitboxResponder
             case Act.ALARM:
                 break;
             default:
-                Debug.Log("[WARN]: Unknown Guard Act "+act);
+                Debug.LogError($"Unknown Guard Act {act}");
                 break;
         }
     }

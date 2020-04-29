@@ -94,7 +94,7 @@ public class Interior : MonoBehaviour
                 }
                 break;
             default:
-                Debug.Log("[Error] Unrecognized Size Enumeration Value!");
+                Debug.LogError($"Unrecognized Size {size}");
                 break;
         }
         mesh.vertices = vertices.ToArray();

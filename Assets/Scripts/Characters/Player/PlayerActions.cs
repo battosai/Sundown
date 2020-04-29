@@ -64,7 +64,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 				shapeshift(other);
 				break;
 			default:
-				Debug.Log("[Error] Unknown Player Act");
+				Debug.LogError($"Unknown Player Act {act}");
 				break;
 		}
 	}

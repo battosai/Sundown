@@ -98,7 +98,7 @@ public class Ranger : HeroClass, IHitboxResponder
                         }
                         break;
                     default:
-                        Debug.Log("[Error] Unknown Ranger Act: "+state);
+                        Debug.LogError($"Unknown Ranger Act {state}");
                         break;
                 }
             }
@@ -142,7 +142,7 @@ public class Ranger : HeroClass, IHitboxResponder
                 }
                 break;
             default:
-                Debug.Log("[Error] Unknown Spacing: "+spacing);
+                Debug.LogError($"Unknown Spacing {spacing}");
                 break;
         }
     }
@@ -278,7 +278,7 @@ public class Ranger : HeroClass, IHitboxResponder
             case Act.ATTACK:
                 break;
             default:
-                Debug.Log("[Error] Unrecognized Ranger Act");
+                Debug.LogError($"Unrecognized Ranger Act {act}");
                 break;
         }
     }

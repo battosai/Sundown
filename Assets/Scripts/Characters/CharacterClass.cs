@@ -152,7 +152,7 @@ public class CharacterClass : MonoBehaviour
 
 	public virtual void UpdateAnimator()
 	{
-		Debug.Log("[WARN] "+gameObject.name+" has no proper UpdateAnimator() method");
+		Debug.LogWarning($"{gameObject.name} has no proper UpdateAnimator() method");
 	}
 	
 	//sets position so that floor position is at target

@@ -65,7 +65,7 @@ public class Villager : TownspersonClass, IHitboxResponder
                     rb.velocity = Vector2.zero;
                     break;
                 default:
-                    Debug.Log("[Error] Unrecognized State: "+state);
+                    Debug.LogError($"Unrecognized State {state}");
                     break;
             }
             UpdateAnimator();
@@ -81,7 +81,7 @@ public class Villager : TownspersonClass, IHitboxResponder
                 alarm(other);
                 break;
             default:
-                Debug.Log("[WARN]: Unknown Villager Act "+act);
+                Debug.LogError($"Unknown Villager Act {act}");
                 break;
         }
     }
