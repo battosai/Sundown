@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game;
 
 public class Guard : TownspersonClass, IHitboxResponder
 {
-    private readonly float RECOVERY_TIME = 5f;
-    private readonly float AGGRO_LEASH = 75f; //make sure this is larger than the radius of werewolfaggrobox
-    private readonly int FLEE_HEALTH = 1;
-    private readonly int ATTACK_RANGE = 20;
-    private readonly int TIME_BETWEEN_ATTACKS = 3;
-	private Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
-    private int strength = 2;
+    public static readonly float AGGRO_LEASH = 75f; //make sure this is larger than the radius of werewolfaggrobox
+    public static readonly int ATTACK_RANGE = 20;
+	public static readonly Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
+    private static readonly float RECOVERY_TIME = 5f;
+    private static readonly int TIME_BETWEEN_ATTACKS = 3;
+    private static readonly int FLEE_HEALTH = 1;
+    private static readonly int strength = 1;
 
     public override void Awake()
     {

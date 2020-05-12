@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Game;
 
 public class Wildlife : CharacterClass
 {
@@ -21,7 +22,7 @@ public class Wildlife : CharacterClass
     {
         if(player == null)
             player = GameObject.Find("Player").GetComponent<PlayerClass>();
-        SetType(CharacterClass.Type.WILDLIFE);
+        SetType(CharacterType.WILDLIFE);
         base.Awake();
     }
 

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Game;
 
 public class Villager : TownspersonClass, IHitboxResponder
 {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game;
 
 //ROLE: controls player status
 //set all objects with sprites to use floorHeight to decide rendering order
@@ -26,7 +27,7 @@ public class PlayerClass : CharacterClass
 	public void Start()
 	{
 		aggroBox.enabled = false;
-		SetType(CharacterClass.Type.PLAYER);
+		SetType(CharacterType.PLAYER);
 		setFloorHeight();
 		Trap.OnTrapped += Trapped;
 	}

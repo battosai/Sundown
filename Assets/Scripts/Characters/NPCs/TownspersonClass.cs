@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game;
 
 public class TownspersonClass : CharacterClass
 {
@@ -8,8 +9,8 @@ public class TownspersonClass : CharacterClass
     protected readonly float ENTRANCE_RADIUS = 5f;
     protected State state;
     protected PlayerClass player;
-    protected Hitbox hitbox;
-    protected Building building;
+    public Hitbox hitbox {get; private set;}
+    public Building building {get; private set;}
     public void SetBuilding(Building building){this.building=building;}
     
     //called one time
@@ -17,7 +18,7 @@ public class TownspersonClass : CharacterClass
     {
         player = GameObject.Find("Player").GetComponent<PlayerClass>();
         hitbox = GetComponent<Hitbox>(); 
-        SetType(CharacterClass.Type.TOWNSPERSON);
+        SetType(CharacterType.TOWNSPERSON);
         base.Awake();
     }
 

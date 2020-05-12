@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game;
 
 public class CharacterClass : MonoBehaviour
 {
-	public enum Type {PLAYER, HERO, WILDLIFE, TOWNSPERSON};
 	public readonly float BASE_SPEED = 20f;
     public Sprite alive;
     public Sprite dead;
+	[System.NonSerialized] public PathFinding.Node[,] nodeMap;
 	public int nodeID {get; private set;}
 	public int maxHealth {get; protected set;}
 	public int health {get; private set;}
@@ -16,7 +17,7 @@ public class CharacterClass : MonoBehaviour
 	public bool isLeft {get; private set;}
 	public bool isAlive {get; private set;}
 	public Vector2 floorPosition {get; private set;}
-	public Type type {get; private set;}
+	public CharacterType type {get; private set;}
 	public GameState gameState {get; private set;}
 	public World world {get; private set;}
 	public Transform trans {get; private set;}
@@ -24,12 +25,11 @@ public class CharacterClass : MonoBehaviour
 	public SpriteRenderer rend {get; private set;}
 	public Hurtbox hurtBox {get; private set;}
     protected float time;
-    protected bool isAlarmed;
+    public bool isAlarmed {get; private set;}
     protected Vector2 alarmPoint;
-	protected PathFinding.Node[,] nodeMap;
 	protected Animator anim;
 	protected Collider2D pushBox;
-	public void SetType(Type type){this.type = type;}
+	public void SetType(CharacterType type){this.type = type;}
 	public void SetNodeID(int id){nodeID = id;}
 	public void SetAlarmPoint(Vector2 alarmPoint){this.alarmPoint=alarmPoint;}
 	public void SetIsLeft(bool isLeft){this.isLeft = isLeft;}

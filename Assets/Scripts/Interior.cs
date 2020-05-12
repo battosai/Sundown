@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game;
 
-public enum Size {SMALL, MEDIUM, LARGE};
 public class Interior : MonoBehaviour
 {
     public Vector3[] outter;
     public List<GameObject> smallInteriors; //these hold the possible layouts for room sizes
     public List<GameObject> mediumInteriors;
     public List<GameObject> largeInteriors;
-    public Dictionary<Size, List<GameObject>> blueprints {get; private set;}
+    public Dictionary<InteriorSize, List<GameObject>> blueprints {get; private set;}
     public GameObject objects {get; private set;}    
     public Building building {get; private set;}
     public Vector2 savedPos {get; private set;}
@@ -20,18 +20,18 @@ public class Interior : MonoBehaviour
     private GameObject buildingExit;
     private MeshFilter meshFilter;
     private EdgeCollider2D edgeColl;
-    private Dictionary<Size, Mesh> meshPool;
-    private Dictionary<Size, Vector2[]> points = new Dictionary<Size, Vector2[]>
+    private Dictionary<InteriorSize, Mesh> meshPool;
+    private Dictionary<InteriorSize, Vector2[]> points = new Dictionary<InteriorSize, Vector2[]>
     {
-        {Size.SMALL, new Vector2[] {new Vector2(-SMALL, -SMALL), new Vector2(SMALL, -SMALL), new Vector2(SMALL, SMALL), new Vector2(-SMALL, SMALL), new Vector2(-SMALL, -SMALL)}},
-        {Size.MEDIUM, new Vector2[] {new Vector2(-MEDIUM, -MEDIUM), new Vector2(MEDIUM, -MEDIUM), new Vector2(MEDIUM, MEDIUM), new Vector2(-MEDIUM, MEDIUM), new Vector2(-MEDIUM, -MEDIUM)}},
-        {Size.LARGE, new Vector2[] {new Vector2(-LARGE, -LARGE), new Vector2(LARGE, -LARGE), new Vector2(LARGE, LARGE), new Vector2(-LARGE, LARGE), new Vector2(-LARGE, -LARGE)}}
+        {InteriorSize.SMALL, new Vector2[] {new Vector2(-SMALL, -SMALL), new Vector2(SMALL, -SMALL), new Vector2(SMALL, SMALL), new Vector2(-SMALL, SMALL), new Vector2(-SMALL, -SMALL)}},
+        {InteriorSize.MEDIUM, new Vector2[] {new Vector2(-MEDIUM, -MEDIUM), new Vector2(MEDIUM, -MEDIUM), new Vector2(MEDIUM, MEDIUM), new Vector2(-MEDIUM, MEDIUM), new Vector2(-MEDIUM, -MEDIUM)}},
+        {InteriorSize.LARGE, new Vector2[] {new Vector2(-LARGE, -LARGE), new Vector2(LARGE, -LARGE), new Vector2(LARGE, LARGE), new Vector2(-LARGE, LARGE), new Vector2(-LARGE, -LARGE)}}
     }; 
 
     public void SetObjects(GameObject objects){this.objects = objects;}
     public void SetBuilding(Building building){this.building = building;}
     public void SavePlayerPos(Vector2 savedPos){this.savedPos = savedPos;} 
-    public void SetSize(Size size)
+    public void SetSize(InteriorSize size)
     {
         edgeColl.points = points[size];
         meshFilter.mesh = getMesh(size); 
@@ -43,21 +43,21 @@ public class Interior : MonoBehaviour
     public void Awake()
     {
         buildingExit = GameObject.Find("BuildingExit");
-        blueprints = new Dictionary<Size, List<GameObject>>();
+        blueprints = new Dictionary<InteriorSize, List<GameObject>>();
         meshFilter = GetComponent<MeshFilter>();
         edgeColl = GetComponent<EdgeCollider2D>();
     }
     public void Start()
     {
-        meshPool = new Dictionary<Size, Mesh>();
-        blueprints = new Dictionary<Size, List<GameObject>>();
-        blueprints[Size.SMALL] = smallInteriors;
-        blueprints[Size.MEDIUM] = mediumInteriors;
-        blueprints[Size.LARGE] = largeInteriors;
+        meshPool = new Dictionary<InteriorSize, Mesh>();
+        blueprints = new Dictionary<InteriorSize, List<GameObject>>();
+        blueprints[InteriorSize.SMALL] = smallInteriors;
+        blueprints[InteriorSize.MEDIUM] = mediumInteriors;
+        blueprints[InteriorSize.LARGE] = largeInteriors;
     }
 
     //checks pool for mesh, otherwise add a new one to the pool
-    private Mesh getMesh(Size size)
+    private Mesh getMesh(InteriorSize size)
     {
         if(meshPool.ContainsKey(size))
             return meshPool[size];
@@ -67,7 +67,7 @@ public class Interior : MonoBehaviour
     }
 
     //create new mesh for designated size
-    private Mesh createMesh(Size size)
+    private Mesh createMesh(InteriorSize size)
     {
         Mesh mesh = new Mesh();
         Vector2[] inner = points[size];
@@ -78,11 +78,11 @@ public class Interior : MonoBehaviour
         vertices.AddRange(outter);
         switch(size)
         {
-            case Size.SMALL:
-                goto case Size.LARGE;
-            case Size.MEDIUM:
-                goto case Size.LARGE;
-            case Size.LARGE:
+            case InteriorSize.SMALL:
+                goto case InteriorSize.LARGE;
+            case InteriorSize.MEDIUM:
+                goto case InteriorSize.LARGE;
+            case InteriorSize.LARGE:
                 for(int i = 0; i < inner.Length-1; i++)
                 {
                    triangles.Add(i);

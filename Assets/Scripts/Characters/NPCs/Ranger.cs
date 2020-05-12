@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game;
 
 public class Ranger : HeroClass, IHitboxResponder
 {
@@ -49,6 +50,7 @@ public class Ranger : HeroClass, IHitboxResponder
         {
             if(isPresent)
             {
+                Debug.Log($"Ranger State: {state}");
                 switch(state)
                 {
                     case State.IDLE:

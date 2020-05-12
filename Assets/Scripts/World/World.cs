@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game;
 
 //ROLE: handles creation of world (spawn critters, interactables, etc)
 
@@ -162,9 +163,9 @@ public class World : MonoBehaviour
 			Building building = poolObject.GetComponent<Building>();
 			poolObject.transform.position = building.SetFloorPosition(point);
 			if(poolObject == wnode.buildingPool[0])
-				building.SetType(Building.Type.BARRACKS);
+				building.SetType(BuildingType.BARRACKS);
 			else
-				building.SetType(Building.Type.HOME);
+				building.SetType(BuildingType.HOME);
 			building.Reset();
 			poolObject.SetActive(true);
 			points.Remove(point);
@@ -177,9 +178,9 @@ public class World : MonoBehaviour
 			building.Init();
 			building.SetNodeID(nodeID);
 			if(wnode.buildingPool.Count == 0)
-				building.SetType(Building.Type.BARRACKS);
+				building.SetType(BuildingType.BARRACKS);
 			else
-				building.SetType(Building.Type.HOME);
+				building.SetType(BuildingType.HOME);
 			obj.transform.position = building.SetFloorPosition(point);
         	building.Reset();
 			wnode.AddPoolObject(obj, wnode.buildingPool);

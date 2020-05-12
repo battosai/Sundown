@@ -2,26 +2,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game;
 
 public class Building : MonoBehaviour
 {
-    public enum Type {BARRACKS, HOME};
     public List<GameObject> villagerPool;
     public List<GameObject> guardPool;
     public GameObject objects;
     public GameObject entrance {get; private set;}
-    public Type type {get; private set;}
+    public BuildingType type {get; private set;}
     public bool isEnterable {get; private set;}
     public bool isOccupied {get; private set;}
     public int nodeID {get; private set;}
     public float floorHeight {get; private set;}
-    public Size size;// {get; private set;}
+    public InteriorSize size;// {get; private set;}
     private World world;
     private Interior interior;
     private Transform trans;
     private SpriteRenderer rend;
     public void SetNodeID(int nodeID){this.nodeID = nodeID;}
-    public void SetType(Type type){this.type=type;}
+    public void SetType(BuildingType type){this.type=type;}
 
     public void Init()
     {
@@ -52,9 +52,9 @@ public class Building : MonoBehaviour
     //resuses/generates villagers/guards that live in this building
     public void Populate()
     {
-        int count = type == Type.HOME ? UnityEngine.Random.Range(1, 5) : UnityEngine.Random.Range(3, 6);
+        int count = type == BuildingType.HOME ? UnityEngine.Random.Range(1, 5) : UnityEngine.Random.Range(3, 6);
         List<Vector2> points = world.GetValidPoints(nodeID, count);
-        List<GameObject> pool = type == Type.HOME ? villagerPool : guardPool;
+        List<GameObject> pool = type == BuildingType.HOME ? villagerPool : guardPool;
         for(int i = 0; i < pool.Count; i++)
         {
             if(points.Count == 0)
@@ -72,7 +72,7 @@ public class Building : MonoBehaviour
         }     
         for(int i = 0; i < points.Count; i++)
         {
-            GameObject obj = type == Type.HOME ?
+            GameObject obj = type == BuildingType.HOME ?
                 Instantiate(world.villagerPrefabs[UnityEngine.Random.Range(0, world.villagerPrefabs.Count)], trans) :
                 Instantiate(world.guardPrefabs[UnityEngine.Random.Range(0, world.guardPrefabs.Count)], trans);
             TownspersonClass townie = obj.GetComponent<TownspersonClass>();
@@ -112,7 +112,7 @@ public class Building : MonoBehaviour
 	}
 
     //selects a set of objects from the possible blueprints for the size
-    private void selectLayout(Size size)
+    private void selectLayout(InteriorSize size)
     {
         List<GameObject> blueprints = interior.blueprints[size]; 
         objects = Instantiate(blueprints[UnityEngine.Random.Range(0, blueprints.Count)], interior.transform);
@@ -121,10 +121,10 @@ public class Building : MonoBehaviour
     }
 
     //returns a random value from Size enum (in Interior.cs)
-    private Size randomSize()
+    private InteriorSize randomSize()
     {
-        Size[] values = (Size[])Enum.GetValues(typeof(Size));
-        Size size = values[UnityEngine.Random.Range(0, values.Length)];
+        InteriorSize[] values = (InteriorSize[])Enum.GetValues(typeof(InteriorSize));
+        InteriorSize size = values[UnityEngine.Random.Range(0, values.Length)];
         return size;
     }
 

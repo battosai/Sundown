@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game;
 
 public class HeroClass : CharacterClass
 {
@@ -18,7 +19,7 @@ public class HeroClass : CharacterClass
 	//common one time setups
 	protected void init()
 	{
-		SetType(CharacterClass.Type.HERO);
+		SetType(CharacterType.HERO);
 	}
 
 	public virtual void ArenaUpdate()
@@ -85,7 +86,7 @@ public class HeroClass : CharacterClass
 		}
 	}
 
-	protected new IEnumerator takePath(Vector2 destination, System.Action callback)
+	protected new IEnumerator takePath(Vector2 destination, System.Action callback=null)
 	{
 		Debug.Log("Taking path!");
 		float tolerance = 1f;

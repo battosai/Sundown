@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game;
 
 //ROLE: be a hitbox for attacks, player action key, etc. (no collider needed)
 
-public enum ColliderState {CLOSED, OPEN, COLLIDING};
-public enum Act {ATTACK, TRAVEL, INTERACT, ALARM, SHAPESHIFT}; //interact could hide in bushes, talk to npcs, search containers
 public class Hitbox : MonoBehaviour
 {
   public ContactFilter2D mask;
