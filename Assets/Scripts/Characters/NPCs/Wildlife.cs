@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Game;
@@ -6,76 +7,52 @@ using Game;
 public class Wildlife : CharacterClass
 {
     public int clue {get; private set;}
-    protected enum State {IDLE, FLEE, DEAD};
     protected static PlayerClass player;
-    protected State state;
     protected int nutrition;
-    private readonly float FLEE_SPEED = 40f;
-    private readonly float FLEE_DISTANCE = 100f;
+    private StateMachine stateMachine;
     public void SetClue(int clue){this.clue = clue;}
 
-    public delegate void PlayerWildlifeHeal();
-    public static event PlayerWildlifeHeal OnPlayerWildlifeHeal;
+    public static event Action OnPlayerWildlifeHeal;
 
     //called one time
     public void Init()
     {
         if(player == null)
             player = GameObject.Find("Player").GetComponent<PlayerClass>();
+        stateMachine = GetComponent<StateMachine>();
         SetType(CharacterType.WILDLIFE);
         base.Awake();
+        InitializeStateMachine();
+    }
+
+    private void InitializeStateMachine()
+    {
+        Dictionary<Type, BaseState> states = new Dictionary<Type, BaseState>()
+        {
+            {typeof(IdleState), new IdleState(this)},
+            {typeof(FleeState), new FleeState(this)}
+        };
+        stateMachine.SetStates(states);
     }
 
     public override void Update()
     {
-        if(health <= 0)
-            state = State.DEAD;
-        if(isAlive)
+        if(health <= 0 && isAlive)
         {
-            switch(state)
-            {
-                case State.IDLE:
-                    if(isAlarmed)
-                    {
-                        SetSpeed(FLEE_SPEED);
-                        state = State.FLEE;
-                        goto case State.FLEE;
-                    }
-                    if(Time.time - time > 1f)
-                    {
-                        time = Time.time;
-                        idleWalk();
-                    }
-                    break;
-                case State.FLEE:
-                    if(Vector2.Distance(alarmPoint, floorPosition) > FLEE_DISTANCE)
-                    {
-                        SetSpeed(BASE_SPEED);
-                        SetIsAlarmed(false);
-                        state = State.IDLE;
-                        goto case State.IDLE;
-                    }
-                    rb.velocity = new Vector2(-1f, -1f)*PathFinding.GetVelocity(floorPosition, alarmPoint, speed);
-                    break;
-                case State.DEAD:
-                    deathPrep();
-                    player.SetHealth(player.health+nutrition);
-                    OnPlayerWildlifeHeal.Invoke();
-                    WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();
-                    wnode.SetClues(wnode.clues+clue);
-                    Debug.Log("WorldNode now has "+wnode.clues+" clues");
-                    break;
-                default:
-                    break;
-            }
-            base.Update();
+            deathPrep();
+            stateMachine.enabled = false;
+            player.SetHealth(player.health+nutrition);
+            OnPlayerWildlifeHeal?.Invoke();
+            WorldNode wnode = World.nodes[nodeID].GetComponent<WorldNode>();
+            wnode.SetClues(wnode.clues+clue);
+            Debug.Log("WorldNode now has "+wnode.clues+" clues");
         }
+        base.Update();
     }
 
     public override void Reset()
     {
         rend.sprite = alive;
-        state = State.IDLE;
         SetHealth(maxHealth);
         base.Reset();
     }

@@ -50,7 +50,7 @@ public class Ranger : HeroClass, IHitboxResponder
         {
             if(isPresent)
             {
-                Debug.Log($"Ranger State: {state}");
+                // Debug.Log($"Ranger State: {state}");
                 switch(state)
                 {
                     case State.IDLE:
