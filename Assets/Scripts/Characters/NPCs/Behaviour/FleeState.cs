@@ -6,13 +6,18 @@ using UnityEngine;
 public class FleeState : BaseState
 {
     private static float PATHFINDING_TOLERANCE = 1f;
-    private PlayerClass player;
+    private static PlayerClass player;
+    private StateMachine stateMachine;
     private List<Vector2> path;
 
     public FleeState(CharacterClass ch) : base(ch)
     {
-		this.player = GameObject.Find("Player").GetComponent<PlayerClass>();
+        if(FleeState.player == null)
+		    FleeState.player = GameObject.Find("Player").GetComponent<PlayerClass>();
+        stateMachine = ch.stateMachine;
         path = new List<Vector2>();
+
+        stateMachine.OnStateChanged += GetPath;
     }
 
     public override Type Tick()
@@ -28,9 +33,9 @@ public class FleeState : BaseState
         {
             if(path.Count > 0)
             {
+                rb.velocity = PathFinding.GetVelocity(character.floorPosition, path[0], character.speed);
                 if(Vector2.Distance(character.floorPosition, path[0]) <= PATHFINDING_TOLERANCE)
                     path.RemoveAt(0);
-                rb.velocity = PathFinding.GetVelocity(character.floorPosition, path[0], character.speed);
             }
             else
             {
@@ -40,8 +45,8 @@ public class FleeState : BaseState
         return null;
     }
 
-    //call this right when state is set to Flee
-    public void GetPath()
+    //call this right when state is set to Flee only for Townspeople
+    private void GetPath()
     {
 		path = PathFinding.AStarJump(character.floorPosition, ((TownspersonClass)character).building.entrance.transform.position, character.nodeMap, character.nodeID);
     }

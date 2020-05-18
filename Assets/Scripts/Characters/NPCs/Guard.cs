@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,89 +24,18 @@ public class Guard : TownspersonClass, IHitboxResponder
         hitbox.SetResponder(this);
     }
 
-    public override void Update()
-    { 
-        if(health <= 0)
-            state = State.DEAD;
-        if(isAlive)
+    protected override void InitializeStateMachine()
+    {
+        Dictionary<Type, BaseState> states = new Dictionary<Type, BaseState>()
         {
-            switch(state)
-            {
-                case State.DEAD:
-                    deathPrep(); 
-                    break;
-                case State.IDLE:
-                    if(isAlarmed)
-                    {
-                        state = State.DEFEND;
-                        goto case State.DEFEND;
-                    } 
-                    if(Time.time-time > 1f)
-                    {
-                        time = Time.time;
-                        idleWalk(); //replace with patrol fnc later
-                    }
-                    break;
-                case State.DEFEND:
-                    if(health <= FLEE_HEALTH)
-                    {
-                        state = State.FLEE;
-                        fleeToBarracks();
-                        goto case State.FLEE;
-                    }
-                    //should have a periodic alarm signal when fighting
-                    if(Vector2.Distance(floorPosition, player.floorPosition) > AGGRO_LEASH)
-                    {
-                        Debug.Log($"WE'RE CHILL BRUV, your floorPos is {player.floorPosition}");
-                        SetIsAlarmed(false);
-                        state = State.IDLE;
-                        goto case State.IDLE;    
-                    }
-                    rb.velocity = PathFinding.GetVelocity(floorPosition, player.floorPosition, speed);
-                    if(Vector2.Distance(floorPosition, player.floorPosition) <= ATTACK_RANGE && Time.time-time > TIME_BETWEEN_ATTACKS)
-                    {
-                        //need some delay before the attack
-                        Debug.Log(this.tag+" is attacking!");
-                        attackCheck();
-                        StartCoroutine(dash(player.floorPosition, WaitCallback));
-                        time = Time.time;
-                        //every attack do an alarm check?
-                    }
-                    break;
-                case State.HOME:
-                    if(Vector2.Distance(floorPosition, building.entrance.transform.position) <= ENTRANCE_RADIUS)
-                    {
-                        rb.velocity = Vector2.zero;
-                        time = Time.time;
-                        state = State.HIDE;
-                        rend.enabled = false;
-                        pushBox.enabled = false;
-                        SetIsAlarmed(false);
-                        goto case State.HIDE;
-                    }
-                    goto case State.FLEE;
-                case State.FLEE:
-                    //alarmCheck() ?
-                    break;
-                case State.HIDE:
-                    if(Time.time-time > RECOVERY_TIME)
-                    {
-                        SetHealth(maxHealth);
-                        rend.enabled = true;
-                        pushBox.enabled = true;
-                        state = State.IDLE;
-                        goto case State.IDLE;
-                    }
-                    break;
-                default:
-                    Debug.LogError($"Unknown Guard State {state}");
-                    break;
-            }
-            UpdateAnimator();
-            base.Update();
-        }
+            {typeof(IdleState), new IdleState(this)},
+            {typeof(FleeState), new FleeState(this)},
+            {typeof(ChaseState), new ChaseState(this)},
+            {typeof(AttackState), new AttackState(this)}
+        };
+        stateMachine.SetStates(states);
     }
-    
+
     private void fleeToBarracks()
     {
         StartCoroutine(takePath(building.entrance.transform.position, HomeCallback));
@@ -151,7 +81,7 @@ public class Guard : TownspersonClass, IHitboxResponder
 		}
     }
 
-    public override void UpdateAnimator()
+    protected override void UpdateAnimator()
     {
         anim.SetBool("isAlarmed", isAlarmed);
         anim.SetFloat("speed", Mathf.Abs(rb.velocity.x)+Mathf.Abs(rb.velocity.y));

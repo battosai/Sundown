@@ -24,6 +24,7 @@ public class CharacterClass : MonoBehaviour
 	public Rigidbody2D rb {get; private set;}
 	public SpriteRenderer rend {get; private set;}
 	public Hurtbox hurtBox {get; private set;}
+	public StateMachine stateMachine {get; protected set;}
     protected float time;
     public bool isAlarmed {get; private set;}
     protected Vector2 alarmPoint;

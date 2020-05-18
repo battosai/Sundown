@@ -9,7 +9,6 @@ public class Wildlife : CharacterClass
     public int clue {get; private set;}
     protected static PlayerClass player;
     protected int nutrition;
-    private StateMachine stateMachine;
     public void SetClue(int clue){this.clue = clue;}
 
     public static event Action OnPlayerWildlifeHeal;

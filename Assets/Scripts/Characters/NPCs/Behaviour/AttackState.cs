@@ -7,7 +7,7 @@ public class AttackState : BaseState
 {
     private static float DASH_TIME = 0.2f;
     private static float DASH_SPEED = 40f;
-    private static float RECOVERY_TIME = 0.2f;
+    private static float RECOVERY_TIME = 1f;
     private PlayerClass player;
     private Hitbox hitbox;
     private bool didAttack;
@@ -72,5 +72,6 @@ public class AttackState : BaseState
 		hitbox.StartCheckingCollision();
 		hitbox.CheckCollision();
 		hitbox.StopCheckingCollision();
+        didAttack = true;
 	}
 }

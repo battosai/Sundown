@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game;
 
-public class TownspersonClass : CharacterClass
+public abstract class TownspersonClass : CharacterClass
 {
     protected enum State {DEAD, IDLE, HOME, DEFEND, ALARM, HIDE, FLEE};
     protected readonly float ENTRANCE_RADIUS = 5f;
@@ -12,6 +12,9 @@ public class TownspersonClass : CharacterClass
     public Hitbox hitbox {get; private set;}
     public Building building {get; private set;}
     public void SetBuilding(Building building){this.building=building;}
+
+    protected abstract void InitializeStateMachine();
+    protected abstract void UpdateAnimator();
     
     //called one time
     public void Init()
@@ -20,6 +23,8 @@ public class TownspersonClass : CharacterClass
         hitbox = GetComponent<Hitbox>(); 
         SetType(CharacterType.TOWNSPERSON);
         base.Awake();
+        stateMachine = GetComponent<StateMachine>();
+        InitializeStateMachine();
     }
 
     public override void Reset()
@@ -29,6 +34,17 @@ public class TownspersonClass : CharacterClass
         state = State.IDLE;
         nodeMap = PathFinding.Node.MakeNodeMap(World.wnodes[nodeID].map, nodeID);
         base.Reset();
+    }
+
+    public override void Update()
+    {
+        if(health <= 0 && isAlive)
+        {
+            deathPrep();
+            stateMachine.enabled = false;
+        }
+        UpdateAnimator();
+        base.Update();
     }
 
     //pass to coroutines to signify reaching end of path that leads home

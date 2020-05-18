@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Game;
@@ -14,64 +15,14 @@ public class Villager : TownspersonClass, IHitboxResponder
         hitbox.SetResponder(this);
     }
 
-    public override void Update()
+    protected override void InitializeStateMachine()
     {
-        if(health <= 0)
-            state = State.DEAD;
-        if(isAlive)
+        Dictionary<Type, BaseState> states = new Dictionary<Type, BaseState>()
         {
-            switch(state)
-            {
-                case State.DEAD:
-                    deathPrep(); 
-                    break;
-                case State.IDLE:
-                    if(isAlarmed)
-                    {
-                        state = State.ALARM;
-                        fleeToHome();
-                        goto case State.ALARM;
-                    }
-                    if(Time.time-time > 1f)
-                    {
-                        time = Time.time;
-                        idleWalk();
-                    }
-                    break;
-                case State.HOME:
-                    //change how this interacts with the takePath subroutine, this is messy
-                    if(Vector2.Distance(floorPosition, building.entrance.transform.position) <= ENTRANCE_RADIUS)
-                    {
-                        rb.velocity = Vector2.zero;
-                        time = Time.time;
-                        state = State.HIDE;
-                        SetIsAlarmed(false);
-                        rend.enabled = false;
-                        pushBox.enabled = false;
-                        goto case State.HIDE;
-                    }
-                    goto case State.ALARM;
-                case State.ALARM:
-                    alarmCheck();
-                    break;
-                case State.HIDE:
-                    if(Time.time-time > RECOVERY_TIME)
-                    {
-                        SetHealth(maxHealth);
-                        rend.enabled = true;
-                        pushBox.enabled = true;
-                        state = State.IDLE;
-                        goto case State.IDLE;
-                    }
-                    rb.velocity = Vector2.zero;
-                    break;
-                default:
-                    Debug.LogError($"Unrecognized State {state}");
-                    break;
-            }
-            UpdateAnimator();
-            base.Update();
-        }
+            {typeof(IdleState), new IdleState(this)},
+            {typeof(FleeState), new FleeState(this)}
+        };
+        stateMachine.SetStates(states);
     }
 
     public void Hit(Collider2D other, Act act)
@@ -130,7 +81,7 @@ public class Villager : TownspersonClass, IHitboxResponder
         //alert nearby guards
     }
 
-    public override void UpdateAnimator()
+    protected override void UpdateAnimator()
     {
         anim.SetBool("isAlarmed", isAlarmed);
         anim.SetFloat("speed", Mathf.Abs(rb.velocity.x)+Mathf.Abs(rb.velocity.y));
