@@ -312,4 +312,9 @@ public class Ranger : HeroClass, IHitboxResponder
     {
        
     }
+
+    protected override void UpdateAnimator()
+    {
+        Debug.Log($"Ranger.cs still needs to implement UpdateAnimator()");
+    }
 }

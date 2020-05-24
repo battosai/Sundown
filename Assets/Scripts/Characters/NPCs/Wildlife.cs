@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Game;
 
-public class Wildlife : CharacterClass
+public abstract class Wildlife : CharacterClass
 {
     public int clue {get; private set;}
     protected static PlayerClass player;

@@ -64,7 +64,7 @@ public class PlayerClass : CharacterClass
 		base.Reset();
 	}
 
-	public override void UpdateAnimator()
+	protected override void UpdateAnimator()
 	{
 		if(actions.isAttacking)
 			anim.SetTrigger("isAttacking");

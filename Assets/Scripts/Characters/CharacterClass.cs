@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game;
 
-public class CharacterClass : MonoBehaviour
+public abstract class CharacterClass : MonoBehaviour
 {
 	public readonly float BASE_SPEED = 20f;
     public Sprite alive;
@@ -25,11 +25,11 @@ public class CharacterClass : MonoBehaviour
 	public SpriteRenderer rend {get; private set;}
 	public Hurtbox hurtBox {get; private set;}
 	public StateMachine stateMachine {get; protected set;}
+	public Collider2D pushBox {get; private set;}
     protected float time;
     public bool isAlarmed {get; private set;}
     protected Vector2 alarmPoint;
 	protected Animator anim;
-	protected Collider2D pushBox;
 	public void SetType(CharacterType type){this.type = type;}
 	public void SetNodeID(int id){nodeID = id;}
 	public void SetAlarmPoint(Vector2 alarmPoint){this.alarmPoint=alarmPoint;}
@@ -42,6 +42,8 @@ public class CharacterClass : MonoBehaviour
 		this.health = Mathf.Max(health, 0);
 		this.health = Mathf.Min(health, this.maxHealth);
 	}
+
+	protected abstract void UpdateAnimator();
 
 	public virtual void Awake()
 	{
@@ -151,10 +153,10 @@ public class CharacterClass : MonoBehaviour
 			callback();
 	}
 
-	public virtual void UpdateAnimator()
-	{
-		Debug.LogWarning($"{gameObject.name} has no proper UpdateAnimator() method");
-	}
+	// public virtual void UpdateAnimator()
+	// {
+	// 	Debug.LogWarning($"{gameObject.name} has no proper UpdateAnimator() method");
+	// }
 	
 	//sets position so that floor position is at target
 	public Vector2 SetFloorPosition(Vector2 target)

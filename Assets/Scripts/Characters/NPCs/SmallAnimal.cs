@@ -15,4 +15,9 @@ public class SmallAnimal : Wildlife
         SetClue(2);
         base.Reset();
     }
+
+    protected override void UpdateAnimator()
+    {
+        Debug.Log($"SmallAnimal.cs still needs to implement UpdateAnimator()");
+    }
 }

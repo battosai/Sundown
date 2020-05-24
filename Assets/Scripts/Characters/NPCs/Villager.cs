@@ -6,7 +6,6 @@ using Game;
 
 public class Villager : TownspersonClass, IHitboxResponder
 {
-    private readonly float RECOVERY_TIME = 5f;
 	private Vector2[] ALARM = {new Vector2(0, 0), new Vector2(20, 16)};
 
     public void Start()

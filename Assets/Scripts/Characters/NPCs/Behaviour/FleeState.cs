@@ -40,14 +40,16 @@ public class FleeState : BaseState
             else
             {
                 // once path is done, switch to a different state
+                return typeof(RestState);
             }
         }
         return null;
     }
 
-    //call this right when state is set to Flee only for Townspeople
-    private void GetPath()
+    //subscribed to OnStateChanged event
+    private void GetPath(BaseState state)
     {
-		path = PathFinding.AStarJump(character.floorPosition, ((TownspersonClass)character).building.entrance.transform.position, character.nodeMap, character.nodeID);
+        if(state is FleeState)
+		    path = PathFinding.AStarJump(character.floorPosition, ((TownspersonClass)character).building.entrance.transform.position, character.nodeMap, character.nodeID);
     }
 }

@@ -9,9 +9,6 @@ public class Guard : TownspersonClass, IHitboxResponder
     public static readonly float AGGRO_LEASH = 75f; //make sure this is larger than the radius of werewolfaggrobox
     public static readonly int ATTACK_RANGE = 20;
 	public static readonly Vector2[] ATTACK = {new Vector2(10, -5), new Vector2(10, 8)};
-    private static readonly float RECOVERY_TIME = 5f;
-    private static readonly int TIME_BETWEEN_ATTACKS = 3;
-    private static readonly int FLEE_HEALTH = 1;
     private static readonly int strength = 1;
 
     public override void Awake()

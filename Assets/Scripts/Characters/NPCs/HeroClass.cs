@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game;
 
-public class HeroClass : CharacterClass
+public abstract class HeroClass : CharacterClass
 {
 	protected readonly int PLAYER_FOUND = 15;
     protected enum State {IDLE, INSPECT, ATTACK, COROUTINE};

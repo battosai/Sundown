@@ -14,7 +14,6 @@ public abstract class TownspersonClass : CharacterClass
     public void SetBuilding(Building building){this.building=building;}
 
     protected abstract void InitializeStateMachine();
-    protected abstract void UpdateAnimator();
     
     //called one time
     public void Init()

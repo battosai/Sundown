@@ -15,4 +15,9 @@ public class BigAnimal : Wildlife
         SetClue(4);
         base.Reset();
     }
+
+    protected override void UpdateAnimator()
+    {
+        Debug.Log($"BigAnimal.cs still needs to implement UpdateAnimator()");
+    }
 }
