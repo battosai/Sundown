@@ -49,7 +49,7 @@ public class FleeState : BaseState
     //subscribed to OnStateChanged event
     private void GetPath(BaseState state)
     {
-        if(state is FleeState)
+        if(state is FleeState && character is TownspersonClass)
 		    path = PathFinding.AStarJump(character.floorPosition, ((TownspersonClass)character).building.entrance.transform.position, character.nodeMap, character.nodeID);
     }
 }

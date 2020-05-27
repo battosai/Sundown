@@ -19,7 +19,8 @@ public class Villager : TownspersonClass, IHitboxResponder
         Dictionary<Type, BaseState> states = new Dictionary<Type, BaseState>()
         {
             {typeof(IdleState), new IdleState(this)},
-            {typeof(FleeState), new FleeState(this)}
+            {typeof(FleeState), new FleeState(this)},
+            {typeof(RestState), new RestState(this)}
         };
         stateMachine.SetStates(states);
     }

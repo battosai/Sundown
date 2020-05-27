@@ -28,7 +28,8 @@ public class Guard : TownspersonClass, IHitboxResponder
             {typeof(IdleState), new IdleState(this)},
             {typeof(FleeState), new FleeState(this)},
             {typeof(ChaseState), new ChaseState(this)},
-            {typeof(AttackState), new AttackState(this)}
+            {typeof(AttackState), new AttackState(this)},
+            {typeof(RestState), new RestState(this)}
         };
         stateMachine.SetStates(states);
     }
