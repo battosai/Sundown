@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class FleeState : BaseState
 {
-    private static float PATHFINDING_TOLERANCE = 1f;
+    private static float PATHFINDING_TOLERANCE = 10f;
     private static PlayerClass player;
     private StateMachine stateMachine;
     private List<Vector2> path;

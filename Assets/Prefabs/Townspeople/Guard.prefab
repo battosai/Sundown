@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 114262826497044718}
   - component: {fileID: 114662168243341116}
   - component: {fileID: 3026679162321597323}
-  m_Layer: 13
+  m_Layer: 8
   m_Name: Guard
   m_TagString: NPC
   m_Icon: {fileID: 0}

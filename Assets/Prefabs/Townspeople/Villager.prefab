@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 114169878308526654}
   - component: {fileID: 114617942016912956}
   - component: {fileID: 2883283928257626657}
-  m_Layer: 13
+  m_Layer: 8
   m_Name: Villager
   m_TagString: NPC
   m_Icon: {fileID: 0}

@@ -6,6 +6,7 @@ public class RestState : BaseState
     private static float REST_TIME = 5f;
     private StateMachine stateMachine;
     private float restTimer;
+    //maybe have this just be below the building entrance (need a good time to set this, can't be in the constructor)
     private Vector2 restPosition; //position once char entered rest, so spawn them here at the end of rest
 
     public RestState(CharacterClass ch) : base(ch)
