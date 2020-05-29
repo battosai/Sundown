@@ -11,8 +11,8 @@ public class Building : MonoBehaviour
     public GameObject objects;
     public GameObject entrance {get; private set;}
     public BuildingType type {get; private set;}
-    public bool isEnterable {get; private set;}
-    public bool isOccupied {get; private set;}
+    // public bool isEnterable {get; private set;}
+    // public bool isOccupied {get; private set;}
     public int nodeID {get; private set;}
     public float floorHeight {get; private set;}
     public InteriorSize size;// {get; private set;}
@@ -45,8 +45,8 @@ public class Building : MonoBehaviour
         size = randomSize();
         selectLayout(size);
         setFloorHeight();
-        isEnterable = true; //temp
-        isOccupied = false; //temp
+        // isEnterable = true; //temp
+        // isOccupied = false; //temp
     }
 
     //resuses/generates villagers/guards that live in this building

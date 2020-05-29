@@ -112,7 +112,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 		if(other.tag == "NPC" || other.tag == "Hero")
 		{
 			CharacterClass npc = other.GetComponent<CharacterClass>();
-			npc.SetAlarmPoint(player.floorPosition);
+			// npc.SetAlarmPoint(player.floorPosition);
 			npc.SetIsAlarmed(true);
 		}
 	}
@@ -122,7 +122,7 @@ public class PlayerActions : MonoBehaviour, IHitboxResponder
 		if(other.tag == "NPC" || other.tag == "Wildlife" || other.tag == "Hero")
 		{
 			CharacterClass character = other.GetComponent<CharacterClass>();
-			character.SetAlarmPoint(player.floorPosition);
+			// character.SetAlarmPoint(player.floorPosition);
 			character.SetIsAlarmed(true);
 			Hurtbox hurtbox = other.GetComponent<Hurtbox>();	
 			hurtbox.Hurt(player.strength);

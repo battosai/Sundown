@@ -28,11 +28,11 @@ public abstract class CharacterClass : MonoBehaviour
 	public Collider2D pushBox {get; private set;}
     protected float time;
     public bool isAlarmed {get; private set;}
-    protected Vector2 alarmPoint;
+    // protected Vector2 alarmPoint;
 	protected Animator anim;
 	public void SetType(CharacterType type){this.type = type;}
 	public void SetNodeID(int id){nodeID = id;}
-	public void SetAlarmPoint(Vector2 alarmPoint){this.alarmPoint=alarmPoint;}
+	// public void SetAlarmPoint(Vector2 alarmPoint){this.alarmPoint=alarmPoint;}
 	public void SetIsLeft(bool isLeft){this.isLeft = isLeft;}
 	public void SetIsAlive(bool isAlive){this.isAlive = isAlive;}
     public void SetIsAlarmed(bool isAlarmed){this.isAlarmed=isAlarmed;}

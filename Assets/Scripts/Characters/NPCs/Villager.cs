@@ -55,13 +55,13 @@ public class Villager : TownspersonClass, IHitboxResponder
         if(other.tag == "Wildlife")
         {
             CharacterClass animal = other.GetComponent<CharacterClass>();
-            animal.SetAlarmPoint(floorPosition);
+            // animal.SetAlarmPoint(floorPosition);
             animal.SetIsAlarmed(true);
         }
         else if(other.tag == "NPC" || other.tag == "Hero")
         {
             CharacterClass character = other.GetComponent<CharacterClass>();
-            character.SetAlarmPoint(alarmPoint);
+            // character.SetAlarmPoint(alarmPoint);
             character.SetIsAlarmed(true);
         }
     }

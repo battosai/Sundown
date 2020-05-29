@@ -34,11 +34,6 @@ public class Guard : TownspersonClass, IHitboxResponder
         stateMachine.SetStates(states);
     }
 
-    private void fleeToBarracks()
-    {
-        StartCoroutine(takePath(building.entrance.transform.position, HomeCallback));
-    }
-
     public void Hit(Collider2D other, Act act)
     {
         switch(act)
@@ -56,24 +51,12 @@ public class Guard : TownspersonClass, IHitboxResponder
         }
     }
 
-	private void attackCheck()
-	{
-		int dir = isLeft ? -1 : 1;
-		hitbox.mask.useTriggers = false;
-		hitbox.SetAct(Act.ATTACK);
-		hitbox.SetOffset(new Vector2(ATTACK[0].x*dir, ATTACK[0].y));
-		hitbox.SetSize(ATTACK[1]);
-		hitbox.StartCheckingCollision();
-		hitbox.CheckCollision();
-		hitbox.StopCheckingCollision();
-	}
-
     private void attack(Collider2D other)
     {
         if(other.tag == "Player")
 		{
 			PlayerClass player = other.GetComponent<PlayerClass>();
-			player.SetAlarmPoint(player.floorPosition);
+			// player.SetAlarmPoint(player.floorPosition);
 			Hurtbox hurtbox = other.GetComponent<Hurtbox>();	
 			hurtbox.Hurt(strength, player);
 		}

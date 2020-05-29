@@ -50,59 +50,59 @@ public class Ranger : HeroClass, IHitboxResponder
         {
             if(isPresent)
             {
-                // Debug.Log($"Ranger State: {state}");
-                switch(state)
-                {
-                    case State.IDLE:
-                        if(isAlarmed)
-                        {
-                            //attack if found player, or attacked directly
-                            //health will only go down if attacked by player
-                            if(playerSpotted() || health < maxHealth)
-                            {
-                                state = State.ATTACK;
-                                goto case State.ATTACK;
-                            }
-                            Debug.Log("RANGER IS DOING AN INSPECT");
-                            StartCoroutine(takePath(alarmPoint, InspectCallback));
-                            state = State.COROUTINE;
-                            goto case State.COROUTINE;
-                        } 
-                        if(Time.time-time > 1f)
-                        {
-                            time = Time.time;
-                            idleWalk();
-                        }
-                        break;
-                    case State.INSPECT:
-                        if(Time.time-time > INSPECT_TIME)
-                        {
-                            state = State.IDLE;
-                            goto case State.IDLE;
-                        } 
-                        interactCheck();
-                        break;
-                    case State.COROUTINE:
-                        break;
-                    case State.ATTACK:
-                        float distance = Vector2.Distance(floorPosition, player.floorPosition);
-                        if(distance > AGGRO_RANGE)
-                        {
-                            Debug.Log("Player has escaped the Ranger");
-                            SetIsAlarmed(false);
-                            state = State.IDLE;
-                            goto case State.IDLE;
-                        }
-                        if(distance < ATTACK_RANGE && Time.time-time > ATTACK_TIME)
-                        {
-                            time = Time.time;
-                            basicAttack();
-                        }
-                        break;
-                    default:
-                        Debug.LogError($"Unknown Ranger Act {state}");
-                        break;
-                }
+                // // Debug.Log($"Ranger State: {state}");
+                // switch(state)
+                // {
+                //     case State.IDLE:
+                //         if(isAlarmed)
+                //         {
+                //             //attack if found player, or attacked directly
+                //             //health will only go down if attacked by player
+                //             if(playerSpotted() || health < maxHealth)
+                //             {
+                //                 state = State.ATTACK;
+                //                 goto case State.ATTACK;
+                //             }
+                //             Debug.Log("RANGER IS DOING AN INSPECT");
+                //             StartCoroutine(takePath(alarmPoint, InspectCallback));
+                //             state = State.COROUTINE;
+                //             goto case State.COROUTINE;
+                //         } 
+                //         if(Time.time-time > 1f)
+                //         {
+                //             time = Time.time;
+                //             idleWalk();
+                //         }
+                //         break;
+                //     case State.INSPECT:
+                //         if(Time.time-time > INSPECT_TIME)
+                //         {
+                //             state = State.IDLE;
+                //             goto case State.IDLE;
+                //         } 
+                //         interactCheck();
+                //         break;
+                //     case State.COROUTINE:
+                //         break;
+                //     case State.ATTACK:
+                //         float distance = Vector2.Distance(floorPosition, player.floorPosition);
+                //         if(distance > AGGRO_RANGE)
+                //         {
+                //             Debug.Log("Player has escaped the Ranger");
+                //             SetIsAlarmed(false);
+                //             state = State.IDLE;
+                //             goto case State.IDLE;
+                //         }
+                //         if(distance < ATTACK_RANGE && Time.time-time > ATTACK_TIME)
+                //         {
+                //             time = Time.time;
+                //             basicAttack();
+                //         }
+                //         break;
+                //     default:
+                //         Debug.LogError($"Unknown Ranger Act {state}");
+                //         break;
+                // }
             }
         }
         else
