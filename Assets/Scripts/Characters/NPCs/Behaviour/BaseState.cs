@@ -3,6 +3,7 @@ using UnityEngine;
 
 public abstract class BaseState
 {
+    protected static PlayerClass player;
     protected GameObject obj;
     protected Transform trans;
     protected Rigidbody2D rb;
@@ -12,6 +13,8 @@ public abstract class BaseState
 
     public BaseState(CharacterClass ch)
     {
+        if(player == null)
+            GameObject.Find("Player").GetComponent<PlayerClass>();
         this.obj = ch.gameObject;
         this.trans = ch.transform;
         this.rb = ch.rb;

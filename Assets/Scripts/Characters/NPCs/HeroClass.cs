@@ -12,9 +12,11 @@ public abstract class HeroClass : CharacterClass
 	protected float tracking;
 	protected float visionRange;
 	protected bool isPresent;
-	protected bool isArenaTime;
+	public bool isArenaTime {get; protected set;}
 	protected PlayerClass player;
 	protected Hitbox hitBox;
+
+    protected abstract void InitializeStateMachine();
 
 	//common one time setups
 	protected void init()

@@ -1,23 +1,35 @@
 using System;
 using UnityEngine;
 
-public class IdleState : BaseState
+public class RangerIdleState : BaseState
 {
-    private static float CHANGE_ACTION_TIME = 1f;
-    private bool isHostile;
+    private static float CHANGE_ACTION_TIME = 1f;   //during non-arena
+    private Ranger ranger;
     private float actionTimer;
 
-    public IdleState(CharacterClass character) : base(character)
+    public RangerIdleState(Ranger ch) : base(ch)
     {
-        this.isHostile = (character is Guard);
+        this.ranger = ch;
     }
+
     public override Type Tick()
     {
-        if(character.isAlarmed)
-            return isHostile ? typeof(ChaseState) : typeof(FleeState);
+        rb.velocity = Vector2.zero;
         actionTimer += Time.deltaTime;
         if(actionTimer > CHANGE_ACTION_TIME)
         {
+            if(ranger.isArenaTime)
+            {
+                //decide which distance action to do
+            }
+            else
+            {
+                //check if should do chase/basic attack
+                if(ranger.isAlarmed)
+                    return typeof(RangerChaseState);
+            }
+
+            //idle motions
             int action = UnityEngine.Random.Range(0, 5);
             if(action == 0)
             {
@@ -25,9 +37,6 @@ public class IdleState : BaseState
                 float vertical = UnityEngine.Random.Range(-character.speed, character.speed);
                 rb.velocity = new Vector2(horizontal, vertical);
             }
-            else
-                rb.velocity = Vector2.zero;
-            actionTimer = 0f;
         }
         return null;
     }

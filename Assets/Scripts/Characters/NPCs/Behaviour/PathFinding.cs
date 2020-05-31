@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PathFinding
 {
+	//use with squared distance
+	public static readonly float TOLERANCE = Mathf.Pow(10, 2);
     public static List<Vector2> AStarJump(Vector2 start, Vector2 destination, Node[,] nodeMap, int nodeID)
 	{
 		float time = Time.realtimeSinceStartup;

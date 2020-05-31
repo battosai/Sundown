@@ -5,15 +5,11 @@ using UnityEngine;
 
 public class FleeState : BaseState
 {
-    private static float PATHFINDING_TOLERANCE = 10f;
-    private static PlayerClass player;
     private StateMachine stateMachine;
     private List<Vector2> path;
 
     public FleeState(CharacterClass ch) : base(ch)
     {
-        if(FleeState.player == null)
-		    FleeState.player = GameObject.Find("Player").GetComponent<PlayerClass>();
         stateMachine = ch.stateMachine;
         path = new List<Vector2>();
 
@@ -34,7 +30,7 @@ public class FleeState : BaseState
             if(path.Count > 0)
             {
                 rb.velocity = PathFinding.GetVelocity(character.floorPosition, path[0], character.speed);
-                if(Vector2.Distance(character.floorPosition, path[0]) <= PATHFINDING_TOLERANCE)
+                if(((Vector2)(character.floorPosition - path[0])).sqrMagnitude <= PathFinding.TOLERANCE) 
                     path.RemoveAt(0);
             }
             else

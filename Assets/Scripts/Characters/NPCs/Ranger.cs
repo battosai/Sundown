@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class Ranger : HeroClass, IHitboxResponder
     private readonly float LONG_DISTANCE = 100f;
     private readonly float MID_DISTANCE = 60f;
     private readonly float AGGRO_RANGE = 100f;
+    public static readonly float VISION_RANGE = 100f;
     private readonly float ATTACK_RANGE = 100f;
     private readonly float ATTACK_WIDTH = 2f;
     private readonly float TRISHOT_DEVIATION = 5f*Mathf.Deg2Rad;
@@ -42,6 +44,20 @@ public class Ranger : HeroClass, IHitboxResponder
         traps = new List<GameObject>();
         needles = new List<GameObject>();
         hitBox.SetResponder(this); 
+    }
+
+    protected override void InitializeStateMachine()
+    {
+        Dictionary<Type, BaseState> states = new Dictionary<Type, BaseState>()
+        {
+            {typeof(RangerIdleState), new RangerIdleState(this)},
+            {typeof(RangerChaseState), new RangerChaseState(this)},
+            {typeof(RangerAttackState), new RangerAttackState(this)},
+            {typeof(RangerTrishotState), new RangerTrishotState(this)},
+            {typeof(RangerTrapState), new RangerTrapState(this)},
+            {typeof(RangerRepositionState), new RangerRepositionState(this)}
+        };
+        stateMachine.SetStates(states);
     }
 
     public override void Update()

@@ -4,11 +4,9 @@ using UnityEngine;
 public class ChaseState : BaseState
 {
 	private static float FLEE_HEALTH = 0.25f;
-	private PlayerClass player;
 
 	public ChaseState(CharacterClass ch) : base(ch)
 	{
-		this.player = GameObject.Find("Player").GetComponent<PlayerClass>();
 	}
 
     public override Type Tick()

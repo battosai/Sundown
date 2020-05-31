@@ -8,7 +8,6 @@ public class AttackState : BaseState
     private static float DASH_TIME = 0.2f;
     private static float DASH_SPEED = 40f;
     private static float RECOVERY_TIME = 1f;
-    private PlayerClass player;
     private Hitbox hitbox;
     private bool didAttack;
     private float dashTimer;
@@ -16,7 +15,6 @@ public class AttackState : BaseState
 
     public AttackState(TownspersonClass ch) : base(ch)
     {
-        this.player = GameObject.Find("Player").GetComponent<PlayerClass>();
         this.hitbox = ch.hitbox;
         didAttack = false;
         dashTimer = 0f;
