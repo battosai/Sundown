@@ -18,12 +18,6 @@ public abstract class HeroClass : CharacterClass
 
     protected abstract void InitializeStateMachine();
 
-	//common one time setups
-	protected void init()
-	{
-		SetType(CharacterType.HERO);
-	}
-
 	public virtual void ArenaUpdate()
 	{
 		Debug.Log("DEFAULT ARENA UPDATE!");

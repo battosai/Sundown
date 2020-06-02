@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class RangerChaseState : BaseState
 {
+    private static readonly float VISION_RANGE = 100f;
+    private Ranger ranger;
     private StateMachine stateMachine;
     private List<Vector2> path;
 
     public RangerChaseState(Ranger ch) : base(ch)
     {
+        ranger = ch;
         stateMachine = ch.stateMachine;
         path = new List<Vector2>();
     }
@@ -33,7 +36,10 @@ public class RangerChaseState : BaseState
 
             //if we reach where the end of path without LOS, go to idle
             if(path.Count == 0)
+            {
+                ranger.SetIsAlarmed(false);
                 return typeof(RangerIdleState);
+            }
         }
         return null;
     }
@@ -43,7 +49,7 @@ public class RangerChaseState : BaseState
         Vector2 direction = player.floorPosition-character.floorPosition;
         if((character.isLeft && Mathf.Sign(direction.x) < 0) || (!character.isLeft && Mathf.Sign(direction.x) > 0))
         {
-            RaycastHit2D vision = Physics2D.Raycast(character.floorPosition, player.floorPosition - character.floorPosition, Ranger.VISION_RANGE);
+            RaycastHit2D vision = Physics2D.Raycast(character.floorPosition, player.floorPosition - character.floorPosition, VISION_RANGE);
 			if(vision.collider != null)
 			{
 				if(vision.collider.gameObject.name == "Player")

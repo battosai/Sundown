@@ -19,7 +19,6 @@ public abstract class Wildlife : CharacterClass
         if(player == null)
             player = GameObject.Find("Player").GetComponent<PlayerClass>();
         stateMachine = GetComponent<StateMachine>();
-        SetType(CharacterType.WILDLIFE);
         base.Awake();
         InitializeStateMachine();
     }

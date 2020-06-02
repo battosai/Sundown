@@ -130,9 +130,13 @@ public class PathFinding
 			Debug.LogWarning("Character has non-positive speed");
 			return Vector2.zero;
 		}
+
 		float dx = destination.x-start.x;
 		float dy = destination.y-start.y;
-		float dist = Vector2.Distance(start, destination);
+
+		//prevents dividing by 0
+		float dist = Mathf.Max(Vector2.Distance(start, destination), 0.1f);
+
 		float vx = (speed*dx)/dist;
 		float vy = (speed*dy)/dist;
 		return new Vector2(vx, vy);

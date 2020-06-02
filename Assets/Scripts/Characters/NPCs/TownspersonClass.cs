@@ -20,7 +20,6 @@ public abstract class TownspersonClass : CharacterClass
     {
         player = GameObject.Find("Player").GetComponent<PlayerClass>();
         hitbox = GetComponent<Hitbox>(); 
-        SetType(CharacterType.TOWNSPERSON);
         base.Awake();
         stateMachine = GetComponent<StateMachine>();
         InitializeStateMachine();

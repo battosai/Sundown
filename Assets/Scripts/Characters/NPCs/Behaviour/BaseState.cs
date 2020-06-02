@@ -3,7 +3,21 @@ using UnityEngine;
 
 public abstract class BaseState
 {
-    protected static PlayerClass player;
+    //can't do in constructor, race condition
+    protected static PlayerClass player
+    {
+        get
+        {
+            if(_player == null)
+                _player = GameObject.Find("Player").GetComponent<PlayerClass>();
+            return _player;
+        }
+        private set
+        {
+            _player = value;
+        }
+    }
+    protected static PlayerClass _player;
     protected GameObject obj;
     protected Transform trans;
     protected Rigidbody2D rb;
@@ -13,8 +27,6 @@ public abstract class BaseState
 
     public BaseState(CharacterClass ch)
     {
-        if(player == null)
-            GameObject.Find("Player").GetComponent<PlayerClass>();
         this.obj = ch.gameObject;
         this.trans = ch.transform;
         this.rb = ch.rb;

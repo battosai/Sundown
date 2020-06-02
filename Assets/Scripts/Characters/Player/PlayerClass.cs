@@ -27,7 +27,6 @@ public class PlayerClass : CharacterClass
 	public void Start()
 	{
 		aggroBox.enabled = false;
-		SetType(CharacterType.PLAYER);
 		setFloorHeight();
 		Trap.OnTrapped += Trapped;
 	}

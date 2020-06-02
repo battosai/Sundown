@@ -11,7 +11,6 @@ public class Ranger : HeroClass, IHitboxResponder
     private readonly int MASTERY = 2;
     private readonly int INSPECT_TIME = 10;
     private readonly int ATTACK_TIME = 3;
-    private readonly int ATTACK_DMG = 2;
     private readonly int TRAP_MAX = 3;
     private readonly float TRISHOT_TIME = 3f;
     private readonly float REPOSITION_THRESHOLD = 10f;
@@ -19,9 +18,6 @@ public class Ranger : HeroClass, IHitboxResponder
     private readonly float LONG_DISTANCE = 100f;
     private readonly float MID_DISTANCE = 60f;
     private readonly float AGGRO_RANGE = 100f;
-    public static readonly float VISION_RANGE = 100f;
-    private readonly float ATTACK_RANGE = 100f;
-    private readonly float ATTACK_WIDTH = 2f;
     private readonly float TRISHOT_DEVIATION = 5f*Mathf.Deg2Rad;
     private readonly float TRITRAP_DEVIATION = 10f*Mathf.Deg2Rad;
     private enum Spacing {FAR, MID, CLOSE};
@@ -34,13 +30,14 @@ public class Ranger : HeroClass, IHitboxResponder
 	{
 		player = GameObject.Find("Player").GetComponent<PlayerClass>();
         hitBox = GetComponent<Hitbox>();
+        stateMachine = GetComponent<StateMachine>();
 		base.Awake();
         gameState.SetHero(this);
 	}
 
     public void Start()
     {
-        init();
+        InitializeStateMachine();
         traps = new List<GameObject>();
         needles = new List<GameObject>();
         hitBox.SetResponder(this); 
@@ -130,39 +127,39 @@ public class Ranger : HeroClass, IHitboxResponder
 
     public override void ArenaUpdate()
     {
-        float distance = Vector2.Distance(player.floorPosition, floorPosition);
-        Spacing prevSpacing = spacing; 
-        spacing = distance > LONG_DISTANCE ? Spacing.FAR : (distance > MID_DISTANCE ? Spacing.MID : Spacing.CLOSE);
-        if(spacing != prevSpacing)
-            time = Time.time;
-        switch(spacing)
-        {
-            case Spacing.FAR:
-                if(Time.time-time > TRISHOT_TIME)
-                {
-                    time = Time.time;
-                    trishot();
-                    Vector2 away = floorPosition-player.floorPosition;
-                    StartCoroutine(dash(floorPosition+away));
-                }
-                break;
-            case Spacing.MID:
-                //maybe just place all 3 in a curve like trishot, and replace if a trap is missing
-                //otherwise just triple shot?
-                //maybe triple shot for midrange, pentashot for long range
-                placeTrap();
-                break;
-            case Spacing.CLOSE:
-                if(Time.time-time > REPOSITION_TIME)
-                {
-                    time = Time.time;
-                    reposition();
-                }
-                break;
-            default:
-                Debug.LogError($"Unknown Spacing {spacing}");
-                break;
-        }
+        // float distance = Vector2.Distance(player.floorPosition, floorPosition);
+        // Spacing prevSpacing = spacing; 
+        // spacing = distance > LONG_DISTANCE ? Spacing.FAR : (distance > MID_DISTANCE ? Spacing.MID : Spacing.CLOSE);
+        // if(spacing != prevSpacing)
+        //     time = Time.time;
+        // switch(spacing)
+        // {
+        //     case Spacing.FAR:
+        //         if(Time.time-time > TRISHOT_TIME)
+        //         {
+        //             time = Time.time;
+        //             trishot();
+        //             Vector2 away = floorPosition-player.floorPosition;
+        //             StartCoroutine(dash(floorPosition+away));
+        //         }
+        //         break;
+        //     case Spacing.MID:
+        //         //maybe just place all 3 in a curve like trishot, and replace if a trap is missing
+        //         //otherwise just triple shot?
+        //         //maybe triple shot for midrange, pentashot for long range
+        //         placeTrap();
+        //         break;
+        //     case Spacing.CLOSE:
+        //         if(Time.time-time > REPOSITION_TIME)
+        //         {
+        //             time = Time.time;
+        //             reposition();
+        //         }
+        //         break;
+        //     default:
+        //         Debug.LogError($"Unknown Spacing {spacing}");
+        //         break;
+        // }
     }
 
     private void reposition()
@@ -312,16 +309,16 @@ public class Ranger : HeroClass, IHitboxResponder
 		hitBox.StopCheckingCollision();
     }
 
-    private void basicAttack()
-    {
-        Debug.Log("Ranger is attacking!");
-        RaycastHit2D hit = Physics2D.CircleCast(floorPosition, ATTACK_WIDTH, player.floorPosition-floorPosition, ATTACK_RANGE);
-        if(hit.collider != null)
-        {
-            if(hit.collider.tag == "Player")
-                player.hurtBox.Hurt(ATTACK_DMG);
-        }
-    }
+    // private void basicAttack()
+    // {
+    //     Debug.Log("Ranger is attacking!");
+    //     RaycastHit2D hit = Physics2D.CircleCast(floorPosition, ATTACK_WIDTH, player.floorPosition-floorPosition, ATTACK_RANGE);
+    //     if(hit.collider != null)
+    //     {
+    //         if(hit.collider.tag == "Player")
+    //             player.hurtBox.Hurt(ATTACK_DMG);
+    //     }
+    // }
 
     //effectively the ranger's "scout" ability
     private void interact(Collider2D other)

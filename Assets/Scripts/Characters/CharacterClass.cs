@@ -17,7 +17,6 @@ public abstract class CharacterClass : MonoBehaviour
 	public bool isLeft {get; private set;}
 	public bool isAlive {get; private set;}
 	public Vector2 floorPosition {get; private set;}
-	public CharacterType type {get; private set;}
 	public GameState gameState {get; private set;}
 	public World world {get; private set;}
 	public Transform trans {get; private set;}
@@ -30,7 +29,6 @@ public abstract class CharacterClass : MonoBehaviour
     public bool isAlarmed {get; private set;}
     // protected Vector2 alarmPoint;
 	protected Animator anim;
-	public void SetType(CharacterType type){this.type = type;}
 	public void SetNodeID(int id){nodeID = id;}
 	// public void SetAlarmPoint(Vector2 alarmPoint){this.alarmPoint=alarmPoint;}
 	public void SetIsLeft(bool isLeft){this.isLeft = isLeft;}
