@@ -6,25 +6,24 @@ using Game;
 
 public class Ranger : HeroClass, IHitboxResponder
 {
-    public GameObject trap;
-    public GameObject needle;
+    public Trap trap;
+    public Needle needle;
     private readonly int MASTERY = 2;
-    private readonly int INSPECT_TIME = 10;
-    private readonly int ATTACK_TIME = 3;
-    private readonly int TRAP_MAX = 3;
-    private readonly float TRISHOT_TIME = 3f;
-    private readonly float REPOSITION_THRESHOLD = 10f;
-    private readonly float REPOSITION_TIME = 5f;
-    private readonly float LONG_DISTANCE = 100f;
-    private readonly float MID_DISTANCE = 60f;
-    private readonly float AGGRO_RANGE = 100f;
-    private readonly float TRISHOT_DEVIATION = 5f*Mathf.Deg2Rad;
-    private readonly float TRITRAP_DEVIATION = 10f*Mathf.Deg2Rad;
-    private enum Spacing {FAR, MID, CLOSE};
-    private Spacing spacing;
+    // private readonly int INSPECT_TIME = 10;
+    // private readonly int TRAP_MAX = 3;
+    // private readonly float TRISHOT_TIME = 3f;
+    // private readonly float REPOSITION_THRESHOLD = 10f;
+    // private readonly float REPOSITION_TIME = 5f;
+    // private readonly float LONG_DISTANCE = 100f;
+    // private readonly float MID_DISTANCE = 60f;
+    // private readonly float AGGRO_RANGE = 100f;
+    // private readonly float TRISHOT_DEVIATION = 5f*Mathf.Deg2Rad;
+    // private readonly float TRITRAP_DEVIATION = 10f*Mathf.Deg2Rad;
+    // private enum Spacing {FAR, MID, CLOSE};
+    // private Spacing spacing;
 	private Vector2 INTERACT_SIZE = new Vector2(50f, 50f);
-    private List<GameObject> traps;
-    private List<GameObject> needles;
+    private List<Trap> traps;
+    private List<Needle> needles;
 
 	public override void Awake()
 	{
@@ -37,10 +36,10 @@ public class Ranger : HeroClass, IHitboxResponder
 
     public void Start()
     {
-        InitializeStateMachine();
-        traps = new List<GameObject>();
-        needles = new List<GameObject>();
+        traps = new List<Trap>();
+        needles = new List<Needle>();
         hitBox.SetResponder(this); 
+        InitializeStateMachine();
     }
 
     protected override void InitializeStateMachine()
@@ -162,95 +161,105 @@ public class Ranger : HeroClass, IHitboxResponder
         // }
     }
 
-    private void reposition()
-    {
-        Vector2 repos = Arena.GetOpenPosition();
-        trans.position = repos;
-    }
+    // private void reposition()
+    // {
+    //     Vector2 repos = Arena.GetOpenPosition();
+    //     trans.position = repos;
+    // }
 
-    private void trishot()
-    {
-        Debug.Log("Trishot!");
-        //midshot calculations
-        float xdiff = player.floorPosition.x-floorPosition.x;
-        float ydiff = player.floorPosition.y-floorPosition.y;
-        float distance = Vector2.Distance(player.floorPosition, trans.position);
-        float angle = ydiff > 0 ? Mathf.Acos(xdiff/distance) : -Mathf.Acos(xdiff/distance);
-        float[] angles = new float[3]{angle, angle-TRISHOT_DEVIATION, angle+TRISHOT_DEVIATION};
-        for(int i = 0; i < 3; i++)
-            createNeedleOrUsePool(angles[i]);
-    }
+    // private void trishot()
+    // {
+    //     Debug.Log("Trishot!");
+    //     //midshot calculations
+    //     float xdiff = player.floorPosition.x-floorPosition.x;
+    //     float ydiff = player.floorPosition.y-floorPosition.y;
+    //     float distance = Vector2.Distance(player.floorPosition, trans.position);
+    //     float angle = ydiff > 0 ? Mathf.Acos(xdiff/distance) : -Mathf.Acos(xdiff/distance);
+    //     float[] angles = new float[3]{angle, angle-TRISHOT_DEVIATION, angle+TRISHOT_DEVIATION};
+    //     for(int i = 0; i < 3; i++)
+    //         createNeedleOrUsePool(angles[i]);
+    // }
 
-    private void createNeedleOrUsePool(float angle)
+    //prepares a needle (from pool or newly created) to fire at a certain angle
+    public void GetNeedle(float angle)
     {
-        foreach(GameObject needle in needles)
-            if(!needle.activeInHierarchy)
+        foreach(Needle needle in needles)
+            if(!needle.gameObject.activeInHierarchy)
             {
-                needle.SetActive(true);
+                needle.gameObject.SetActive(true);
                 needle.transform.position = trans.position;
                 needle.transform.rotation = Quaternion.Euler(0f, 0f, angle*Mathf.Rad2Deg);
-                needle.GetComponent<Rigidbody2D>().velocity = needle.transform.right*Needle.SPEED;
+                needle.rb.velocity = needle.transform.right*Needle.SPEED;
                 return;
             }
-        GameObject newNeedle = Instantiate(needle, trans.position, Quaternion.Euler(0f, 0f, angle*Mathf.Rad2Deg));
-        newNeedle.GetComponent<Rigidbody2D>().velocity = newNeedle.transform.right*Needle.SPEED;
+        Needle newNeedle = Instantiate(needle, trans.position, Quaternion.Euler(0f, 0f, angle*Mathf.Rad2Deg));
+        newNeedle.rb.velocity = newNeedle.transform.right*Needle.SPEED;
         needles.Add(newNeedle);
     }
 
-    private void tritrap()
+    public float GetNeedleAngle(Vector3 target)
     {
-        float xdiff = (player.floorPosition.x-floorPosition.x)/2;
-        float ydiff = (player.floorPosition.y-floorPosition.y)/2;
-        float distance = Vector2.Distance(player.floorPosition, trans.position);
-        float angle = ydiff > 0 ? Mathf.Acos(xdiff/distance) : -Mathf.Acos(xdiff/distance);
-        float axdiff = distance*Mathf.Cos(angle+TRITRAP_DEVIATION);
-        float aydiff = distance*Mathf.Sin(angle+TRITRAP_DEVIATION);
-        float bxdiff = distance*Mathf.Cos(angle-TRITRAP_DEVIATION);
-        float bydiff = distance*Mathf.Sin(angle-TRITRAP_DEVIATION);
-        if(traps.Count == 0)
-        {
-            GameObject midtrap = Instantiate(trap, floorPosition + new Vector2(xdiff, ydiff), Quaternion.identity);
-            GameObject atrap = Instantiate(trap, floorPosition + new Vector2(axdiff, aydiff), Quaternion.identity);
-            GameObject btrap = Instantiate(trap, floorPosition + new Vector2(bxdiff, bydiff), Quaternion.identity);
-            traps.Add(midtrap);
-            traps.Add(atrap);
-            traps.Add(btrap);
-        }
-        else
-        {
-            traps[0].SetActive(true);
-            traps[1].SetActive(true);
-            traps[2].SetActive(true);
-            traps[0].transform.position = floorPosition + new Vector2(xdiff, ydiff);
-            traps[1].transform.position = floorPosition + new Vector2(axdiff, aydiff);
-            traps[2].transform.position = floorPosition + new Vector2(bxdiff, bydiff);
-        }
+        float xdiff = target.x - floorPosition.x;
+        float ydiff = target.y - floorPosition.y;
+        float distance = Vector2.Distance(target, floorPosition);
+        float angle = ((ydiff > 0) ? 1 : -1) * Mathf.Acos(xdiff/distance);
+        return angle;
     }
 
-    private void placeTrap()
-    {
-        int active = 0;
-        foreach(GameObject trap in traps)
-            if(trap.activeInHierarchy)
-                active++;
-        if(active < TRAP_MAX)
-        {
-            GameObject newTrap;
-            if(traps.Count < TRAP_MAX && traps.Count == active)
-            {
-                newTrap = Instantiate(trap);
-                traps.Add(newTrap);
-            }
-            else
-            {
-                newTrap = traps[active]; 
-                newTrap.SetActive(true);
-            }
-            Vector2 offset = (player.floorPosition-floorPosition)/2;
-            Vector2 pos = floorPosition+offset;
-            newTrap.transform.position = pos;
-        }
-    }
+    // private void tritrap()
+    // {
+    //     float xdiff = (player.floorPosition.x-floorPosition.x)/2;
+    //     float ydiff = (player.floorPosition.y-floorPosition.y)/2;
+    //     float distance = Vector2.Distance(player.floorPosition, trans.position);
+    //     float angle = ydiff > 0 ? Mathf.Acos(xdiff/distance) : -Mathf.Acos(xdiff/distance);
+    //     float axdiff = distance*Mathf.Cos(angle+TRITRAP_DEVIATION);
+    //     float aydiff = distance*Mathf.Sin(angle+TRITRAP_DEVIATION);
+    //     float bxdiff = distance*Mathf.Cos(angle-TRITRAP_DEVIATION);
+    //     float bydiff = distance*Mathf.Sin(angle-TRITRAP_DEVIATION);
+    //     if(traps.Count == 0)
+    //     {
+    //         GameObject midtrap = Instantiate(trap, floorPosition + new Vector2(xdiff, ydiff), Quaternion.identity);
+    //         GameObject atrap = Instantiate(trap, floorPosition + new Vector2(axdiff, aydiff), Quaternion.identity);
+    //         GameObject btrap = Instantiate(trap, floorPosition + new Vector2(bxdiff, bydiff), Quaternion.identity);
+    //         traps.Add(midtrap);
+    //         traps.Add(atrap);
+    //         traps.Add(btrap);
+    //     }
+    //     else
+    //     {
+    //         traps[0].SetActive(true);
+    //         traps[1].SetActive(true);
+    //         traps[2].SetActive(true);
+    //         traps[0].transform.position = floorPosition + new Vector2(xdiff, ydiff);
+    //         traps[1].transform.position = floorPosition + new Vector2(axdiff, aydiff);
+    //         traps[2].transform.position = floorPosition + new Vector2(bxdiff, bydiff);
+    //     }
+    // }
+
+    // private void placeTrap()
+    // {
+    //     int active = 0;
+    //     foreach(GameObject trap in traps)
+    //         if(trap.activeInHierarchy)
+    //             active++;
+    //     if(active < TRAP_MAX)
+    //     {
+    //         GameObject newTrap;
+    //         if(traps.Count < TRAP_MAX && traps.Count == active)
+    //         {
+    //             newTrap = Instantiate(trap);
+    //             traps.Add(newTrap);
+    //         }
+    //         else
+    //         {
+    //             newTrap = traps[active]; 
+    //             newTrap.SetActive(true);
+    //         }
+    //         Vector2 offset = (player.floorPosition-floorPosition)/2;
+    //         Vector2 pos = floorPosition+offset;
+    //         newTrap.transform.position = pos;
+    //     }
+    // }
 
     public void InspectCallback()
     {

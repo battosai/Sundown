@@ -18,20 +18,22 @@ public class RangerChaseState : BaseState
 
     public override Type Tick()
     {
+        rb.velocity = Vector2.zero;
+
         //if valid LOS, attack
         if(HasLineOfSight())
         {
             path.Clear();
             return typeof(RangerAttackState);
         }
-        
+
         //else move towards player while checking
         if(path.Count == 0)
-            path = PathFinding.AStarJump(character.floorPosition, player.floorPosition, character.nodeMap, character.nodeID);
+            path = PathFinding.AStarJump(ranger.floorPosition, player.floorPosition, ranger.nodeMap, character.nodeID);
         else
         {
-            rb.velocity = PathFinding.GetVelocity(character.floorPosition, path[0], character.speed);
-            if(((Vector2)(character.floorPosition - path[0])).sqrMagnitude <= PathFinding.TOLERANCE)
+            rb.velocity = PathFinding.GetVelocity(ranger.floorPosition, path[0], ranger.speed);
+            if(((Vector2)(ranger.floorPosition - path[0])).sqrMagnitude <= PathFinding.TOLERANCE)
                 path.RemoveAt(0);
 
             //if we reach where the end of path without LOS, go to idle
@@ -46,10 +48,11 @@ public class RangerChaseState : BaseState
 
     private bool HasLineOfSight()
     {
-        Vector2 direction = player.floorPosition-character.floorPosition;
-        if((character.isLeft && Mathf.Sign(direction.x) < 0) || (!character.isLeft && Mathf.Sign(direction.x) > 0))
+        Vector2 direction = player.floorPosition-ranger.floorPosition;
+        if((ranger.isLeft && Mathf.Sign(direction.x) < 0) || (!ranger.isLeft && Mathf.Sign(direction.x) > 0))
         {
-            RaycastHit2D vision = Physics2D.Raycast(character.floorPosition, player.floorPosition - character.floorPosition, VISION_RANGE);
+            Debug.DrawRay(ranger.floorPosition, player.floorPosition-ranger.floorPosition, Color.red, 2f);
+            RaycastHit2D vision = Physics2D.Raycast(ranger.floorPosition, player.floorPosition - ranger.floorPosition, VISION_RANGE, 1 << LayerMask.NameToLayer("Default"));
 			if(vision.collider != null)
 			{
 				if(vision.collider.gameObject.name == "Player")

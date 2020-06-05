@@ -1,23 +1,36 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RangerAttackState : BaseState
 {
-    private static readonly int ATTACK_DMG = 2;
-    private static readonly float ATTACK_RANGE = 100f;
-    private static readonly float ATTACK_WIDTH = 2f;
+    private static readonly float ATTACK_TIME = 2f;
+    private bool didAttack;
+    private float attackTimer;
+    private Ranger ranger;
 
     public RangerAttackState(Ranger ch) : base(ch)
     {
+        ranger = ch;
+        didAttack = false;
+        attackTimer = 0f;
     }
 
     public override Type Tick()
     {
-        RaycastHit2D hit = Physics2D.CircleCast(character.floorPosition, ATTACK_WIDTH, player.floorPosition - character.floorPosition, ATTACK_RANGE);
-        if(hit.collider != null)
+        //will wait 2 seconds (lining up shot) before shooting
+        if(attackTimer < ATTACK_TIME)
+            attackTimer += Time.deltaTime;
+        else if(!didAttack)
         {
-            if(hit.collider.tag == "Player")
-                player.hurtBox.Hurt(ATTACK_DMG);
+            didAttack = true;
+            ranger.GetNeedle(ranger.GetNeedleAngle(player.floorPosition));
+        }
+        else
+        {
+            attackTimer = 0f;
+            didAttack = false;
+            return typeof(RangerChaseState);
         }
         return null;
     }

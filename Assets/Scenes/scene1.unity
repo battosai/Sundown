@@ -2875,6 +2875,18 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114502804030520796, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
+        type: 3}
+      propertyPath: needle
+      value: 
+      objectReference: {fileID: 114627301928775314, guid: 774446cc788f7374ba0372214fd088a2,
+        type: 3}
+    - target: {fileID: 114502804030520796, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
+        type: 3}
+      propertyPath: trap
+      value: 
+      objectReference: {fileID: 114391247035950794, guid: b2297f9ed6dff24409d79fbb0254ca7d,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee4c68029c7d5a64cba18ef6cd9f1973, type: 3}
 --- !u!1 &1996629760

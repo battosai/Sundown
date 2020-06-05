@@ -5,8 +5,9 @@ using UnityEngine;
 public class Needle : MonoBehaviour 
 {
 	public static readonly float SPEED = 70f;
+	private static readonly int DMG = 2;
 	public Vector2 floorPosition {get; private set;}
-	private readonly int DMG = 5;
+	public Rigidbody2D rb {get; private set;}
 	private float floorHeight;
 	private Transform trans;
 	private SpriteRenderer rend;
@@ -15,6 +16,7 @@ public class Needle : MonoBehaviour
 	public void Awake()
 	{
 		trans = transform;
+		rb = GetComponent<Rigidbody2D>();
 		rend = GetComponent<SpriteRenderer>();
 		player = GameObject.Find("Player").GetComponent<PlayerClass>();
 	}
@@ -24,15 +26,15 @@ public class Needle : MonoBehaviour
 		setFloorHeight();	
 	}
 
-	public void OnTriggerEnter2D(Collider2D other)
+	public void OnCollisionEnter2D(Collision2D other)
 	{
-		switch(other.tag)
+		switch(other.collider.tag)
 		{
 			case "Player":
-				other.GetComponent<Hurtbox>().Hurt(DMG, player);
+				other.collider.GetComponent<Hurtbox>().Hurt(DMG, player);
 				break;
 			case "Wildlife":
-				other.GetComponent<Hurtbox>().Hurt(DMG);
+				other.collider.GetComponent<Hurtbox>().Hurt(DMG);
 				break;
 			default:
 				break;
