@@ -9,20 +9,17 @@ public class Ranger : HeroClass, IHitboxResponder
     public Trap trap;
     public Needle needle;
     private readonly int MASTERY = 2;
+    public readonly int TRAP_MAX = 6;
     // private readonly int INSPECT_TIME = 10;
-    // private readonly int TRAP_MAX = 3;
-    // private readonly float TRISHOT_TIME = 3f;
     // private readonly float REPOSITION_THRESHOLD = 10f;
     // private readonly float REPOSITION_TIME = 5f;
     // private readonly float LONG_DISTANCE = 100f;
     // private readonly float MID_DISTANCE = 60f;
     // private readonly float AGGRO_RANGE = 100f;
-    // private readonly float TRISHOT_DEVIATION = 5f*Mathf.Deg2Rad;
-    // private readonly float TRITRAP_DEVIATION = 10f*Mathf.Deg2Rad;
     // private enum Spacing {FAR, MID, CLOSE};
     // private Spacing spacing;
 	private Vector2 INTERACT_SIZE = new Vector2(50f, 50f);
-    private List<Trap> traps;
+    public List<Trap> traps {get; private set;}
     private List<Needle> needles;
 
 	public override void Awake()
@@ -180,16 +177,16 @@ public class Ranger : HeroClass, IHitboxResponder
     //         createNeedleOrUsePool(angles[i]);
     // }
 
-    //prepares a needle (from pool or newly created) to fire at a certain angle
-    public void GetNeedle(float angle)
+    //places a needle (from pool or newly created) to fire at a certain angle
+    public void SpawnNeedle(float angle)
     {
-        foreach(Needle needle in needles)
-            if(!needle.gameObject.activeInHierarchy)
+        foreach(Needle n in needles)
+            if(!n.gameObject.activeInHierarchy)
             {
-                needle.gameObject.SetActive(true);
-                needle.transform.position = trans.position;
-                needle.transform.rotation = Quaternion.Euler(0f, 0f, angle*Mathf.Rad2Deg);
-                needle.rb.velocity = needle.transform.right*Needle.SPEED;
+                n.gameObject.SetActive(true);
+                n.transform.position = trans.position;
+                n.transform.rotation = Quaternion.Euler(0f, 0f, angle*Mathf.Rad2Deg);
+                n.rb.velocity = n.transform.right*Needle.SPEED;
                 return;
             }
         Needle newNeedle = Instantiate(needle, trans.position, Quaternion.Euler(0f, 0f, angle*Mathf.Rad2Deg));
@@ -197,7 +194,26 @@ public class Ranger : HeroClass, IHitboxResponder
         needles.Add(newNeedle);
     }
 
-    public float GetNeedleAngle(Vector3 target)
+    //places a trap (from pool or newly created) at position
+    public void SpawnTrap(Vector3 position)
+    {
+        foreach(Trap t in traps)
+        {
+            if(!t.gameObject.activeInHierarchy)
+            {
+                t.gameObject.SetActive(true);
+                t.transform.position = position;
+                return;
+            }
+        }
+        if(traps.Count < TRAP_MAX)
+        {
+            Trap newTrap = Instantiate(trap, position, Quaternion.identity);
+            traps.Add(newTrap);
+        }
+    }
+
+    public float GetAngle(Vector3 target)
     {
         float xdiff = target.x - floorPosition.x;
         float ydiff = target.y - floorPosition.y;
@@ -261,11 +277,11 @@ public class Ranger : HeroClass, IHitboxResponder
     //     }
     // }
 
-    public void InspectCallback()
-    {
-        state = State.INSPECT;
-        time = Time.time;
-    }
+    // public void InspectCallback()
+    // {
+    //     state = State.INSPECT;
+    //     time = Time.time;
+    // }
 
     public override void Track(int nodeID)
     {

@@ -86,7 +86,7 @@ public class PlayerClass : CharacterClass
 	private IEnumerator TrappedDuration()
 	{
 		float time = 0f;
-		while(time <= Trap.TRAP_TIME)
+		while(time <= Trap.IMMOBILE_TIME)
 		{
 			time += Time.deltaTime;
 			yield return null;

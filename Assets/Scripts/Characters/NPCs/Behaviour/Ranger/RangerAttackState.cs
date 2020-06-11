@@ -24,7 +24,7 @@ public class RangerAttackState : BaseState
         else if(!didAttack)
         {
             didAttack = true;
-            ranger.GetNeedle(ranger.GetNeedleAngle(player.floorPosition));
+            ranger.SpawnNeedle(ranger.GetAngle(player.floorPosition));
         }
         else
         {
