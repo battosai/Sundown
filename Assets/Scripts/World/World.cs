@@ -249,7 +249,7 @@ public class World : MonoBehaviour
         		if(map[i,j] == MapGenerator.FLOOR)
         		{
 					Vector2 coords = ConvertMapToWorld(i, j, nodeID);
-					float distance = (pos.x-coords.x)*(pos.x-coords.x)+(pos.y-coords.y)*(pos.y-coords.y);
+					float distance = (pos-coords).sqrMagnitude;
 					if(distance < min || min < 0)
 					{
 						min = distance;

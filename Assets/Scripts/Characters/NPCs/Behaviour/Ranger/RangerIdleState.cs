@@ -24,7 +24,7 @@ public class RangerIdleState : BaseState
         if(ranger.isArenaTime)
         {
             //decide which distance action to do
-            float dist = ((Vector2)(player.floorPosition-ranger.floorPosition)).sqrMagnitude; 
+            float dist = (player.floorPosition-ranger.floorPosition).sqrMagnitude; 
             if(dist > LONG_RANGE)
                 return typeof(RangerTrishotState);
             else if(dist > MID_RANGE)

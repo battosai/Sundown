@@ -33,7 +33,7 @@ public class RangerChaseState : BaseState
         else
         {
             rb.velocity = PathFinding.GetVelocity(ranger.floorPosition, path[0], ranger.speed);
-            if(((Vector2)(ranger.floorPosition - path[0])).sqrMagnitude <= PathFinding.TOLERANCE)
+            if((ranger.floorPosition - path[0]).sqrMagnitude <= PathFinding.TOLERANCE)
                 path.RemoveAt(0);
 
             //if we reach where the end of path without LOS, go to idle

@@ -30,7 +30,7 @@ public class FleeState : BaseState
             if(path.Count > 0)
             {
                 rb.velocity = PathFinding.GetVelocity(character.floorPosition, path[0], character.speed);
-                if(((Vector2)(character.floorPosition - path[0])).sqrMagnitude <= PathFinding.TOLERANCE) 
+                if((character.floorPosition - path[0]).sqrMagnitude <= PathFinding.TOLERANCE) 
                     path.RemoveAt(0);
             }
             else
