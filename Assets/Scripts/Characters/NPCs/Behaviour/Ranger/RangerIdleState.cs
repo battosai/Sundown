@@ -23,6 +23,8 @@ public class RangerIdleState : BaseState
     {
         if(ranger.isArenaTime)
         {
+            rb.velocity = Vector2.zero;
+
             //decide which distance action to do
             float dist = (player.floorPosition-ranger.floorPosition).sqrMagnitude; 
             if(dist > LONG_RANGE)

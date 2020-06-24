@@ -40,6 +40,7 @@ public class RangerTrapState : BaseState
                 didAttack = false;
                 return typeof(RangerIdleState);
             }
+            return null;
         }
         //shoot player if too many traps
         return typeof(RangerTrishotState);
