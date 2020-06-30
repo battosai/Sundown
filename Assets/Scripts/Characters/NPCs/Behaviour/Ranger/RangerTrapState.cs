@@ -24,13 +24,16 @@ public class RangerTrapState : BaseState
             else if(!didAttack)
             {
                 didAttack = true;
-                float angle = ranger.GetAngle(player.floorPosition);
-                float distance = Vector2.Distance(player.floorPosition, trans.position);
+                Vector2 midpt = 
+                    new Vector2(player.floorPosition.x+trans.position.x, 
+                    player.floorPosition.y+trans.position.y)/2;
+                float angle = ranger.GetAngle(midpt);
+                float distance = Vector2.Distance(midpt, trans.position);
                 float axDiff = distance*Mathf.Cos(angle+ANGLE_DEVIATION);
                 float ayDiff = distance*Mathf.Sin(angle+ANGLE_DEVIATION);
                 float bxDiff = distance*Mathf.Cos(angle-ANGLE_DEVIATION);
                 float byDiff = distance*Mathf.Sin(angle-ANGLE_DEVIATION);
-                ranger.SpawnTrap(player.floorPosition);
+                ranger.SpawnTrap(midpt);
                 ranger.SpawnTrap(ranger.floorPosition + new Vector2(axDiff, ayDiff));
                 ranger.SpawnTrap(ranger.floorPosition + new Vector2(bxDiff, byDiff));
             }
