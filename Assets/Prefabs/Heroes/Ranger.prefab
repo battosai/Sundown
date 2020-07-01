@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 114502804030520796}
   m_Layer: 9
   m_Name: Ranger
-  m_TagString: NPC
+  m_TagString: Hero
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -190,4 +190,3 @@ MonoBehaviour:
   dead: {fileID: 0}
   trap: {fileID: 0}
   needle: {fileID: 0}
-  needles: []
