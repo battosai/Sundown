@@ -125,37 +125,6 @@ public abstract class CharacterClass : MonoBehaviour
         }
 	}
 
-	protected IEnumerator takePath(Vector2 destination, System.Action callback=null)
-	{
-		Debug.Log("Taking path!");
-		float tolerance = 1f;
-		List<Vector2> path = PathFinding.AStarJump(floorPosition, destination, nodeMap, nodeID);
-		Debug.DrawLine(new Vector3(destination.x-1f, destination.y, 0f), new Vector3(destination.x+1f, destination.y, 0f), Color.red, 100f);
-		for(int i = 0; i < path.Count; i++)
-		{
-			if(health <= 0)
-				break;
-			while(true)
-			{
-				if(health <= 0)
-					break;
-				if(Vector2.Distance(floorPosition, path[i]) <= tolerance)
-					break;
-				Debug.DrawLine(new Vector3(path[i].x-1f, path[i].y, 0f), new Vector3(path[i].x+1f, path[i].y, 0f), Color.cyan, 1f);
-				rb.velocity = PathFinding.GetVelocity(floorPosition, path[i], speed);
-				yield return null;
-			}
-		}
-		Debug.Log("Reached end of path");
-		if(callback != null)
-			callback();
-	}
-
-	// public virtual void UpdateAnimator()
-	// {
-	// 	Debug.LogWarning($"{gameObject.name} has no proper UpdateAnimator() method");
-	// }
-	
 	//sets position so that floor position is at target
 	public Vector2 SetFloorPosition(Vector2 target)
 	{

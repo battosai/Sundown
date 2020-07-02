@@ -39,7 +39,7 @@ public abstract class HeroClass : CharacterClass
 	}
 
 	//is the player in the ranger's line of sight
-    protected bool playerSpotted()
+    protected bool PlayerSpotted()
     {
         Vector2 direction = player.floorPosition-floorPosition;
         if(isLeft && Mathf.Sign(direction.x) < 0 || !isLeft && Mathf.Sign(direction.x) > 0)
@@ -63,7 +63,7 @@ public abstract class HeroClass : CharacterClass
 	}
 
 	//handles making the hero (not) present in the player's node, but not making the game object inactive
-	protected void presentInNode(bool isPresent, int nodeID=-1)
+	protected void PresentInNode(bool isPresent, int nodeID=-1)
 	{
 		this.isPresent = isPresent;
 		rend.enabled = isPresent;
@@ -80,37 +80,6 @@ public abstract class HeroClass : CharacterClass
 			Vector2 spawn = world.GetValidPoints(nodeID, 1)[0];
 			trans.position = spawn;
 		}
-	}
-
-	protected new IEnumerator takePath(Vector2 destination, System.Action callback=null)
-	{
-		Debug.Log("Taking path!");
-		float tolerance = 1f;
-		List<Vector2> path = PathFinding.AStarJump(floorPosition, destination, nodeMap, nodeID);
-		Debug.DrawLine(new Vector3(destination.x-1f, destination.y, 0f), new Vector3(destination.x+1f, destination.y, 0f), Color.red, 100f);
-		for(int i = 0; i < path.Count; i++)
-		{
-			if(health <= 0)
-				break;
-			else if(playerSpotted())
-			{
-				callback();
-				break;
-			}
-			while(true)
-			{
-				if(health <= 0)
-					break;
-				if(Vector2.Distance(floorPosition, path[i]) <= tolerance)
-					break;
-				Debug.DrawLine(new Vector3(path[i].x-1f, path[i].y, 0f), new Vector3(path[i].x+1f, path[i].y, 0f), Color.cyan, 1f);
-				rb.velocity = PathFinding.GetVelocity(floorPosition, path[i], speed);
-				yield return null;
-			}
-		}
-		Debug.Log("Reached end of path");
-		if(callback != null)
-			callback();
 	}
 
 	public override void Reset()

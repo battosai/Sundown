@@ -66,21 +66,6 @@ public class Villager : TownspersonClass, IHitboxResponder
         }
     }
 
-    private void wanderInLeash()
-    {
-        //wander around assigned building entrance within leash
-    }
-
-    private void fleeToHome()
-    {
-        StartCoroutine(takePath(building.entrance.transform.position, HomeCallback));
-    }
-
-    private void callGuards()
-    {
-        //alert nearby guards
-    }
-
     protected override void UpdateAnimator()
     {
         anim.SetBool("isAlarmed", isAlarmed);

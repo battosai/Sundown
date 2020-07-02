@@ -5,9 +5,7 @@ using Game;
 
 public abstract class TownspersonClass : CharacterClass
 {
-    protected enum State {DEAD, IDLE, HOME, DEFEND, ALARM, HIDE, FLEE};
     protected readonly float ENTRANCE_RADIUS = 5f;
-    protected State state;
     protected PlayerClass player;
     public Hitbox hitbox {get; private set;}
     public Building building {get; private set;}
@@ -29,7 +27,6 @@ public abstract class TownspersonClass : CharacterClass
     {
         SetHealth(maxHealth);
         SetIsAlarmed(false);
-        state = State.IDLE;
         nodeMap = PathFinding.Node.MakeNodeMap(World.wnodes[nodeID].map, nodeID);
         base.Reset();
     }
@@ -43,16 +40,5 @@ public abstract class TownspersonClass : CharacterClass
         }
         UpdateAnimator();
         base.Update();
-    }
-
-    //pass to coroutines to signify reaching end of path that leads home
-    public void HomeCallback()
-    {
-        state = State.HOME;
-    }
-
-    public void WaitCallback()
-    {
-        StartCoroutine(wait(0.2f));
     }
 }

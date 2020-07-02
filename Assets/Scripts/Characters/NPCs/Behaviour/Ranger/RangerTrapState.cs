@@ -4,7 +4,7 @@ using UnityEngine;
 public class RangerTrapState : BaseState
 {
     private static readonly float ATTACK_TIME = 1f;
-    private static readonly float ANGLE_DEVIATION = 10f*Mathf.Deg2Rad;
+    private static readonly float ANGLE_DEVIATION = 45f*Mathf.Deg2Rad;
     private bool didAttack;
     private float attackTimer;
     private Ranger ranger;
@@ -25,8 +25,8 @@ public class RangerTrapState : BaseState
             {
                 didAttack = true;
                 Vector2 midpt = 
-                    new Vector2(player.floorPosition.x+trans.position.x, 
-                    player.floorPosition.y+trans.position.y)/2;
+                    new Vector2(player.floorPosition.x + ranger.floorPosition.x, 
+                    player.floorPosition.y + ranger.floorPosition.y)/2;
                 float angle = ranger.GetAngle(midpt);
                 float distance = Vector2.Distance(midpt, trans.position);
                 float axDiff = distance*Mathf.Cos(angle+ANGLE_DEVIATION);
