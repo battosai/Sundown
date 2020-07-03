@@ -10,11 +10,14 @@ public class PlayerClass : CharacterClass
 {
 	public Sprite human, halfHuman, werewolf;
 	public bool isHuman {get; private set;}
-	public bool isTrapped {get; private set;}
+	public bool isStunned {get; private set;} //use this for any form of CC (trap, shove, etc.)
 	public int strength {get; private set;}
 	public PlayerInput input {get; private set;}
 	public PlayerActions actions {get; private set;}
 	private Collider2D aggroBox;
+
+	public delegate void Stunned(float duration, bool isStuck=false);
+	public static Stunned OnStunned;
 
 	public override void Awake()
 	{
@@ -28,7 +31,7 @@ public class PlayerClass : CharacterClass
 	{
 		aggroBox.enabled = false;
 		setFloorHeight();
-		Trap.OnTrapped += Trapped;
+		OnStunned += StunHandler;
 	}
 
 	// Update is called once per frame
@@ -56,7 +59,7 @@ public class PlayerClass : CharacterClass
 		trans.position = SetFloorPosition(World.wnodes[nodeID].playerSpawn.transform.position);
 		rend.sprite = human;
 		isHuman = true;
-		isTrapped = false;
+		isStunned = false;
 		strength = 1;
 		UpdateAnimator();
 		actions.Reset();
@@ -74,24 +77,26 @@ public class PlayerClass : CharacterClass
 		anim.SetInteger("attackCount", input.attackCount);
 	}
 
-	//subscribed to Trap.OnTrapped event
-	private void Trapped()
+	//listener for OnStunned
+	private void StunHandler(float duration, bool isStuck=false)
 	{
-		isTrapped = true;	
+		isStunned = true;
 		rb.velocity = Vector2.zero;
-		StartCoroutine(TrappedDuration());
+		StartCoroutine(Stun(duration, isStuck));
 	}
 
 	//begins when player steps in trap;
-	private IEnumerator TrappedDuration()
+	private IEnumerator Stun(float duration, bool isStuck)
 	{
 		float time = 0f;
-		while(time <= Trap.IMMOBILE_TIME)
+		while(time <= duration)
 		{
+			if(isStuck)
+				rb.velocity = Vector2.zero;
 			time += Time.deltaTime;
 			yield return null;
 		}
-		isTrapped = false;
+		isStunned = false;
 	}
 
 	//called whenever player goes to next node or maybe by will

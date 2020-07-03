@@ -52,7 +52,7 @@ public class PlayerInput : MonoBehaviour
 		trackMouse();
     getMouseInput();
     getKeyboardInput();
-    if(!player.isTrapped)
+    if(!player.isStunned)
       useInput();
 	}
 

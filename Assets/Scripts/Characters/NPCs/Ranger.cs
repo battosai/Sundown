@@ -8,6 +8,7 @@ public class Ranger : HeroClass, IHitboxResponder
 {
 	public static readonly Vector2[] SHOVE = {new Vector2(10, -5), new Vector2(10, 8)};
     public static readonly float SHOVE_FORCE = 10f;
+    public static readonly float SHOVE_DURATION = 1f;
     public Trap trap;
     public Needle needle;
     private readonly int MASTERY = 2;
@@ -84,9 +85,9 @@ public class Ranger : HeroClass, IHitboxResponder
 
     public float GetAngle(Vector3 target)
     {
-        float xdiff = target.x - floorPosition.x;
-        float ydiff = target.y - floorPosition.y;
-        float distance = Vector2.Distance(target, floorPosition);
+        float xdiff = target.x - trans.position.x;
+        float ydiff = target.y - trans.position.y;
+        float distance = Vector2.Distance(target, trans.position);
         float angle = ((ydiff > 0) ? 1 : -1) * Mathf.Acos(xdiff/distance);
         return angle;
     }
@@ -122,9 +123,10 @@ public class Ranger : HeroClass, IHitboxResponder
         if(other.tag == "Player")
         {
             PlayerClass player = other.GetComponent<PlayerClass>();
-            //raise some sort of flag to indicate that player is "shoved"
-            //and can't control briefly
             Vector2 dir = (player.floorPosition-floorPosition).normalized;
+            //we want to be able to apply shove force, but no other forces
+            //figure it out pledge
+            PlayerClass.OnStunned.Invoke(SHOVE_DURATION);
             player.rb.AddForce(dir*SHOVE_FORCE);
         }
     }

@@ -6,16 +6,7 @@ public class Trap : MonoBehaviour
 {
 	public static readonly float IMMOBILE_TIME = 2f;
 	private static readonly float TRAP_DURATION = 6f;
-	private PlayerClass player;
 	private float durationTimer;
-
-	public delegate void Trapped();
-	public static event Trapped OnTrapped;
-
-	public void Awake()
-	{
-		player = GameObject.Find("Player").GetComponent<PlayerClass>();
-	}
 
 	public void Start()
 	{
@@ -37,7 +28,7 @@ public class Trap : MonoBehaviour
 	{
 		if(other.tag == "Player")
 		{
-			OnTrapped.Invoke();
+			PlayerClass.OnStunned.Invoke(TRAP_DURATION, isStuck:true);
 			gameObject.SetActive(false);
 		}
 	}
