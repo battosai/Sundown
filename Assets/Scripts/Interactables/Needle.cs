@@ -26,15 +26,15 @@ public class Needle : MonoBehaviour
 		setFloorHeight();	
 	}
 
-	public void OnCollisionEnter2D(Collision2D other)
+	public void OnTriggerEnter2D(Collider2D other)
 	{
-		switch(other.collider.tag)
+		switch(other.tag)
 		{
 			case "Player":
-				other.collider.GetComponent<Hurtbox>().Hurt(DMG, player);
+				other.GetComponent<Hurtbox>().Hurt(DMG, player);
 				break;
 			case "Wildlife":
-				other.collider.GetComponent<Hurtbox>().Hurt(DMG);
+				other.GetComponent<Hurtbox>().Hurt(DMG);
 				break;
 			default:
 				break;

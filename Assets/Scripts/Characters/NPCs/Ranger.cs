@@ -124,8 +124,6 @@ public class Ranger : HeroClass, IHitboxResponder
         {
             PlayerClass player = other.GetComponent<PlayerClass>();
             Vector2 dir = (player.floorPosition-floorPosition).normalized;
-            //we want to be able to apply shove force, but no other forces
-            //figure it out pledge
             PlayerClass.OnStunned.Invoke(SHOVE_DURATION);
             player.rb.AddForce(dir*SHOVE_FORCE);
         }
