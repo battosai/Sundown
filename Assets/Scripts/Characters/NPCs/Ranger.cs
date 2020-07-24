@@ -7,8 +7,8 @@ using Game;
 public class Ranger : HeroClass, IHitboxResponder
 {
 	public static readonly Vector2[] SHOVE = {new Vector2(10, -5), new Vector2(10, 8)};
-    public static readonly float SHOVE_FORCE = 10f;
-    public static readonly float SHOVE_DURATION = 1f;
+    private static readonly float SHOVE_FORCE = 10f;
+    private static readonly float SHOVE_DURATION = 1f;  //how long it affects the player
     public Trap trap;
     public Needle needle;
     private readonly int MASTERY = 2;
@@ -19,7 +19,7 @@ public class Ranger : HeroClass, IHitboxResponder
 	public override void Awake()
 	{
 		player = GameObject.Find("Player").GetComponent<PlayerClass>();
-        hitBox = GetComponent<Hitbox>();
+        hitbox = GetComponent<Hitbox>();
         stateMachine = GetComponent<StateMachine>();
 		base.Awake();
         gameState.SetHero(this);
@@ -29,7 +29,7 @@ public class Ranger : HeroClass, IHitboxResponder
     {
         traps = new List<Trap>();
         needles = new List<Needle>();
-        hitBox.SetResponder(this); 
+        hitbox.SetResponder(this); 
         InitializeStateMachine();
     }
 
@@ -118,7 +118,7 @@ public class Ranger : HeroClass, IHitboxResponder
     }
 
     //pushes player away and briefly disables input
-    private void Shove(Collider2D other)
+    public void Shove(Collider2D other)
     {
         if(other.tag == "Player")
         {

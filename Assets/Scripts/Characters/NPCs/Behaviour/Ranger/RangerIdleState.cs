@@ -6,7 +6,7 @@ public class RangerIdleState : BaseState
     //arena constants
     private static readonly float LONG_RANGE = Mathf.Pow(100, 2);
     private static readonly float MID_RANGE = Mathf.Pow(50, 2);
-    private static readonly float REPOSITION_TOLERANCE = Mathf.Pow(10, 2);
+    private static readonly float REPOSITION_TOLERANCE = Mathf.Pow(5, 2);
 
     //non arena constants
     private static readonly float CHANGE_ACTION_TIME = 1f;   //during non-arena

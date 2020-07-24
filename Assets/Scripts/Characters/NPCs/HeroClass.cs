@@ -14,7 +14,7 @@ public abstract class HeroClass : CharacterClass
 	protected bool isPresent;
 	public bool isArenaTime {get; protected set;}
 	protected PlayerClass player;
-	protected Hitbox hitBox;
+	public Hitbox hitbox {get; protected set;}
 
     protected abstract void InitializeStateMachine();
 
