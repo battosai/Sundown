@@ -12,7 +12,7 @@ public class Ranger : HeroClass, IHitboxResponder
     public Trap trap;
     public Needle needle;
     private readonly int MASTERY = 2;
-    public readonly int TRAP_MAX = 6;
+    public readonly int TRAP_MAX = 3;
     public List<Trap> traps {get; private set;}
     private List<Needle> needles;
 
@@ -134,6 +134,7 @@ public class Ranger : HeroClass, IHitboxResponder
         switch(act)
         {
             case Act.SHOVE:
+                Debug.Log($"SHOVED PLAYER");
                 Shove(other);
                 break;
             default:

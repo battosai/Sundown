@@ -2870,6 +2870,66 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 3.4056187
       objectReference: {fileID: 0}
+    - target: {fileID: 114180781985000638, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
+        type: 3}
+      propertyPath: closedColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114180781985000638, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
+        type: 3}
+      propertyPath: closedColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114180781985000638, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
+        type: 3}
+      propertyPath: closedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114180781985000638, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
+        type: 3}
+      propertyPath: openColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114180781985000638, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
+        type: 3}
+      propertyPath: openColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114180781985000638, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
+        type: 3}
+      propertyPath: openColor.b
+      value: 0.06818819
+      objectReference: {fileID: 0}
+    - target: {fileID: 114180781985000638, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
+        type: 3}
+      propertyPath: collidingColor.r
+      value: 0.99636734
+      objectReference: {fileID: 0}
+    - target: {fileID: 114180781985000638, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
+        type: 3}
+      propertyPath: collidingColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114180781985000638, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
+        type: 3}
+      propertyPath: collidingColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114180781985000638, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
+        type: 3}
+      propertyPath: closedColor.a
+      value: 0.5372549
+      objectReference: {fileID: 0}
+    - target: {fileID: 114180781985000638, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
+        type: 3}
+      propertyPath: openColor.a
+      value: 0.54509807
+      objectReference: {fileID: 0}
+    - target: {fileID: 114180781985000638, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
+        type: 3}
+      propertyPath: collidingColor.a
+      value: 0.56078434
+      objectReference: {fileID: 0}
     - target: {fileID: 114502804030520796, guid: ee4c68029c7d5a64cba18ef6cd9f1973,
         type: 3}
       propertyPath: m_Enabled
